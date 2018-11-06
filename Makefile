@@ -1,5 +1,5 @@
-NM = nm
-OTOOL = otool
+NM = ft_nm
+OTOOL = ft_otool
 NAME = $(NM) $(OTOOL)
 
 LIBFT_DIR = libft
