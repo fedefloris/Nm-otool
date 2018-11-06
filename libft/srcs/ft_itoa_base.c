@@ -3,81 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/21 19:25:15 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/22 17:55:11 by dhojt            ###   ########.fr       */
+/*   Created: 2016/03/28 14:36:40 by jwong             #+#    #+#             */
+/*   Updated: 2016/04/04 16:50:31 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-/*
-** 'A' or 'a' should be passed to c to indicate uper or lower case
-*/
-
-static char	ft_calculate_char(int mod, char c)
+static unsigned int	ft_total_digits(unsigned long nb, unsigned int base)
 {
-	char	return_char;
-
-	if (mod > 36)
-		return (0);
-	return_char = '0';
-	while (mod--)
-	{
-		return_char++;
-		if (return_char == ':')
-			return_char = c;
-	}
-	return (return_char);
-}
-
-static int	ft_get_len(uintmax_t num, uintmax_t base)
-{
-	int		len;
+	unsigned int	len;
 
 	len = 0;
-	while (num)
+	while ((nb / base) > 0)
 	{
-		num /= base;
 		len++;
+		nb /= base;
 	}
-	return (len);
+	return (len + 1);
 }
 
-static char	*ft_generate_string(uintmax_t num, uintmax_t base, char c)
+static void			ft_storenb(unsigned long nb, char *base, int *i, char *s)
 {
-	uintmax_t	sum;
-	int			mod;
-	int			len;
-	int			i;
-	char		*str;
+	int len;
 
-	if (num == 0)
+	len = ft_strlen(base);
+	if ((nb / len) == 0)
 	{
-		if (!(str = ft_strnew(1)))
-			return (NULL);
-		*str = '0';
-		return (str);
+		s[*i] = base[(nb % len)];
+		(*i)++;
+		s[*i] = '\0';
 	}
-	sum = num;
-	i = 0;
-	len = ft_get_len(num, base);
-	if (!(str = ft_strnew(len)))
-		return (NULL);
-	while (sum)
+	else
 	{
-		mod = sum % base;
-		sum /= base;
-		str[(len--) - 1] = ft_calculate_char(mod, c);
+		ft_storenb((nb / len), base, i, s);
+		s[*i] = base[(nb % len)];
+		(*i)++;
+		s[*i] = '\0';
 	}
-	return (str);
 }
 
-char		*ft_itoa_base(uintmax_t num, uintmax_t base, char c)
+char				*ft_itoa_base(unsigned long nb, char *base)
 {
-	char	*str;
+	int		i;
+	int		len;
+	char	*ret;
 
-	str = ft_generate_string(num, base, c);
-	return (str);
+	len = ft_strlen(base);
+	ret = (char *)malloc(sizeof(*ret) * (ft_total_digits(nb, len) + 1));
+	if (ret != NULL)
+	{
+		i = 0;
+		ft_storenb(nb, base, &i, ret);
+	}
+	return (ret);
+}
+
+char				*ft_itoa_base_signed(long nb, char *base)
+{
+	char	*ret;
+	char	*tmp;
+
+	if (nb < 0)
+	{
+		ret = ft_itoa_base((nb * -1), base);
+		tmp = ret;
+		ret = ft_strjoin("-", ret);
+		free(tmp);
+		return (ret);
+	}
+	return (ft_itoa_base(nb, base));
 }

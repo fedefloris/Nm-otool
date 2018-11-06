@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:38:19 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/03 14:02:49 by dhojt            ###   ########.fr       */
+/*   Created: 2015/11/27 15:29:16 by jwong             #+#    #+#             */
+/*   Updated: 2015/11/27 15:29:42 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,20 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	char	needle;
-	size_t	i;
+	const char	*temp;
+	char		chr;
+	int			i;
 
-	needle = (char)c;
-	i = ft_strlen(s) + 1;
-	while (i > 0)
+	temp = NULL;
+	chr = c;
+	i = 0;
+	while (s[i])
 	{
-		if (s[i - 1] == needle)
-			return ((char *)s + (i - 1));
-		i--;
+		if (s[i] == chr)
+			temp = &s[i];
+		i++;
 	}
-	return (NULL);
+	if (s[i] == chr)
+		temp = &s[i];
+	return ((char *)temp);
 }

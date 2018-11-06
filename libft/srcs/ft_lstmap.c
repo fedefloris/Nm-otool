@@ -3,33 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:36:08 by dhojt             #+#    #+#             */
-/*   Updated: 2018/01/27 15:36:10 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/10 16:18:27 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 18:57:49 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list	*ft_lstmap(t_list *lst, t_list *(*f) (t_list *elem))
 {
-	t_list	*ptr;
+	t_list	*head;
 	t_list	*new;
 	t_list	*tmp;
 
-	tmp = f(lst);
-	if (!(new = ft_lstnew(tmp->content, tmp->content_size)))
-		return (NULL);
-	ptr = new;
-	lst = lst->next;
-	while (lst)
+	if (lst != NULL)
 	{
-		tmp = f(lst);
-		if (!(new->next = ft_lstnew(tmp->content, tmp->content_size)))
-			return (NULL);
-		lst = lst->next;
-		new = new->next;
+		tmp = lst;
+		new = f(tmp);
+		head = new;
+		tmp = (*tmp).next;
+		while (tmp != NULL)
+		{
+			(*new).next = f(tmp);
+			tmp = (*tmp).next;
+			new = (*new).next;
+		}
+		(*new).next = NULL;
+		return (head);
 	}
-	return (ptr);
+	return (NULL);
 }

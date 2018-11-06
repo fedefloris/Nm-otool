@@ -3,90 +3,123 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/07 07:49:36 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/15 20:35:14 by dhojt            ###   ########.fr       */
+/*   Created: 2016/03/15 18:42:06 by jwong             #+#    #+#             */
+/*   Updated: 2018/03/22 11:58:13 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include "../includes/libft.h"
 
-int		line_copy(char **line, char *content, char c)
+static char		*str_divide(char **str)
 {
+	char	*ret;
+	char	*tmp;
 	int		i;
-	char	*tmp;
 
-	i = 0;
-	tmp = *line;
-	while (content[i] && content[i] != c)
-		i++;
-	if (!(*line = ft_strndup(content, i)))
-		return (0);
-	return (i);
-}
-
-t_list	*get_live(int fd, t_list **hist)
-{
-	t_list	*tmp;
-
-	if (!hist)
+	if ((*str)[0] == '\0')
+	{
+		*str = NULL;
 		return (NULL);
-	tmp = *hist;
-	while (tmp)
-	{
-		if ((int)tmp->content_size == fd)
-			return (tmp);
-		tmp = tmp->next;
 	}
-	tmp = ft_lstnew("", fd);
-	ft_lstadd(hist, tmp);
-	return (tmp);
-}
-
-int		my_read(const int fd, char **content)
-{
-	int		read_result;
-	char	*tmp;
-	char	buf[BUFF_SIZE + 1];
-
-	while ((read_result = read(fd, buf, BUFF_SIZE)))
+	i = 0;
+	while (((*str)[i] != '\0') && ((*str)[i] != '\n'))
+		i++;
+	ret = ft_strsub(*str, 0, i);
+	i += 1;
+	if ((tmp = ft_strsub(*str, i, (ft_strlen(*str) - i))) != NULL)
 	{
-		buf[read_result] = '\0';
-		tmp = *content;
-		if (!(*content = ft_strjoin(*content, buf)))
-			return (-1);
+		free(*str);
+		if (tmp[0] == '\0')
+			*str = NULL;
+		else
+			*str = ft_strdup(tmp);
 		free(tmp);
-		if (ft_strchr(buf, ENDL))
-			break ;
 	}
-	return (read_result);
+	return (ret);
 }
 
-int		get_next_line(const int fd, char **line)
+static void		check_str(char **str, char *ret)
 {
-	char			buf[BUFF_SIZE + 1];
-	size_t			read_result;
-	static t_list	*hist;
-	t_list			*live;
-	char			*tmp;
+	if (*str != NULL)
+		*str = ft_strjoin(*str, ret);
+	else if (ret[0] != '\0')
+		*str = ft_strdup(ret);
+	free(ret);
+}
 
-	if (fd < 0 || !line || (read(fd, buf, 0)) < 0 ||
-			(!(live = get_live(fd, &hist))))
-		return (-1);
-	tmp = live->content;
-	read_result = my_read(fd, &tmp);
-	live->content = tmp;
-	if (!read_result && !*tmp)
+static int		read_file(int fd, char **str)
+{
+	char		*buffer;
+	char		*found;
+	char		*ret;
+	char		*tmp;
+	int			bytes_read;
+
+	if ((buffer = (char *)malloc(sizeof(char *) * BUFF_SIZE + 1)) != NULL)
+	{
+		found = NULL;
+		ret = ft_strdup("");
+		bytes_read = 1;
+		while ((found = ft_strchr(ret, (int)'\n')) == NULL && bytes_read > 0)
+		{
+			bytes_read = read(fd, buffer, BUFF_SIZE);
+			buffer[bytes_read] = '\0';
+			tmp = ret;
+			ret = ft_strjoin(ret, buffer);
+			free(tmp);
+		}
+		check_str(str, ret);
+		free(buffer);
+		return (bytes_read);
+	}
+	return (-1);
+}
+
+static int		return_line(int bytes_read, char **str, char ***line)
+{
+	if (bytes_read > 0)
+	{
+		if (ft_strchr(*str, (int)'\n'))
+			**line = str_divide(str);
+		return (1);
+	}
+	else if (bytes_read == 0 && *str != NULL)
+	{
+		if (ft_strchr(*str, (int)'\n'))
+			**line = str_divide(str);
+		else
+		{
+			**line = ft_strdup(*str);
+			free(*str);
+			*str = NULL;
+		}
+		return (1);
+	}
+	else if (bytes_read == 0 && *str == NULL)
+	{
+		**line = NULL;
 		return (0);
-	read_result = line_copy(line, live->content, ENDL);
-	tmp = live->content;
-	if (tmp[read_result] != '\0')
-	{
-		live->content = ft_strdup(&((live->content)[read_result + 1]));
-		free(tmp);
 	}
-	else
-		tmp[0] = '\0';
-	return (1);
+	return (-1);
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	static char	*str = NULL;
+	int			bytes_read;
+
+	if (fd < 0 || BUFF_SIZE < 1 || line == NULL)
+		return (-1);
+	if (str != NULL)
+		if (ft_strchr(str, (int)'\n') != NULL)
+		{
+			*line = str_divide(&str);
+			return (1);
+		}
+	bytes_read = read_file(fd, &str);
+	return (return_line(bytes_read, &str, &line));
 }

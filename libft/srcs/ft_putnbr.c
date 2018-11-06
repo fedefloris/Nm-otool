@@ -3,16 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:36:48 by dhojt             #+#    #+#             */
-/*   Updated: 2018/01/27 15:36:49 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/03 12:37:28 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 15:33:17 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
 
-void	ft_putnbr(int n)
+static	void	ft_putlnbr(long long n)
 {
-	ft_putnbr_fd(n, 1);
+	char	c;
+
+	if (n < 0)
+	{
+		write(1, "-", 1);
+		n *= -1;
+	}
+	if (n / 10 == 0)
+	{
+		c = (n % 10) + '0';
+		write(1, &c, 1);
+	}
+	else
+	{
+		ft_putlnbr(n / 10);
+		c = (n % 10) + '0';
+		write(1, &c, 1);
+	}
+}
+
+void			ft_putnbr(int n)
+{
+	long long nbr;
+
+	nbr = n;
+	ft_putlnbr(nbr);
 }

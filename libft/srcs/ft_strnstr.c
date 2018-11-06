@@ -3,27 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:38:17 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/03 14:02:07 by dhojt            ###   ########.fr       */
+/*   Created: 2015/11/27 15:30:21 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 15:32:29 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+static	size_t	ft_ismatch(const char *big, const char *little, size_t stop)
 {
-	size_t	needle_len;
+	size_t	i;
 
-	if (*needle == '\0')
-		return ((char *)haystack);
-	needle_len = ft_strlen(needle);
-	while (*haystack && len-- >= needle_len)
+	i = 0;
+	while (*big && little[i] && i < stop)
 	{
-		if (ft_strncmp(haystack, needle, needle_len) == 0)
-			return ((char *)haystack);
-		haystack++;
+		if (*big != little[i])
+			return (1);
+		big++;
+		i++;
 	}
-	return (0);
+	if (little[i] == '\0')
+		return (0);
+	return (1);
+}
+
+char			*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+
+	if (little[0] == '\0')
+		return ((char *)big);
+	i = 0;
+	while (*big && i < len)
+	{
+		if (ft_ismatch(big, little, len - i) == 0)
+			return ((char*)big);
+		big++;
+		i++;
+	}
+	return (NULL);
 }

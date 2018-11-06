@@ -3,67 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:35:39 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/03 16:41:51 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/03 13:35:03 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 15:24:55 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-static int		ft_get_len(int n)
+static void	ft_storenbr(int n, int *i, char *s, int tok)
 {
-	int		len;
-	int		minus;
+	char	c;
 
-	minus = 0;
-	len = 1;
-	if (n < 0)
+	if (n / 10 == 0)
 	{
-		n *= -1;
-		minus = 1;
+		if (tok == 1)
+		{
+			c = (n % 10) + '1';
+			tok = 0;
+		}
+		else
+			c = (n % 10) + '0';
+		s[*i] = c;
+		(*i)++;
 	}
-	while ((n /= 10) > 0)
-		len++;
-	return ((minus) ? len + 1 : len);
+	else
+	{
+		ft_storenbr(n / 10, i, s, tok);
+		c = (n % 10) + '0';
+		s[*i] = c;
+		(*i)++;
+	}
 }
 
-static int		ft_get_tens(int n)
+char		*ft_itoa(int n)
 {
-	int tens;
-
-	tens = 1;
-	while ((n /= 10) > 0)
-		tens *= 10;
-	return (tens);
-}
-
-char			*ft_itoa(int n)
-{
-	int		tens;
+	char	*ret;
 	int		i;
-	char	*ptr;
+	int		tok;
 
-	i = 0;
-	if (!(ptr = ft_strnew(ft_get_len(n))))
-		return (NULL);
-	if (n < 0)
+	ret = (char *)malloc(sizeof(*ret) * 12);
+	if (ret != NULL)
 	{
-		ptr[i++] = '-';
+		tok = 0;
 		if (n == -2147483648)
-			ptr[i++] = '2';
-		if (n == -2147483648)
-			n = -147483648;
-		n = -n;
+		{
+			tok = 1;
+			n += 1000000000;
+		}
+		i = 0;
+		if (n < 0)
+		{
+			ret[i] = '-';
+			n *= -1;
+			i++;
+		}
+		ft_storenbr(n, &i, ret, tok);
+		ret[i] = '\0';
 	}
-	tens = ft_get_tens(n);
-	while (tens)
-	{
-		ptr[i++] = ((char)(n / tens) + 48);
-		n %= tens;
-		tens /= 10;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	return (ret);
 }

@@ -3,118 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:38:20 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/03 17:53:25 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/08 14:34:45 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 19:09:14 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-static int	ft_isblank(char const *s, char c)
+static	size_t	ft_wordcnt(char const *s, char c)
 {
-	int blank;
+	size_t	words;
+	size_t	i;
 
-	blank = 1;
-	while (*s)
-	{
-		if (*s != c)
-			blank = 0;
-		s++;
-	}
-	return (blank);
-}
-
-static void	ft_newarraydelimstr(char **array, char const *s, char c)
-{
-	int		j;
-	int		k;
-
-	j = 0;
-	k = 0;
-	while (*s)
-	{
-		if (*s != c)
-			j++;
-		if (*s == c || *(s + 1) == '\0')
-		{
-			array[k] = ft_strnew(j);
-			k++;
-			j = 0;
-		}
-		s++;
-	}
-	array[k] = NULL;
-}
-
-static char	**ft_arraydelim(char const *s, char c)
-{
-	int		i;
-	int		j;
-	char	**array;
-
+	words = 0;
 	i = 0;
-	j = 0;
-	while (s[i] != '\0')
+	if (s[i] != c && s[i] != '\0')
+		words++;
+	while (s[i])
 	{
 		if (s[i] == c)
-			j++;
-		i++;
-	}
-	if (!(array = (char **)malloc((j + 2) * sizeof(char *))))
-		return (NULL);
-	ft_newarraydelimstr(array, s, c);
-	return (array);
-}
-
-static void	ft_fillarraydelim(char **array, const char *s, char c)
-{
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != c)
 		{
-			array[j][k] = s[i];
-			k++;
-		}
-		if (s[i] == c)
-		{
-			j++;
-			k = 0;
+			if (i != 0 && s[i + 1] != '\0')
+				if (s[i + 1] != c)
+					words++;
 		}
 		i++;
 	}
+	return (words);
 }
 
-char		**ft_strsplit(char const *s, char c)
+static	size_t	ft_wordlen(char *s, char c)
 {
-	char	*str_trim;
-	char	*str_condensed;
-	char	**array;
+	size_t	len;
+	size_t	i;
 
-	if (!(s && c))
-		return (NULL);
-	array = NULL;
-	if (ft_isblank(s, c) != 0)
+	len = 0;
+	i = 0;
+	while (s[i] == c && s[i])
+		i++;
+	while (s[i] != c && s[i])
 	{
-		if (!(array = (char **)malloc(1 * sizeof(char *))))
-			return (NULL);
-		array[0] = NULL;
-		return (array);
+		len++;
+		i++;
 	}
-	if (!(str_trim = ft_strtrimselect(s, c)))
-		return (NULL);
-	if (!(str_condensed = ft_removeselect(str_trim, c)))
-		return (NULL);
-	if (!(array = ft_arraydelim(str_condensed, c)))
-		return (NULL);
-	ft_fillarraydelim(array, str_condensed, c);
-	return (array);
+	return (len);
+}
+
+static	char	*ft_substr(char *s, char c)
+{
+	char	*tmp;
+	size_t	i;
+
+	tmp = (char *)malloc(sizeof(*tmp) * ft_wordlen(s, c) + 1);
+	if (tmp != NULL)
+	{
+		i = 0;
+		while (*s && *s == c)
+			s++;
+		while (*s && *s != c)
+		{
+			tmp[i] = *s;
+			*s = c;
+			i++;
+			s++;
+		}
+		tmp[i] = '\0';
+	}
+	return (tmp);
+}
+
+char			**ft_strsplit(char const *s, char c)
+{
+	char	**table;
+	char	*cpy;
+	size_t	len;
+	size_t	count;
+
+	if (s != NULL)
+	{
+		len = ft_wordcnt(s, c) + 1;
+		count = 0;
+		table = (char **)malloc(sizeof(char *) * len);
+		if (table != NULL)
+		{
+			cpy = ft_strdup(s);
+			if (cpy != NULL)
+			{
+				while (len-- > 1)
+					table[count++] = ft_substr(cpy, c);
+				table[count] = NULL;
+			}
+            free(cpy);
+		}
+		return (table);
+	}
+	return (NULL);
 }

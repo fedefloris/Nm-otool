@@ -3,36 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:36:11 by dhojt             #+#    #+#             */
-/*   Updated: 2018/05/13 22:28:35 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/03 16:30:48 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 15:38:29 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-t_list	*ft_lstnew(void const *content, size_t content_size)
+static	void	*ft_mcpy(void const *src, size_t n)
 {
-	t_list	*lst;
+	unsigned char	*dest;
+	unsigned char	*s;
+	size_t			i;
 
-	if (!(lst = (t_list *)malloc(sizeof(*lst))))
-		return (NULL);
-	if (!content)
+	dest = (unsigned char *)malloc(sizeof(*dest) * n + 1);
+	if (dest != NULL)
 	{
-		lst->content = NULL;
-		lst->content_size = 0;
-	}
-	else
-	{
-		if (!(lst->content = ft_memalloc(content_size)))
+		s = (unsigned char *)src;
+		i = 0;
+		while (n-- > 0)
 		{
-			free(lst);
-			return (NULL);
+			dest[i] = *s;
+			i++;
+			s++;
 		}
-		ft_memcpy(lst->content, content, content_size);
-		lst->content_size = content_size;
+		dest[i] = '\0';
 	}
-	lst->next = NULL;
-	return (lst);
+	return (dest);
+}
+
+t_list			*ft_lstnew(void const *content, size_t content_size)
+{
+	t_list	*new;
+
+	new = (t_list *)malloc(sizeof(*new));
+	if (new != NULL)
+	{
+		if (content == NULL)
+		{
+			(*new).content = NULL;
+			(*new).content_size = 0;
+		}
+		else
+		{
+			(*new).content = ft_mcpy(content, content_size);
+			(*new).content_size = content_size;
+		}
+		(*new).next = NULL;
+	}
+	return (new);
 }

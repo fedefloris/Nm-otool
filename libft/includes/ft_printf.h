@@ -3,71 +3,152 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/25 19:46:06 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/29 09:52:18 by dhojt            ###   ########.fr       */
+/*   Created: 2016/03/22 13:01:04 by jwong             #+#    #+#             */
+/*   Updated: 2016/04/19 10:58:46 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-
 # include <stdarg.h>
-# include <ctype.h>
+# include <stdlib.h>
+# include <stdio.h>
+
+# define TRUE 1
+# define FALSE 0
+# define ERROR -1
+# define BUFF_SIZE 32
+
+typedef struct	s_info
+{
+	va_list		ap;
+	size_t		buff_len;
+	size_t		char_count;
+	char		*buffer;
+}				t_info;
+
+typedef struct	s_format
+{
+	char	flag_sharp	: 1;
+	char	flag_zero	: 1;
+	char	flag_minus	: 1;
+	char	flag_space	: 1;
+	char	flag_plus	: 1;
+	char	is_zero		: 1;
+	char	neg_sign	: 1;
+	char	*lmod;
+	char	*value_str;
+	int		width;
+	int		precision;
+}				t_format;
 
 /*
-** format: string (first ft_printf parameter).
-** f_copy: copy of format.
-** f_treat: copy of format.
-** args: stores caradic arguments.
-** len: ft_printf return value (number of printed characters).
-** i: position of read in format string.
-** masks contain strings of chars for the respective flags, used for matching.
+**	ft_add_sign.c
 */
+void			ft_add_sign(t_format *format, char **fstr);
+void			ft_sharp_handler(char **fstr, char c);
 
-typedef struct	s_tab
-{
-	const char	*format;
-	char		*f_copy;
-	char		*f_treat;
-	va_list		args;
-	int			len;
-	size_t		i;
-	long int	precision;
-	long int	field_width;
-	char		specifier_flag;
-	char		convert[6];
-	char		argument_flag[2];
-	char		*specifier_mask;
-	char		*converter_mask;
-	char		*argument_mask;
-}				t_tab;
+/*
+**	ft_alignment1.c
+*/
+int				ft_add_alignment_di(t_format *format, char **fstr, int len);
+int				ft_add_alignment_o(t_format *format, char **fstr, int len);
+int				ft_add_alignment_x(t_format *format, char **fstr, int len,
+				char c);
+int				ft_add_alignment_u(t_format *format, char **fstr, int len);
+
+/*
+**	ft_alignment2.c
+*/
+int				ft_add_alignment_c(t_format *format, char **fstr, int len);
+int				ft_add_alignment_p(t_format *format, char **fstr, int len,
+		char c);
+int				ft_add_alignment_invalid(t_format *format, t_info *info,
+		char **fstr, int len);
+
+void			ft_cleanup(t_format *format);
+void			ft_fill_buffer(t_info *info, char *str, size_t n);
+int				ft_fprintf(FILE *stream, const char *format, ...);
+
+/*
+**	ft_format1.c
+*/
+int				ft_format_di(t_info *info, t_format *format);
+int				ft_format_o(t_info *info, t_format *format);
+int				ft_format_percent(t_info *info, t_format *format);
+int				ft_format_x(t_info *info, t_format *format, char c);
+int				ft_format_u(t_info *info, t_format *format);
+
+/*
+**	ft_format2.c
+*/
+int				ft_format_c(t_info *info, t_format *format);
+int				ft_format_invalid_specifier(t_info *info, t_format *format);
+int				ft_format_p(t_info *info, t_format *format);
+int				ft_format_s(t_info *info, t_format *format);
+
+int				ft_format_processing(t_info *info, t_format *format, char c);
+char			*ft_get_wchar(int num);
+char			*ft_get_wstring(int *num);
+
+int				ft_isvalid_lmod(t_format *format);
+
+/*
+**	ft_justified.c
+*/
+char			*ft_padding(int len, char c);
+void			ft_left_adjust(char **fstr, int size);
+void			ft_right_adjust(char **fstr, int size, char c);
+
+/*
+**	ft_precision_handling.c
+*/
+void			ft_add_precision(t_format *format, char **fstr);
+void			ft_add_precision_s(t_format *format, char **fstr);
+
+/*
+**	ft_preformatting.c
+*/
+int				ft_get_format_string(t_info *info, char *str, int *i);
+int				ft_get_formatted_string(t_info *info, char *str);
+void			ft_get_options(t_format *format, char *s, int **i);
 
 int				ft_printf(const char *format, ...);
-int				treatement(t_tab *tab);
-int				parser(t_tab *tab);
+char			*ft_remalloc(char *buffer, size_t len, size_t n);
+int				ft_sprintf(char *str, const char *format, ...);
+int				ft_snprintf(char *str, size_t size, const char *format, ...);
 
-t_tab			*initialize(t_tab *tab);
-t_tab			*reinitialize(t_tab *tab);
+/*
+**  ft_store_options.c
+*/
+int				ft_store_flags(t_format *format, char *s, int start);
+int				ft_store_width(t_format *format, char *s, int start);
+int				ft_store_precision(t_format *format, char *s, int start);
+int				ft_store_lmod(t_format *format, char *s, char *str, int start);
 
-t_tab			*parse_convert(t_tab *tab);
-t_tab			*parse_field_width(t_tab *tab);
-t_tab			*parse_precision(t_tab *tab);
-t_tab			*parse_arguments(t_tab *tab);
-t_tab			*parse_specifier(t_tab *tab);
-t_tab			*switch_display(t_tab *tab);
+/*
+**	ft_specifiers1.c
+*/
+int				ft_specifier_cap_duo(t_info *info, t_format *format, char c);
+int				ft_specifier_di(t_info *info, t_format *format);
+int				ft_specifier_ox(t_info *info, t_format *format, char c);
+int				ft_specifier_percent(t_format *format);
+int				ft_specifier_u(t_info *info, t_format *format);
 
-t_tab			*display_d(t_tab *tab);
-t_tab			*display_s(t_tab *tab);
-t_tab			*display_c(t_tab *tab);
-t_tab			*display_u(t_tab *tab);
-t_tab			*display_x(t_tab *tab);
-t_tab			*display_o(t_tab *tab);
-t_tab			*display_p(t_tab *tab);
-t_tab			*display_ws(t_tab *tab);
-t_tab			*display_other(t_tab *tab);
-void			display_wchar(wint_t c, t_tab *tab);
-void			display_gap(t_tab *tab, char c, int len, int update_len);
+/*
+**	ft_specifiers2.c
+*/
+int				ft_specifier_c(t_info *info, t_format *format, char c);
+int				ft_specifier_invalid(t_format *format, char c);
+int				ft_specifier_p(t_info *info, t_format *format);
+int				ft_specifier_s(t_info *info, t_format *format, char c);
+
+int				ft_vprintf(const char *format, va_list ap);
+int				ft_vfprintf(FILE *stream, const char *format, va_list ap);
+int				ft_vsprintf(char *str, const char *format, va_list ap);
+int				ft_vsnprintf(char *str, size_t size, const char *format,
+		va_list ap);
 
 #endif

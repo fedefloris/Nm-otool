@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:35:13 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/02 00:26:13 by dhojt            ###   ########.fr       */
+/*   Created: 2015/11/23 16:43:25 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 17:58:45 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isalpha(int c)
+int	ft_isalpha(int c)
 {
 	if (c >= 'A' && c <= 'Z')
 		return (1);
-	if (c >= 'a' && c <= 'z')
+	else if (c >= 'a' && c <= 'z')
 		return (1);
-	return (0);
+	else
+		return (0);
 }

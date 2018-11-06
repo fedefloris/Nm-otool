@@ -3,58 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:38:27 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/03 18:28:25 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/03 12:36:35 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/14 19:19:54 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-static int	ft_calc_trailing(char const *s)
+static	char	*ft_trimit(char const *s)
 {
-	int		j;
+	size_t			len;
+	unsigned int	i;
+	unsigned int	start;
 
-	j = ft_strlen(s) - 1;
-	while (s[j] == ' ' || s[j] == '\t' || s[j] == '\n')
-		j--;
-	return (j);
-}
-
-static int	ft_calc_leading(char const *s)
-{
-	int		i;
-
+	len = 0;
 	i = 0;
-	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\n')
+	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
 		i++;
-	return (i);
+	start = i;
+	if (s[i] == '\0')
+		return (ft_strsub(s, start, 1));
+	while (s[i])
+	{
+		i++;
+		len++;
+	}
+	i--;
+	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
+	{
+		i--;
+		len--;
+	}
+	return (ft_strsub(s, start, len));
 }
 
-char		*ft_strtrim(char const *s)
+char			*ft_strtrim(char const *s)
 {
-	size_t	i;
-	size_t	j;
-	size_t	k;
-	char	*str;
-
-	if (!s)
-		return (NULL);
-	i = ft_calc_leading(s);
-	j = ft_calc_trailing(s);
-	k = 0;
-	if (i == ft_strlen(s))
-	{
-		if (!(str = ft_strnew(0)))
-			return (NULL);
-	}
-	else
-	{
-		if (!(str = ft_strnew((j + 1) - i)))
-			return (NULL);
-		while (i <= j)
-			str[k++] = s[i++];
-	}
-	return (str);
+	if (s != NULL)
+		return (ft_trimit(s));
+	return (NULL);
 }

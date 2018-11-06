@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/25 19:52:37 by dhojt             #+#    #+#             */
-/*   Updated: 2018/08/12 18:28:42 by dhojt            ###   ########.fr       */
+/*   Created: 2016/03/22 12:59:35 by jwong             #+#    #+#             */
+/*   Updated: 2016/04/14 10:13:59 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <unistd.h>
 #include "ft_printf.h"
 
 int			ft_printf(const char *format, ...)
 {
-	t_tab	*tab;
-	int		len;
+	t_info	info;
 
-	if (!(tab = (t_tab*)malloc(sizeof(t_tab))))
-		return (-1);
-	tab->format = format;
-	tab = initialize(tab);
-	if (format)
+	if (format == NULL || format[0] == '\0')
+		return (0);
+	va_start(info.ap, format);
+	info.buff_len = BUFF_SIZE;
+	info.char_count = 0;
+	info.buffer = (char *)malloc(sizeof(char) * BUFF_SIZE);
+	if (info.buffer != NULL)
 	{
-		va_start(tab->args, format);
-		tab->len = parser(tab);
-		va_end(tab->args);
+		ft_get_formatted_string(&info, (char *)format);
+		write(1, info.buffer, info.char_count);
+		free(info.buffer);
+		va_end(info.ap);
+		return (info.char_count);
 	}
-	len = tab->len;
-	free(tab);
-	return (len);
+	va_end(info.ap);
+	return (ERROR);
 }

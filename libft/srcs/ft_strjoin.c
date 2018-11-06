@@ -3,37 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dhojt <dhojt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jwong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/27 15:37:45 by dhojt             #+#    #+#             */
-/*   Updated: 2018/04/15 20:25:21 by dhojt            ###   ########.fr       */
+/*   Created: 2015/12/02 19:01:02 by jwong             #+#    #+#             */
+/*   Updated: 2015/12/19 16:20:54 by jwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*join_str;
 	size_t	i;
-	size_t	j;
-	size_t	len1;
-	size_t	len2;
+	char	*ret;
 
-	if (s1 && s2)
+	if (s1 != NULL && s2 != NULL)
 	{
-		len1 = ft_strlen(s1);
-		len2 = ft_strlen(s2);
-		i = -1;
-		j = 0;
-		if (!(join_str = (char *)malloc(sizeof(char) * len1 + len2 + 1)))
-			return (NULL);
-		while (++i < len1)
-			join_str[i] = s1[i];
-		while (j < len2)
-			join_str[i++] = s2[j++];
-		join_str[i] = '\0';
-		return (join_str);
+		ret = (char *)malloc(sizeof(*ret) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+		if (ret != NULL)
+		{
+			i = 0;
+			while (*s1)
+			{
+				ret[i++] = *s1;
+				s1++;
+			}
+			while (*s2)
+			{
+				ret[i++] = *s2;
+				s2++;
+			}
+			ret[i] = '\0';
+		}
+		return (ret);
 	}
 	return (NULL);
 }
