@@ -1,0 +1,22 @@
+# macOS
+*.DS_Store
+
+
+# lib / bin / obj
+/nm
+/otool
+
+*.a
+*a.out
+
+*obj
+*.o
+
+
+# valgrind
+*.dSYM
+
+
+# VIM
+*.swp
+*.swo
