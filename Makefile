@@ -3,14 +3,9 @@ OTOOL = ft_otool
 NAME = $(NM) $(OTOOL)
 
 LIBFT_DIR = libft
-LIBFT_NAME = libft.a
-LIBFT_FILE = $(LIBFT_DIR)/$(LIBFT_NAME)
 
 NM_DIR = nm
 OTOOL_DIR = otool
-
-SHARED_DIR = shared
-SHARED_INCLUDES_DIR = $(SHARED_DIR)/includes
 
 all: comp_libft comp_nm comp_otool $(NAME)
 
