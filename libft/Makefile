@@ -110,7 +110,9 @@ SOURCES 	= ft_memset.c		\
 
 CC 			= gcc
 CFLAGS 		= -Wall -Werror -Wextra
-INCLUDES	= -Iincludes
+INCLUDES_DIR = includes
+HEADERS = $(INCLUDES_DIR)/ft_printf.h $(INCLUDES_DIR)/libft.h
+INCLUDES	= -I$(INCLUDES_DIR)
 DIR			= srcs/
 SRC			= $(addprefix $(DIR), $(SOURCES))
 OBJ 		= $(SRC:.c=.o)
@@ -122,7 +124,7 @@ $(NAME): $(OBJ)
 		ar rc libft.a $(OBJ)
 		ranlib libft.a
 
-%.o: %.c
+%.o: %.c $(HEADERS)
 		$(CC) $(CFLAGS) $(INCLUDES)  $< -c -o $@
 
 clean:
