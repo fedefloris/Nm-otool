@@ -21,13 +21,17 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = nm
+SHARED_FILES =
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
+SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))
 
 MAIN_OBJS_DIR = $(OBJS_DIR)/main
-OBJS_DIRS = $(MAIN_OBJS_DIR)
+SHARED_OBJS_DIR = $(OBJS_DIR)/shared
+OBJS_DIRS = $(MAIN_OBJS_DIR) $(SHARED_OBJS_DIR)
 
 OBJS = $(patsubst %, $(MAIN_OBJS_DIR)/%, $(MAIN_OBJS))
+OBJS += $(patsubst %, $(SHARED_OBJS_DIR)/%, $(SHARED_OBJS))
 
 GREEN_COLOR = "\033[0;32m"
 DEFAULT_COLOR = "\033[0m"
