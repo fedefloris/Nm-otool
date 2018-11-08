@@ -1,9 +1,20 @@
+#include <sys/stat.h>
+#include <sys/mman.h>
 #include "otool.h"
 
 int					main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-	ft_putendl("otool: nothing here");
-	return (0);
+    int     i;
+    int     ret;
+    t_file  file;
+
+    i = 0;
+    while (++i < argc)
+    {
+        ft_bzero(&file, sizeof(t_file));
+        if ((ret = load_file(argv[i], &file) == SUCCESS))
+        {
+        }
+    }
+    return (SUCCESS);
 }
