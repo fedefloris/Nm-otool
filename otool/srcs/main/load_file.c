@@ -1,0 +1,27 @@
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include "otool.h"
+
+int load_file(char *filename, t_file *file)
+{
+    int			fd;
+    struct stat	buf;
+
+    if (!filename)
+        return (FAILURE);
+    if ((fd = open(filename, O_RDONLY)) < 0)
+        return (FAILURE);
+    if (fstat(fd, &buf) < 0)
+    {
+        close(fd);
+        return (FAILURE);
+    }
+    if ((file->map = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+    {
+        close(fd);
+        return (FAILURE);
+    }
+    return (SUCCESS);
+}

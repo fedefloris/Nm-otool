@@ -12,4 +12,9 @@ typedef struct  s_file
     char        *map;
 }               t_file;
 
+/*
+** load_file.c
+*/
+int             load_file(char *filename, t_file *file);
+
 #endif
