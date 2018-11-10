@@ -2,6 +2,25 @@
 #include "otool.h"
 #include "ft_printf.h"
 
+int		parse_text_64(struct section_64 *section, t_file *file)
+{
+	struct section_64	*sect_ptr;
+	uint32_t			i;
+	unsigned char		word;
+
+	sect_ptr = (void *)file->map + section->offset;
+	i = 0;
+	while (i < section->size)
+	{
+		word = *(unsigned char *)sect_ptr;
+		ft_printf("%x ", word);
+		//swap_64(word);
+		sect_ptr = (void *)sect_ptr + sizeof(char);
+		i++;
+	}
+	return (SUCCESS);
+}
+
 int     text_segment_64(struct load_command *lcmd, t_file *file)
 {
     struct segment_command_64   *segment;
@@ -19,6 +38,7 @@ int     text_segment_64(struct load_command *lcmd, t_file *file)
 				&& ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
 			ft_printf("segment: %s , section: %s\n", segment->segname, section->sectname);
+			parse_text_64(section, file);
 		}
 		sect_ptr += sizeof(struct section_64);
         i++;
