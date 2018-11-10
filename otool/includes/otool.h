@@ -17,4 +17,9 @@ typedef struct  s_file
 */
 int             load_file(char *filename, t_file *file);
 
+/*
+** macho_64.c
+*/
+int             macho_64(t_file *file);
+
 #endif
