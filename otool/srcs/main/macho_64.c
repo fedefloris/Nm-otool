@@ -2,6 +2,24 @@
 #include "otool.h"
 #include "ft_printf.h"
 
+void	 swap_64(unsigned char x)
+{
+	unsigned char	tmp;
+	unsigned char	y;
+	int				i;
+
+	i = 0;
+	while (i < 4)
+	{
+		tmp = x & 3;
+		y = y << 2;
+		y |= tmp;
+		x = x >> 2;
+		i++;
+	}
+	//ft_printf("------->value = %.2x\n", y);
+}
+
 int		parse_text_64(struct section_64 *section, t_file *file)
 {
 	struct section_64	*sect_ptr;
