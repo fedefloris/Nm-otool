@@ -26,6 +26,15 @@ int     text_segment_64(struct load_command *lcmd, t_file *file)
     return (SUCCESS);
 }
 
+int		filetype_64(struct mach_header_64 *header)
+{
+	if (header->filetype == MH_OBJECT)
+		ft_printf("filetype: object\n");
+	else if (header->filetype == MH_EXECUTE)
+		ft_printf("filetype: executable\n");
+	return (SUCCESS);
+}
+
 int     macho_64(t_file *file)
 {
     struct mach_header_64       *header;
