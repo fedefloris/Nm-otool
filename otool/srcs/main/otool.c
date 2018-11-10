@@ -6,12 +6,15 @@
 
 int					otool(t_file *file)
 {
-    uint32_t    magic_num;
+    uint32_t    magic;
 
-    magic_num = *(uint32_t *)file->map;
-    if (magic_num == MH_MAGIC_64)
+    magic = *(uint32_t *)file->map;
+    if (magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
+    {
         ft_printf("64 bit obj\n");
-    else if (magic_num == MH_MAGIC)
+        macho_64(file);
+    }
+    else if (magic == MH_MAGIC || magic == MH_CIGAM)
         ft_printf("32 bit obj\n");
     return (SUCCESS);
 }
