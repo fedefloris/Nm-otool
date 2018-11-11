@@ -4,14 +4,16 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include <stdlib.h>
+# include <sys/stat.h>
 
 typedef struct	s_nm
 {
+	int			argc;
 	char		**argv;
 
 	struct stat	stat;
 }				t_nm;
 
-int     list_object_files_symbols(int argc, char **argv);
+int     list_object_files_symbols(t_nm *nm);
 int     list_object_file_symbols(char *file_name);
 #endif
