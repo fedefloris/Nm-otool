@@ -4,11 +4,11 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 
-static t_bool		get_memory(t_nm *nm, int fd)
+static t_bool		get_memory(t_nm *nm)
 {
-	if (fstat(fd, &nm->stat) < 0)
+	if (fstat(nm->fd, &nm->stat) < 0)
 		return (FALSE);
-	nm->memory = mmap(0, nm->stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	nm->memory = mmap(0, nm->stat.st_size, PROT_READ, MAP_PRIVATE, nm->fd, 0);
 	if (nm->memory == MAP_FAILED)
 		return (FALSE);
 	return (TRUE);
@@ -16,16 +16,14 @@ static t_bool		get_memory(t_nm *nm, int fd)
 
 int					list_object_file_symbols(t_nm *nm, char *file_name)
 {
-	int				fd;
-
-	if ((fd = open(file_name, O_RDONLY)) < 0)
+	if ((nm->fd = open(file_name, O_RDONLY)) < 0)
 		return (EXIT_FAILURE);
-	if (!get_memory(nm, fd))
+	if (!get_memory(nm))
 	{
-		close(fd);
+		close(nm->fd);
 		return (EXIT_FAILURE);
 	}
-	if (close(fd) == -1)
+	if (close(nm->fd) == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
