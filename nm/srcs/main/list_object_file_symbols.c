@@ -2,10 +2,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/mman.h>
 
-static void 	*get_memory(fd)
+static void 	*get_memory(int fd)
 {
 	struct stat	file_stat;
 	void 				*memory;
