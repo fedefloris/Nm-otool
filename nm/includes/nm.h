@@ -14,17 +14,22 @@
 
 typedef char		t_bool;
 
-typedef struct		s_nm
+typedef struct		s_file
 {
-	int				argc;
-	char			**argv;
-
 	int				fd;
 	struct stat		stat;
 
 	void			*memory;
 
 	int				file_format;
+}					t_file;
+
+typedef struct		s_nm
+{
+	int				argc;
+	char			**argv;
+
+	t_file			file;
 }					t_nm;
 
 int					list_object_files_symbols(t_nm *nm);
