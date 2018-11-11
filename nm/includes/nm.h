@@ -15,5 +15,5 @@ typedef struct	s_nm
 }				t_nm;
 
 int     list_object_files_symbols(t_nm *nm);
-int     list_object_file_symbols(char *file_name);
+int     list_object_file_symbols(t_nm *nm, char *file_name);
 #endif
