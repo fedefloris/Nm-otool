@@ -12,6 +12,8 @@ typedef struct	s_nm
 	char		**argv;
 
 	struct stat	stat;
+
+	void		*memory;
 }				t_nm;
 
 int     list_object_files_symbols(t_nm *nm);

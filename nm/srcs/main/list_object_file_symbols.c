@@ -3,27 +3,25 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/mman.h>
+#include <stdbool.h>
 
-static void			*get_memory(t_nm *nm, int fd)
+static bool			get_memory(t_nm *nm, int fd)
 {
-	void			*memory;
-
 	if (fstat(fd, &nm->stat) < 0)
-		return (NULL);
-	memory = mmap(0, nm->stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-	if (memory == MAP_FAILED)
-		return (NULL);
-	return (memory);
+		return (false);
+	nm->memory = mmap(0, nm->stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (nm->memory == MAP_FAILED)
+		return (false);
+	return (true);
 }
 
 int					list_object_file_symbols(t_nm *nm, char *file_name)
 {
-	void 			*memory;
 	int				fd;
 
 	if ((fd = open(file_name, O_RDONLY)) < 0)
 		return (EXIT_FAILURE);
-	if (!(memory = get_memory(nm, fd)))
+	if (!get_memory(nm, fd))
 	{
 		close(fd);
 		return (EXIT_FAILURE);
