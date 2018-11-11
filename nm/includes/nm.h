@@ -6,8 +6,11 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 
-# define FALSE	0
-# define TRUE	1
+# define FALSE		0
+# define TRUE		1
+
+# define BITS_32	32
+# define BITS_64	64
 
 typedef char		t_bool;
 
@@ -20,6 +23,8 @@ typedef struct		s_nm
 	struct stat		stat;
 
 	void			*memory;
+
+	int				file_format;
 }					t_nm;
 
 int					list_object_files_symbols(t_nm *nm);

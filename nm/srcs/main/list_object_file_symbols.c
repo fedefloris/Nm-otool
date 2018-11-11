@@ -1,8 +1,23 @@
 #include "nm.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/mman.h>
+#include <mach-o/loader.h>
+#include <mach-o/nlist.h>
+
+static t_bool		read_magic_number(t_nm *nm)
+{
+	uint32_t		magic_number;
+
+	magic_number = *(uint32_t *)nm->memory;
+	if (magic_number == MH_MAGIC)
+		nm->file_format = BITS_32;
+	else if (magic_number == MH_MAGIC_64)
+		nm->file_format = BITS_64;
+	else
+		return (FALSE);
+	return (TRUE);
+}
 
 static t_bool		get_memory(t_nm *nm)
 {
@@ -24,6 +39,8 @@ int					list_object_file_symbols(t_nm *nm, char *file_name)
 		return (EXIT_FAILURE);
 	}
 	if (close(nm->fd) == -1)
+		return (EXIT_FAILURE);
+	if (!read_magic_number(nm))
 		return (EXIT_FAILURE);
 	if (munmap(nm->memory, nm->stat.st_size) < 0)
 		return (EXIT_FAILURE);
