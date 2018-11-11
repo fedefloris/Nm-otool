@@ -6,6 +6,11 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 
+# define FALSE	0
+# define TRUE	1
+
+typedef char	t_bool;
+
 typedef struct	s_nm
 {
 	int			argc;
