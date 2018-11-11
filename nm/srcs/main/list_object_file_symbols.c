@@ -25,5 +25,7 @@ int					list_object_file_symbols(t_nm *nm, char *file_name)
 	}
 	if (close(nm->fd) == -1)
 		return (EXIT_FAILURE);
+	if (munmap(nm->memory, nm->stat.st_size) < 0)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
