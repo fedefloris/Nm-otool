@@ -6,6 +6,8 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 
+# define DEFAULT	"a.out"
+
 # define FALSE		0
 # define TRUE		1
 
