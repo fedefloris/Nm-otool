@@ -34,6 +34,7 @@ typedef struct		s_nm
 	t_file			file;
 }					t_nm;
 
+void				config_nm(t_nm *nm, int argc, char **argv);
 int					list_object_files_symbols(t_nm *nm);
 int					list_object_file_symbols(t_nm *nm, char *file_name);
 
