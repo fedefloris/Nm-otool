@@ -8,7 +8,7 @@
 static void			do_nm(t_nm *nm)
 {
 	ft_printf("[%d] %s\n",
-			(nm->file.file_format == BITS_32) ? 32 : 64,
+			(nm->file.format == BITS_32) ? 32 : 64,
 			(nm->argc == 1) ? DEFAULT : *nm->argv);
 }
 
@@ -18,9 +18,9 @@ static t_bool		read_magic_number(t_nm *nm)
 
 	magic_number = *(uint32_t *)nm->file.memory;
 	if (magic_number == MH_MAGIC)
-		nm->file.file_format = BITS_32;
+		nm->file.format = BITS_32;
 	else if (magic_number == MH_MAGIC_64)
-		nm->file.file_format = BITS_64;
+		nm->file.format = BITS_64;
 	else
 		return (FALSE);
 	return (TRUE);
