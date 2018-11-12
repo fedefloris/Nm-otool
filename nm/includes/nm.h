@@ -23,7 +23,7 @@ typedef struct		s_file
 
 	void			*memory;
 
-	int				file_format;
+	int				format;
 }					t_file;
 
 typedef struct		s_nm

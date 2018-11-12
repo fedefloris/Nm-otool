@@ -5,6 +5,13 @@
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
 
+static void			do_nm(t_nm *nm)
+{
+	ft_printf("[%d] %s\n",
+			(nm->file.file_format == BITS_32) ? 32 : 64,
+			(nm->argc == 1) ? DEFAULT : *nm->argv);
+}
+
 static t_bool		read_magic_number(t_nm *nm)
 {
 	uint32_t		magic_number;
@@ -46,5 +53,6 @@ int					list_object_file_symbols(t_nm *nm, char *file_name)
 		return (EXIT_FAILURE);
 	if (munmap(nm->file.memory, nm->file.stat.st_size) < 0)
 		return (EXIT_FAILURE);
+	do_nm(nm);
 	return (EXIT_SUCCESS);
 }
