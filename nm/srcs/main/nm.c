@@ -4,7 +4,6 @@ int					main(int argc, char **argv)
 {
 	t_nm			nm;
 
-	nm.argv = argv;
-	nm.argc = argc;
+	config_nm(&nm, argc, argv);
 	return (list_object_files_symbols(&nm));
 }
