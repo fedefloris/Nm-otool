@@ -4,17 +4,13 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include <stdlib.h>
+# include <stdbool.h>
 # include <sys/stat.h>
 
 # define DEFAULT	"a.out"
 
-# define FALSE		0
-# define TRUE		1
-
 # define BITS_32	32
 # define BITS_64	64
-
-typedef char		t_bool;
 
 typedef struct		s_file
 {

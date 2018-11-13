@@ -12,7 +12,7 @@ static void			do_nm(t_nm *nm)
 			(nm->argc == 1) ? DEFAULT : *nm->argv);
 }
 
-static t_bool		read_magic_number(t_nm *nm)
+static bool			read_magic_number(t_nm *nm)
 {
 	uint32_t		magic_number;
 
@@ -22,36 +22,35 @@ static t_bool		read_magic_number(t_nm *nm)
 	else if (magic_number == MH_MAGIC_64)
 		nm->file.format = BITS_64;
 	else
-		return (FALSE);
-	return (TRUE);
+		return (false);
+	return (true);
 }
 
-static t_bool		get_memory(t_nm *nm)
+static bool			get_memory(t_nm *nm)
 {
-	t_bool			status;
+	bool				status;
 
-	status = TRUE;
+	status = true;
 	if (status && fstat(nm->file.fd, &nm->file.stat) < 0)
-		status = FALSE;
+		status = false;
 	if (status)
 		nm->file.memory = mmap(0, nm->file.stat.st_size,
 				PROT_READ, MAP_PRIVATE, nm->file.fd, 0);
 	if (status && nm->file.memory == MAP_FAILED)
-		status = FALSE;
-	if (close(nm->file.fd) == -1)
-		status = FALSE;
-	return (TRUE);
+		status = false;
+	if (status && !S_ISREG(nm->file.stat.st_mode))
+		status = false;
+	return (status);
 }
 
 int					list_object_file_symbols(t_nm *nm, char *file_name)
 {
-	if ((nm->file.fd = open(file_name, O_RDONLY)) < 0)
-		return (EXIT_FAILURE);
-	if (!get_memory(nm))
-		return (EXIT_FAILURE);
-	if (!read_magic_number(nm))
+	if ((nm->file.fd = open(file_name, O_RDONLY)) < 0 ||
+			!get_memory(nm) ||
+			!read_magic_number(nm))
 		return (EXIT_FAILURE);
 	do_nm(nm);
+	close(nm->file.fd); // maybe check return status
 	if (munmap(nm->file.memory, nm->file.stat.st_size) < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
