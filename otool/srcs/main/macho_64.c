@@ -23,18 +23,28 @@ void	 swap_64(unsigned char x)
 int		parse_text_64(struct section_64 *section, t_file *file)
 {
 	struct section_64	*sect_ptr;
+	struct section_64	*sect_addr;
 	uint32_t			i;
+	uint32_t			j;
 	unsigned char		word;
 
 	sect_ptr = (void *)file->map + section->offset;
+	sect_addr = section;
 	i = 0;
 	while (i < section->size)
 	{
-		word = *(unsigned char *)sect_ptr;
-		ft_printf("%x ", word);
-		//swap_64(word);
-		sect_ptr = (void *)sect_ptr + sizeof(char);
-		i++;
+		ft_printf("%016lx      ", (void *)(sect_addr->addr + i));
+		j = 0;
+		while (j < 16 && (i + j) < section->size)
+		{
+			word = *(unsigned char *)sect_ptr;
+			ft_printf("%02x", word);
+			//swap_64(word);
+			sect_ptr = (void *)sect_ptr + sizeof(char);
+			j++;
+		}
+		ft_printf("\n");
+		i += 16;
 	}
 	return (SUCCESS);
 }
