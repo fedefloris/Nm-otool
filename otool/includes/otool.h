@@ -22,4 +22,9 @@ int             load_file(char *filename, t_file *file);
 */
 int             macho_64(t_file *file);
 
+/*
+** print.c
+*/
+void            print_64(unsigned char word);
+
 #endif
