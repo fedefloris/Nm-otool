@@ -51,8 +51,8 @@ int					list_object_file_symbols(t_nm *nm, char *file_name)
 		return (EXIT_FAILURE);
 	if (!read_magic_number(nm))
 		return (EXIT_FAILURE);
+	do_nm(nm);
 	if (munmap(nm->file.memory, nm->file.stat.st_size) < 0)
 		return (EXIT_FAILURE);
-	do_nm(nm);
 	return (EXIT_SUCCESS);
 }
