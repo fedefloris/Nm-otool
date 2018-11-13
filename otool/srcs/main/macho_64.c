@@ -17,7 +17,7 @@ int		parse_text_64(struct section_64 *section, t_file *file)
 	{
 		ft_printf("%016lx      ", (void *)(sect_addr->addr + i));
 		j = 0;
-		while (j < 16 && (i + j) < section->size)
+		while (j < WORD_NUM && (i + j) < section->size)
 		{
 			word = *(unsigned char *)sect_ptr;
 			ft_printf("%02x ", word);
@@ -26,7 +26,7 @@ int		parse_text_64(struct section_64 *section, t_file *file)
 			j++;
 		}
 		ft_printf("\n");
-		i += 16;
+		i += WORD_NUM;
 	}
 	return (SUCCESS);
 }

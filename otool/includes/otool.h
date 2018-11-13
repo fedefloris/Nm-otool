@@ -5,6 +5,7 @@
 
 # define SUCCESS 1
 # define FAILURE 0
+# define WORD_NUM 16
 
 typedef struct  s_file
 {
