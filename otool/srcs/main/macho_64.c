@@ -62,8 +62,7 @@ int     text_segment_64(struct load_command *lcmd, t_file *file)
     while (i < segment->nsects)
     {
 		section = (struct section_64 *)sect_ptr;
-		if (ft_strcmp(segment->segname, SEG_TEXT) == 0
-				&& ft_strcmp(section->sectname, SECT_TEXT) == 0)
+		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
 			ft_printf("segment: %s , section: %s\n", segment->segname, section->sectname);
 			parse_text_64(section, file);
