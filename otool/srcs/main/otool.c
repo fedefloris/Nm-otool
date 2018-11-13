@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <ar.h>
 #include "otool.h"
 #include "nm_otool.h"
 #include "ft_printf.h"
@@ -16,6 +17,8 @@ int					otool(t_file *file)
     }
     else if (magic == MH_MAGIC || magic == MH_CIGAM)
         ft_printf("32 bit obj\n");
+    else if (ft_strncmp((char *)file->map, ARMAG, SARMAG) == 0)
+        ft_printf("archive aka: static library\n");
     return (SUCCESS);
 }
 
