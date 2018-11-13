@@ -38,7 +38,7 @@ int		parse_text_64(struct section_64 *section, t_file *file)
 		while (j < 16 && (i + j) < section->size)
 		{
 			word = *(unsigned char *)sect_ptr;
-			ft_printf("%02x", word);
+			ft_printf("%02x ", word);
 			//swap_64(word);
 			sect_ptr = (void *)sect_ptr + sizeof(char);
 			j++;
@@ -64,7 +64,7 @@ int     text_segment_64(struct load_command *lcmd, t_file *file)
 		section = (struct section_64 *)sect_ptr;
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
-			ft_printf("segment: %s , section: %s\n", segment->segname, section->sectname);
+			ft_printf("Contents of (__TEXT,__text) section\n");
 			parse_text_64(section, file);
 		}
 		sect_ptr += sizeof(struct section_64);
