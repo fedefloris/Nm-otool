@@ -14,6 +14,11 @@ typedef struct  s_file
 }               t_file;
 
 /*
+** archive.c
+*/
+int             archive(t_file *file);
+
+/*
 ** load_file.c
 */
 int             load_file(char *filename, t_file *file);
