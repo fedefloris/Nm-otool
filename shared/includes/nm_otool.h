@@ -5,6 +5,10 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 
+#ifdef __APPLE__
+# include <mach-o/loader.h>
+#endif
+
 # define DEFAULT_ARGUMENT	"a.out"
 
 # define BITS_32	32
