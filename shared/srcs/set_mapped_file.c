@@ -3,12 +3,13 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-bool      			set_mapped_file(t_file *file, char *file_name)
+bool      			set_mapped_file(t_file *file, char *file_name, char **env)
 {
 	bool				status;
 	struct stat	stat;
 	int					fd;
 
+	(void)env;
 	status = true;
 	file->name = file_name;
 	if ((fd = open(file->name, O_RDONLY)) < 0)

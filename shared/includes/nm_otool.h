@@ -23,10 +23,10 @@ typedef struct		s_file
 	int				format;
 }					t_file;
 
-int					list_object_files_symbols(int argc, char **argv);
-int					list_object_file_symbols(char *file_name);
+int					list_object_files_symbols(int argc, char **argv, char **env);
+int					list_object_file_symbols(char *file_name, char **env);
 
-bool				set_mapped_file(t_file *file, char *file_name);
+bool				set_mapped_file(t_file *file, char *file_name, char **env);
 bool				set_file_format(t_file *file);
 
 bool				unset_mapped_file(t_file *file);
