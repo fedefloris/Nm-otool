@@ -22,7 +22,7 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = nm \
 	list_object_files_symbols list_object_file_symbols \
-	config_nm
+	set_mapped_file unset_mapped_file
 SHARED_FILES =
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
