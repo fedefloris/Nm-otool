@@ -1,13 +1,11 @@
-#include "nm.h"
+#include "nm_otool.h"
 
-static char			**get_paths(t_nm *nm)
+static char			**get_paths(char **env)
 {
-	char			**env;
 	char			*env_string;
 	int				len;
 
 	env_string = NULL;
-	env = nm->env;
 	while (*env)
 	{
 		len = ft_strstr(*env, "=") - *env;
@@ -27,7 +25,7 @@ static char			**get_paths(t_nm *nm)
 		return (NULL);
 }
 
-static void			binary_exists(t_nm *nm, char *binary, char **binary_path)
+static void			binary_exists(char **env, char *binary, char **binary_path)
 {
 	int				i;
 	char			**path;
@@ -35,7 +33,7 @@ static void			binary_exists(t_nm *nm, char *binary, char **binary_path)
 
 	i = 0;
 	path = NULL;
-	if ((path = get_paths(nm)))
+	if ((path = get_paths(env)))
 	{
 		while (path[i])
 		{
@@ -55,17 +53,17 @@ static void			binary_exists(t_nm *nm, char *binary, char **binary_path)
 		*binary_path = ft_strdup(binary + 1);
 }
 
-char				*find_binary(t_nm *nm, char *file_name)
+char				*find_binary(t_file *file, char **env)
 {
 	char			*tmp_file_name;
 	char			*binary_path;
 	
 	binary_path = NULL;
-	if (!nm->env)
+	if (!env)
 		return (NULL);
-	if (!(tmp_file_name = ft_strjoin("/", file_name)))
+	if (!(tmp_file_name = ft_strjoin("/", file->name)))
 		return (NULL);
-	binary_exists(nm, tmp_file_name, &binary_path);
+	binary_exists(env, tmp_file_name, &binary_path);
 	free(tmp_file_name);
 	return (binary_path);
 }

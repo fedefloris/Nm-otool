@@ -2,6 +2,7 @@
 # define NM_OTOOL_H
 
 # include "libft.h"
+# include <stdlib.h>
 # include <stdbool.h>
 # include <sys/stat.h>
 
