@@ -1,21 +1,7 @@
-#include "nm.h"
+#include "nm_otool.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
-
-// static bool			read_magic_number(t_file *file)
-// {
-// 	uint32_t		magic_number;
-//
-// 	magic_number = *(uint32_t *)file->memory;
-// 	if (magic_number == MH_MAGIC)
-// 		file->format = BITS_32;
-// 	else if (magic_number == MH_MAGIC_64)
-// 		file->format = BITS_64;
-// 	else
-// 		return (false);
-// 	return (true);
-// }
 
 bool      			set_mapped_file(t_file *file, char *file_name)
 {
@@ -36,6 +22,9 @@ bool      			set_mapped_file(t_file *file, char *file_name)
 		status = false;
 	if (status && !S_ISREG(stat.st_mode))
 		status = false;
-	close(fd); // maybe check return status
+	if (fd != -1)
+		close(fd);
+	if (status && set_file_format(file) == false)
+		status = false;
 	return (status);
 }

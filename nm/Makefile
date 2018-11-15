@@ -20,10 +20,9 @@ INCLUDES_FILES = nm
 HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
-MAIN_FILES = nm \
-	list_object_files_symbols list_object_file_symbols \
-	set_mapped_file unset_mapped_file
-SHARED_FILES =
+MAIN_FILES = nm
+SHARED_FILES = list_object_file_symbols list_object_files_symbols \
+	set_mapped_file unset_mapped_file set_file_format
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))

@@ -1,5 +1,5 @@
-#include "nm.h"
-#include "ft_printf.h"
+#include "nm_otool.h"
+#include <stdlib.h>
 
 int					list_object_file_symbols(char *file_name)
 {

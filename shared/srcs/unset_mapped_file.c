@@ -1,4 +1,4 @@
-#include "nm.h"
+#include "nm_otool.h"
 #include <sys/mman.h>
 
 bool      unset_mapped_file(t_file *file)

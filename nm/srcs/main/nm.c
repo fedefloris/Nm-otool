@@ -1,4 +1,4 @@
-#include "nm.h"
+#include "nm_otool.h"
 
 int			main(int argc, char **argv)
 {
