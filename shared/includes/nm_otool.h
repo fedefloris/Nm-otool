@@ -7,8 +7,6 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-# define DEFAULT_ARGUMENT	"a.out"
-
 # define MAC_O_32_FORMAT	1
 # define MAC_O_64_FORMAT	2
 # define ELF_32_FORMAT 3
