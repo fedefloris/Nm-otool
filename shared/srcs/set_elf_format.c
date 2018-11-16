@@ -1,4 +1,5 @@
 #include "nm_otool.h"
+#include <elf.h>
 
 bool			set_elf_format(t_file *file)
 {
@@ -10,6 +11,11 @@ bool			set_elf_format(t_file *file)
 			header->e_ident[EI_MAG2] != ELFMAG2 ||
 			header->e_ident[EI_MAG3] != ELFMAG3)
 		return (false);
-	file->format = ELF_FORMAT;
+	if (header->e_ident[EI_CLASS] == ELFCLASS32)
+		file->format = ELF_32_FORMAT;
+	else if (header->e_ident[EI_CLASS] == ELFCLASS64)
+		file->format = ELF_64_FORMAT;
+	else
+		return (false);
 	return (true);
 }

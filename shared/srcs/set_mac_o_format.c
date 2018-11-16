@@ -1,4 +1,5 @@
 #include "nm_otool.h"
+#include <mach-o/loader.h>
 #include <stdint.h>
 
 bool			set_mac_o_format(t_file *file)

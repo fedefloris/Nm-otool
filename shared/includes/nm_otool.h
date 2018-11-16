@@ -7,17 +7,12 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-#ifdef __APPLE__
-# include <mach-o/loader.h>
-#elif __linux__
-# include <elf.h>
-#endif
-
 # define DEFAULT_ARGUMENT	"a.out"
 
 # define MAC_O_32_FORMAT	1
 # define MAC_O_64_FORMAT	2
-# define ELF_FORMAT 3
+# define ELF_32_FORMAT 3
+# define ELF_64_FORMAT 4
 
 typedef struct		s_file
 {
