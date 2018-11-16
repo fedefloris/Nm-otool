@@ -1,5 +1,4 @@
 #include "nm_otool.h"
-#include "ft_printf.h"
 #include <stdlib.h>
 
 int 		list_object_files_symbols(int argc, char **argv, char **env)
