@@ -59,9 +59,9 @@ char				*find_binary(t_nm_otool *nm_otool)
 	char			*binary_path;
 	
 	binary_path = NULL;
-	if (nm->otool->env)
+	if (!nm_otool->env)
 		return (NULL);
-	if (!(tmp_file_name = ft_strjoin("/", file->name)))
+	if (!(tmp_file_name = ft_strjoin("/", nm_otool->file.name)))
 		return (NULL);
 	binary_exists(nm_otool->env, tmp_file_name, &binary_path);
 	free(tmp_file_name);
