@@ -37,7 +37,7 @@ bool					set_mapped_file(t_nm_otool *nm_otool)
 		status = false;
 	if (fd != -1)
 		close(fd);
-	if (status && set_file_format(nm_otool) == false)
+	if (status && !set_file_format(nm_otool))
 		status = false;
 	return (status);
 }
