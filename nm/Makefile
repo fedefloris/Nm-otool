@@ -1,5 +1,7 @@
 NAME = ft_nm
 
+OS_TYPE = $(shell uname)
+
 GCC_FLAGS = -Werror -Wextra -Wall
 
 OBJS_DIR = objs
@@ -22,7 +24,14 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = nm
 SHARED_FILES = list_object_file_symbols list_object_files_symbols \
-	set_mapped_file unset_mapped_file set_file_format find_binary
+	set_mapped_file unset_mapped_file set_file_format find_binary \
+	config_structure
+
+ifeq ($(OS_TYPE), Linux)
+	SHARED_FILES += set_elf_format
+else ifeq ($(OS_TYPE), Darwin
+	SHARED_FILES += set_mac_o_format
+endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))

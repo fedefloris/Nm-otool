@@ -1,22 +1,13 @@
 #include "nm_otool.h"
-#include "ft_printf.h"
-#include <stdint.h>
 
-bool				set_file_format(t_file *file)
+bool			set_file_format(t_nm_otool *nm_otool)
 {
 #ifdef __APPLE__
-	uint32_t		magic_number;
-
-	magic_number = *(uint32_t *)file->memory;
-	if (magic_number == MH_MAGIC)
-		file->format = BITS_32;
-	else if (magic_number == MH_MAGIC_64)
-		file->format = BITS_64;
-	else
-		return (false);
-	return (true);
+	return (set_mac_o_format(nm_otool));
+#elif __linux__
+	return (set_elf_format(nm_otool));
 #else
-	(void)file;
+	(void)nm_otool;
 	return (false);
 #endif
 }
