@@ -23,9 +23,10 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = nm
-SHARED_FILES = list_object_file_symbols list_object_files_symbols \
-	set_mapped_file unset_mapped_file set_file_format find_binary \
-	config_structure
+SHARED_FILES = config_nm_otool \
+	list_objs_symbols list_obj_symbols \
+	set_mapped_file unset_mapped_file set_file_format \
+	find_binary \
 
 ifeq ($(OS_TYPE), Linux)
 	SHARED_FILES += set_elf_format
