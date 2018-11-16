@@ -34,5 +34,11 @@ char				*find_binary(t_file *file, char **env);
 bool				set_mapped_file(t_file *file, char *file_name, char **env);
 bool				set_file_format(t_file *file);
 
+#ifdef __APPLE__
+bool				set_mac_o_format(t_file *file);
+#elif __linux__
+bool				set_elf_format(t_file *file);
+#endif
+
 bool				unset_mapped_file(t_file *file);
 #endif
