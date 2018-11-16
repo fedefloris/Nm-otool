@@ -5,8 +5,8 @@
 
 int					open_file(t_nm_otool *nm_otool)
 {
-	int				fd;
 	char			*binary_path;
+	int				fd;
 
 	if ((fd = open(nm_otool->file.name, O_RDONLY)) > 0)
 		return (fd);
