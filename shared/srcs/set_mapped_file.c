@@ -31,11 +31,8 @@ bool					set_mapped_file(t_nm_otool *nm_otool)
 	nm_otool->file.size = stat.st_size;
 	if (status)
 		nm_otool->file.memory = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-	if (status)//
-		ft_putendl(nm_otool->file.name);//
 	if (status && nm_otool->file.memory == MAP_FAILED)
 		status = false;
-	//MAP FAILED!!
 	if (status && !S_ISREG(stat.st_mode))
 		status = false;
 	if (fd != -1)
