@@ -24,7 +24,8 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = nm
 SHARED_FILES = list_object_file_symbols list_object_files_symbols \
-	set_mapped_file unset_mapped_file set_file_format find_binary
+	set_mapped_file unset_mapped_file set_file_format find_binary \
+	config_structure
 
 ifeq ($(OS_TYPE), Linux)
 	SHARED_FILES += set_elf_format

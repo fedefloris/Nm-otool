@@ -53,17 +53,17 @@ static void			binary_exists(char **env, char *binary, char **binary_path)
 		*binary_path = ft_strdup(binary + 1);
 }
 
-char				*find_binary(t_file *file, char **env)
+char				*find_binary(t_nm_otool *nm_otool)
 {
 	char			*tmp_file_name;
 	char			*binary_path;
 	
 	binary_path = NULL;
-	if (!env)
+	if (!nm_otool->env)
 		return (NULL);
-	if (!(tmp_file_name = ft_strjoin("/", file->name)))
+	if (!(tmp_file_name = ft_strjoin("/", nm_otool->file.name)))
 		return (NULL);
-	binary_exists(env, tmp_file_name, &binary_path);
+	binary_exists(nm_otool->env, tmp_file_name, &binary_path);
 	free(tmp_file_name);
 	return (binary_path);
 }
