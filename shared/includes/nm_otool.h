@@ -27,7 +27,7 @@ typedef struct		s_nm_otool
 {
 	char			**env;
 
-	t_file			*file
+	t_file			*file;
 }					t_nm_otool;
 
 void				config_structure(t_nm_otool *nm_otool, char **env);
