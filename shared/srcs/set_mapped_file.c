@@ -8,7 +8,7 @@ int					open_file(t_nm_otool *nm_otool)
 	int				fd;
 	char			*binary_path;
 
-	if ((fd = open(nm_otool->file.name, O_RDONLY)) >= 0)
+	if ((fd = open(nm_otool->file.name, O_RDONLY)) > 0)
 		return (fd);
 	if (!(binary_path = find_binary(nm_otool)))
 		return (-1);
@@ -24,7 +24,7 @@ bool					set_mapped_file(t_nm_otool *nm_otool)
 	int					fd;
 
 	status = true;
-	if ((fd = open_file(nm_otool) < 0))
+	if ((fd = open_file(nm_otool)) < 0)
 		status = false;
 	if (status && fstat(fd, &stat) < 0)
 		status = false;
