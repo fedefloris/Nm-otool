@@ -24,7 +24,6 @@ bool      			set_mapped_file(t_file *file, char *file_name, char **env)
 	int					fd;
 
 	status = true;
-	file->name = file_name;
 	if ((fd = open_file(file, env) < 0))
 		status = false;
 	if (status && fstat(fd, &stat) < 0)
