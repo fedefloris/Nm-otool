@@ -12,16 +12,12 @@
 # define ELF_32_FORMAT 3
 # define ELF_64_FORMAT 4
 
-# define LITTLE_ENDIAN_TYPE 1
-# define BIG_ENDIAN_TYPE 2
-
 typedef struct		s_file
 {
 	char		*name;
 	off_t		size;
 	void		*memory;
 	int			format;
-	int			endianness;
 }									t_file;
 
 typedef struct		s_nm_otool

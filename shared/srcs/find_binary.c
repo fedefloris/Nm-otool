@@ -28,8 +28,8 @@ static char			**get_paths(char **env)
 static void			binary_exists(char **env, char *binary, char **binary_path)
 {
 	struct stat		stat;
-	char			**path;
-	int				i;
+	char					**path;
+	int						i;
 
 	i = 0;
 	path = NULL;
