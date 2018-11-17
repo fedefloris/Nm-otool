@@ -7,8 +7,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-# define MAC_O_32_FORMAT	1
-# define MAC_O_64_FORMAT	2
+# define MACH_O_32_FORMAT	1
+# define MACH_O_64_FORMAT	2
 # define ELF_32_FORMAT 3
 # define ELF_64_FORMAT 4
 
@@ -41,7 +41,7 @@ bool			set_file(t_nm_otool *nm_otool);
 bool			set_file_info(t_nm_otool *nm_otool);
 
 #ifdef __APPLE__
-bool			set_mac_o_info(t_nm_otool *nm_otool);
+bool			set_mach_o_info(t_nm_otool *nm_otool);
 #elif __linux__
 bool			set_elf_info(t_nm_otool *nm_otool);
 #endif
