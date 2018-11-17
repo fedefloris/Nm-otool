@@ -16,7 +16,11 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	if (header->e_ident[EI_CLASS] == ELFCLASS32)
 		nm_otool->file.format = ELF_32_FORMAT;
 	else if (header->e_ident[EI_CLASS] == ELFCLASS64)
+	{
 		nm_otool->file.format = ELF_64_FORMAT;
+		if (nm_otool->file.size < (long)sizeof(*(Elf64_Ehdr*)nm_otool->file.memory))
+			return (false);
+	}
 	else
 		return (false);
 	return (true);
@@ -27,6 +31,8 @@ bool				set_elf_format(t_nm_otool *nm_otool)
 	Elf32_Ehdr	*header;
 
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
+	if (nm_otool->file.size < (long)sizeof(*header))
+		return (false);
 	if (!has_good_magic_number(header))
 		return (false);
 	if (!set_format(nm_otool, header))
