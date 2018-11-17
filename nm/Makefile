@@ -23,7 +23,7 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = nm obj_handler
-MAC_O_FILES =
+MACH_O_FILES =
 ELF_FILES =
 
 SHARED_FILES = config_nm_otool \
@@ -32,27 +32,27 @@ SHARED_FILES = config_nm_otool \
 	find_binary \
 
 ifeq ($(OS_TYPE), Darwin)
-	MAC_O_FILES += mac_o_32_obj_handler mac_o_64_obj_handler
-	SHARED_FILES += set_mac_o_info
+	MACH_O_FILES += mach_o_32_obj_handler mach_o_64_obj_handler
+	SHARED_FILES += set_mach_o_info
 else ifeq ($(OS_TYPE), Linux)
 	ELF_FILES += elf_32_obj_handler elf_64_obj_handler
 	SHARED_FILES += set_elf_info
 endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
-MAC_O_OBJS = $(addsuffix .o, $(MAC_O_FILES))
+MACH_O_OBJS = $(addsuffix .o, $(MACH_O_FILES))
 ELF_OBJS = $(addsuffix .o, $(ELF_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))
 
 MAIN_OBJS_DIR = $(OBJS_DIR)/main
-MAC_O_OBJS_DIR = $(OBJS_DIR)/mac_o
+MACH_O_OBJS_DIR = $(OBJS_DIR)/mach_o
 ELF_OBJS_DIR = $(OBJS_DIR)/elf
 SHARED_OBJS_DIR = $(OBJS_DIR)/shared
 OBJS_DIRS = $(MAIN_OBJS_DIR) $(SHARED_OBJS_DIR) \
-	$(MAC_O_OBJS_DIR) $(ELF_OBJS_DIR)
+	$(MACH_O_OBJS_DIR) $(ELF_OBJS_DIR)
 
 OBJS = $(patsubst %, $(MAIN_OBJS_DIR)/%, $(MAIN_OBJS))
-OBJS += $(patsubst %, $(MAC_O_OBJS_DIR)/%, $(MAC_O_OBJS))
+OBJS += $(patsubst %, $(MACH_O_OBJS_DIR)/%, $(MACH_O_OBJS))
 OBJS += $(patsubst %, $(ELF_OBJS_DIR)/%, $(ELF_OBJS))
 OBJS += $(patsubst %, $(SHARED_OBJS_DIR)/%, $(SHARED_OBJS))
 
