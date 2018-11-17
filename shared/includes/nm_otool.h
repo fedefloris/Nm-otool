@@ -12,12 +12,16 @@
 # define ELF_32_FORMAT 3
 # define ELF_64_FORMAT 4
 
+# define LITTLE_ENDIAN_TYPE 1
+# define BIG_ENDIAN_TYPE 2
+
 typedef struct		s_file
 {
-	char			*name;
-	off_t			size;
-	void			*memory;
-	int				format;
+	char		*name;
+	off_t		size;
+	void		*memory;
+	int			format;
+	int			endianness;
 }									t_file;
 
 typedef struct		s_nm_otool
@@ -37,13 +41,13 @@ int				list_obj_symbols(t_nm_otool *nm_otool, char *file_name,
 
 char			*find_binary(t_nm_otool *nm_otool);
 
-bool			set_mapped_file(t_nm_otool *nm_otool);
-bool			set_file_format(t_nm_otool *nm_otool);
+bool			set_file(t_nm_otool *nm_otool);
+bool			set_file_info(t_nm_otool *nm_otool);
 
 #ifdef __APPLE__
-bool			set_mac_o_format(t_nm_otool *nm_otool);
+bool			set_mac_o_info(t_nm_otool *nm_otool);
 #elif __linux__
-bool			set_elf_format(t_nm_otool *nm_otool);
+bool			set_elf_info(t_nm_otool *nm_otool);
 #endif
 
 bool			unset_mapped_file(t_nm_otool *nm_otool);

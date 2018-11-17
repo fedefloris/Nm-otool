@@ -18,7 +18,8 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	else if (header->e_ident[EI_CLASS] == ELFCLASS64)
 	{
 		nm_otool->file.format = ELF_64_FORMAT;
-		if (nm_otool->file.size < (long)sizeof(*(Elf64_Ehdr*)nm_otool->file.memory))
+		if (nm_otool->file.size <
+				(long)sizeof(*(Elf64_Ehdr*)nm_otool->file.memory))
 			return (false);
 	}
 	else
@@ -26,7 +27,14 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	return (true);
 }
 
-bool				set_elf_format(t_nm_otool *nm_otool)
+static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
+{
+	(void)nm_otool;
+	(void)header;
+	return (true);
+}
+
+bool				set_elf_info(t_nm_otool *nm_otool)
 {
 	Elf32_Ehdr	*header;
 
@@ -36,6 +44,8 @@ bool				set_elf_format(t_nm_otool *nm_otool)
 	if (!has_good_magic_number(header))
 		return (false);
 	if (!set_format(nm_otool, header))
+		return (false);
+	if (!set_endianness(nm_otool, header))
 		return (false);
 	return (true);
 }

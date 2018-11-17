@@ -2,7 +2,7 @@
 #include <mach-o/loader.h>
 #include <stdint.h>
 
-bool			set_mac_o_format(t_nm_otool *nm_otool)
+bool			set_mac_o_info(t_nm_otool *nm_otool)
 {
 	uint32_t		magic_number;
 

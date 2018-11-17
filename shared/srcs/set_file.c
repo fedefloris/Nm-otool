@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-int					open_file(t_nm_otool *nm_otool)
+static int		open_file(t_nm_otool *nm_otool)
 {
 	char			*binary_path;
 	int				fd;
@@ -17,7 +17,7 @@ int					open_file(t_nm_otool *nm_otool)
 	return (fd);
 }
 
-bool					set_mapped_file(t_nm_otool *nm_otool)
+bool					set_file(t_nm_otool *nm_otool)
 {
 	bool				status;
 	struct stat			stat;
@@ -37,7 +37,7 @@ bool					set_mapped_file(t_nm_otool *nm_otool)
 		status = false;
 	if (fd != -1)
 		close(fd);
-	if (status && !set_file_format(nm_otool))
+	if (status && !set_file_info(nm_otool))
 		status = false;
 	return (status);
 }
