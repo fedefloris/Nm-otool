@@ -40,8 +40,8 @@ static bool	set_file_data(t_nm_otool *nm_otool, int fd)
 
 static int	open_file(t_nm_otool *nm_otool)
 {
-	char			*binary_path;
-	int				fd;
+	char	*binary_path;
+	int		fd;
 
 	if ((fd = open(nm_otool->file.name, O_RDONLY)) > 0)
 		return (fd);
@@ -60,6 +60,8 @@ bool				set_file(t_nm_otool *nm_otool)
 		ft_printf("%s file not found\n", ERROR_HEADER);
 	else if (!set_file_data(nm_otool, fd))
 		ft_printf("%s fstat call failed\n", ERROR_HEADER);
+	else if (nm_otool->file.size == 0)
+		ft_printf("%s Bad size\n", ERROR_HEADER);
 	else if (!is_a_regular_file(nm_otool, fd))
 		ft_printf("%s not a regular file\n", ERROR_HEADER);
 	else if (!map_file_to_memory(nm_otool, fd))
