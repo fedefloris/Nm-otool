@@ -9,7 +9,7 @@
 
 # define DEFAULT_COLOR "\033[1;37m"
 # define RED_COLOR "\033[1;31m"
-# define ERROR_HEADER RED_COLOR "Error: " DEFAULT_COLOR
+# define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
 
 # define LITTLE_ENDIAN_TYPE 1
 # define BIG_ENDIAN_TYPE 1
