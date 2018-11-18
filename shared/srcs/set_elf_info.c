@@ -1,4 +1,5 @@
 #include "nm_otool.h"
+#include "ft_printf.h"
 #include <elf.h>
 
 static bool	has_good_magic_number(Elf32_Ehdr	*header)
@@ -27,8 +28,9 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	return (true);
 }
 
-static bool	check_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
+static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 {
+	(void)nm_otool;
 	if (header->e_ident[EI_DATA] == ELFDATA2LSB)
 		;
 	else if (header->e_ident[EI_DATA] == ELFDATA2MSB)
@@ -43,10 +45,16 @@ bool				set_elf_info(t_nm_otool *nm_otool)
 	Elf32_Ehdr	*header;
 
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
-	if (nm_otool->file.size < (long)sizeof(*header) ||
-			!has_good_magic_number(header) ||
-			!set_format(nm_otool, header) ||
-			!check_endianness(nm_otool, header))
+	if (nm_otool->file.size < (long)sizeof(*header))
+		return (false);
+	if (!has_good_magic_number(header))
+	{
+		ft_printf("%s Bad magic number\n", ERROR_HEADER);
+		return (false);
+	}
+	if (!set_format(nm_otool, header))
+		return (false);
+	if (!set_endianness(nm_otool, header))
 		return (false);
 	return (true);
 }
