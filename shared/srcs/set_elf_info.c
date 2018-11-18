@@ -2,12 +2,15 @@
 #include "ft_printf.h"
 #include <elf.h>
 
-static bool	has_good_magic_number(Elf32_Ehdr	*header)
+static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 {
-	return (header->e_ident[EI_MAG0] == ELFMAG0
-		&& header->e_ident[EI_MAG1] == ELFMAG1
-		&& header->e_ident[EI_MAG2] == ELFMAG2
-		&& header->e_ident[EI_MAG3] == ELFMAG3);
+	if (header->e_ident[EI_DATA] == ELFDATA2LSB)
+		nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
+	else if (header->e_ident[EI_DATA] == ELFDATA2MSB)
+		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
+	else
+		return (false);
+	return (true);
 }
 
 static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
@@ -26,15 +29,17 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	return (true);
 }
 
-static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
+static bool	has_good_version(Elf32_Ehdr	*header)
 {
-	if (header->e_ident[EI_DATA] == ELFDATA2LSB)
-		nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
-	else if (header->e_ident[EI_DATA] == ELFDATA2MSB)
-		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
-	else
-		return (false);
-	return (true);
+	return (header->e_ident[EI_VERSION] == EV_CURRENT);
+}
+
+static bool	has_good_magic_number(Elf32_Ehdr	*header)
+{
+	return (header->e_ident[EI_MAG0] == ELFMAG0
+		&& header->e_ident[EI_MAG1] == ELFMAG1
+		&& header->e_ident[EI_MAG2] == ELFMAG2
+		&& header->e_ident[EI_MAG3] == ELFMAG3);
 }
 
 bool				set_elf_info(t_nm_otool *nm_otool)
@@ -46,6 +51,8 @@ bool				set_elf_info(t_nm_otool *nm_otool)
 		ft_printf("%s Bad size\n", ERROR_HEADER);
 	else if (!has_good_magic_number(header))
 		ft_printf("%s Bad magic number\n", ERROR_HEADER);
+	else if (!has_good_version(header))
+		ft_printf("%s Wrong version\n", ERROR_HEADER);
 	else if (!set_format(nm_otool, header))
 		ft_printf("%s Architecture not supported\n", ERROR_HEADER);
 	else if (!set_endianness(nm_otool, header))
