@@ -25,6 +25,7 @@ typedef struct		s_file
 {
 	char		*name;
 	off_t		size;
+	mode_t	mode;
 	void		*memory;
 	int			format;
 	int			endianness;
@@ -56,5 +57,5 @@ bool			set_mach_o_info(t_nm_otool *nm_otool);
 bool			set_elf_info(t_nm_otool *nm_otool);
 #endif
 
-bool			unset_mapped_file(t_nm_otool *nm_otool);
+bool			unset_file(t_nm_otool *nm_otool);
 #endif

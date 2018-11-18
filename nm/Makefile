@@ -28,7 +28,7 @@ ELF_FILES =
 
 SHARED_FILES = config_nm_otool \
 	list_objs_symbols list_obj_symbols \
-	set_file unset_mapped_file set_file_info \
+	set_file set_file_info unset_file \
 	find_binary \
 
 ifeq ($(OS_TYPE), Darwin)
