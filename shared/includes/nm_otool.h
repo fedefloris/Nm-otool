@@ -11,6 +11,9 @@
 # define RED_COLOR "\033[1;31m"
 # define ERROR_HEADER RED_COLOR "Error: " DEFAULT_COLOR
 
+# define LITTLE_ENDIAN_TYPE 1
+# define BIG_ENDIAN_TYPE 1
+
 # define MACH_O_32_FORMAT	1
 # define MACH_O_64_FORMAT	2
 # define ELF_32_FORMAT 3
@@ -22,6 +25,7 @@ typedef struct		s_file
 	off_t		size;
 	void		*memory;
 	int			format;
+	int			endianness;
 }									t_file;
 
 typedef struct		s_nm_otool
