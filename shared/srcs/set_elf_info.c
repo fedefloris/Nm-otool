@@ -1,4 +1,5 @@
 #include "nm_otool.h"
+#include "ft_printf.h"
 #include <elf.h>
 
 static bool	has_good_magic_number(Elf32_Ehdr	*header)
@@ -42,7 +43,10 @@ bool				set_elf_info(t_nm_otool *nm_otool)
 	if (nm_otool->file.size < (long)sizeof(*header))
 		return (false);
 	if (!has_good_magic_number(header))
+	{
+		ft_printf("%s Bad magic number\n", ERROR_HEADER);
 		return (false);
+	}
 	if (!set_format(nm_otool, header))
 		return (false);
 	if (!set_endianness(nm_otool, header))
