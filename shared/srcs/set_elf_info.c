@@ -43,7 +43,7 @@ bool				set_elf_info(t_nm_otool *nm_otool)
 
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
 	if (nm_otool->file.size < (long)sizeof(*header))
-		ft_printf("%s Bad magic number\n", ERROR_HEADER);
+		ft_printf("%s Bad size\n", ERROR_HEADER);
 	else if (!has_good_magic_number(header))
 		ft_printf("%s Bad magic number\n", ERROR_HEADER);
 	else if (!set_format(nm_otool, header))
