@@ -7,7 +7,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-# define DEFAULT_COLOR "\033[1;37m"
+# define DEFAULT_COLOR "\033[1;0m"
 # define RED_COLOR "\033[1;31m"
 # define ORANGE_COLOR "\033[1;33m"
 # define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
