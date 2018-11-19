@@ -47,15 +47,15 @@ bool		set_elf_info(t_nm_otool *nm_otool)
 
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
 	if (nm_otool->file.size < (long)sizeof(*header))
-		ft_printf("%s Bad size\n", ERROR_HEADER);
+		ERROR_LOG("Bad size");
 	else if (!has_good_magic_number(header))
-		ft_printf("%s Bad magic number\n", ERROR_HEADER);
+		ERROR_LOG("Bad magic number");
 	else if (!has_good_version(header))
-		ft_printf("%s Wrong version\n", ERROR_HEADER);
+		ERROR_LOG("Wrong version");
 	else if (!set_format(nm_otool, header))
-		ft_printf("%s Architecture not supported\n", ERROR_HEADER);
+		ERROR_LOG("Architecture not supported");
 	else if (!set_endianness(nm_otool, header))
-		ft_printf("%s Bad endianness\n", ERROR_HEADER);
+		ERROR_LOG("Bad endianness");
 	else
 		return (true);
 	return (false);

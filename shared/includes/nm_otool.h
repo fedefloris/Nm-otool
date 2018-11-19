@@ -11,8 +11,10 @@
 # define DEFAULT_COLOR "\033[1;0m"
 # define RED_COLOR "\033[1;31m"
 # define YELLOW_COLOR "\033[1;33m"
+
 # define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
 # define WARNING_HEADER YELLOW_COLOR "Warning:" DEFAULT_COLOR
+# define ERROR_LOG(x) ft_printf("%s %s\n", ERROR_HEADER, x)
 
 # define LITTLE_ENDIAN_TYPE 1
 # define BIG_ENDIAN_TYPE 1

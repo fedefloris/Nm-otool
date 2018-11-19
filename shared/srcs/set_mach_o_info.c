@@ -39,9 +39,9 @@ static bool	set_format(t_nm_otool *nm_otool)
 bool		set_mach_o_info(t_nm_otool *nm_otool)
 {
 	if (nm_otool->file.size < (long)sizeof(struct mach_header))
-		ft_printf("%s Bad size\n", ERROR_HEADER);
+		ERROR_LOG("Bad size");
 	else if (!set_format(nm_otool))
-		ft_printf("%s Bad magic number\n", ERROR_HEADER);
+		ERROR_LOG("Bad magic number");
 	else
 		return (true);
 	return (false);

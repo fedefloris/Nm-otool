@@ -3,6 +3,6 @@
 bool			set_unknown_info(t_nm_otool *nm_otool)
 {
 	(void)nm_otool;
-	ft_printf("%s OS not supported\n", ERROR_HEADER);
+	ERROR_LOG("OS not supported");
 	return (false);
 }
