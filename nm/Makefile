@@ -32,10 +32,10 @@ SHARED_FILES = config_nm_otool \
 	find_binary \
 
 ifeq ($(OS_TYPE), Darwin)
-	MACH_O_FILES += mach_o_32_obj_handler mach_o_64_obj_handler
+	MACH_O_FILES += mach_o_obj_handler mach_o_32_obj_handler mach_o_64_obj_handler
 	SHARED_FILES += set_mach_o_info
 else ifeq ($(OS_TYPE), Linux)
-	ELF_FILES += elf_32_obj_handler elf_64_obj_handler
+	ELF_FILES += elf_obj_handler elf_32_obj_handler elf_64_obj_handler
 	SHARED_FILES += set_elf_info
 else
 	SHARED_FILES += set_unknown_info
