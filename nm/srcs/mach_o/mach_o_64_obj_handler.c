@@ -20,16 +20,14 @@ static void			print_nm(t_nm_otool *nm_otool, int nsyms, int symoff,  int stroff)
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
 	int						ncmds;
-	int						i;
 	struct mach_header_64	*header;
 	struct load_command		*lc;
 	struct symtab_command	*sym;
 
 	header = (struct mach_header_64 *)nm_otool->file.memory;
-	ncmds = header->ncmds;
-	i = 0;
+	number_of_commands = header->ncmds;
 	lc = (void *)nm_otool->file.memory + sizeof(*header);
-	while (i < ncmds)
+	while (number_of_commands--)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
