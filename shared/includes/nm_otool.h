@@ -15,6 +15,7 @@
 # define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
 # define WARNING_HEADER YELLOW_COLOR "Warning:" DEFAULT_COLOR
 # define ERROR_LOG(x) ft_printf("%s %s\n", ERROR_HEADER, x)
+# define WARNING_LOG(x) ft_printf("%s %s\n", WARNING_HEADER, x)
 
 # define LITTLE_ENDIAN_TYPE 1
 # define BIG_ENDIAN_TYPE 1
