@@ -2,6 +2,14 @@
 #include <mach-o/loader.h>
 #include <stdint.h>
 
+static void	check_size_if_64_format(t_nm_otool *nm_otool)
+{
+	if (nm_otool->file.format == MACH_O_64_FORMAT
+		&& nm_otool->file.size < (long)sizeof(struct mach_header_64))
+		return (false);
+	return (true);
+}
+
 static void	set_64_format(t_nm_otool *nm_otool, uint32_t magic_number)
 {
 	nm_otool->file.format = MACH_O_64_FORMAT;
@@ -26,11 +34,7 @@ static bool	set_format(t_nm_otool *nm_otool)
 	if (magic_number == MH_MAGIC || magic_number == MH_CIGAM)
 		set_32_format(nm_otool, magic_number);
 	else if (magic_number == MH_MAGIC_64 || magic_number == MH_CIGAM_64)
-	{
 		set_64_format(nm_otool, magic_number);
-		if (nm_otool->file.size < (long)sizeof(struct mach_header_64))
-			return (false);
-	}
 	else
 		return (false);
 	return (true);
@@ -42,6 +46,8 @@ bool		set_mach_o_info(t_nm_otool *nm_otool)
 		ERROR_LOG("Bad size");
 	else if (!set_format(nm_otool))
 		ERROR_LOG("Bad magic number");
+	else if(!check_size_if_64_format(nm_otool))
+		ERROR_LOG("Bad size");
 	else
 		return (true);
 	return (false);
