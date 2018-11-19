@@ -37,6 +37,8 @@ ifeq ($(OS_TYPE), Darwin)
 else ifeq ($(OS_TYPE), Linux)
 	ELF_FILES += elf_32_obj_handler elf_64_obj_handler
 	SHARED_FILES += set_elf_info
+else
+	SHARED_FILES += set_unknown_info
 endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
