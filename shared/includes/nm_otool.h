@@ -8,6 +8,10 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
+# ifdef __APPLE__
+#  include <mach-o/loader.h>
+# endif
+
 # define DEFAULT_COLOR "\033[1;0m"
 # define RED_COLOR "\033[1;31m"
 # define YELLOW_COLOR "\033[1;33m"
