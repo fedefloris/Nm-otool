@@ -1,4 +1,3 @@
-#include "ft_printf.h"
 #include "nm_otool.h"
 #include "nm.h"
 

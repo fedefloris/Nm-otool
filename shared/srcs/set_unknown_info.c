@@ -1,5 +1,4 @@
 #include "nm_otool.h"
-#include "ft_printf.h"
 
 bool			set_unknown_info(t_nm_otool *nm_otool)
 {

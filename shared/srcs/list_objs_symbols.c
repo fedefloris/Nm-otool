@@ -1,6 +1,4 @@
 #include "nm_otool.h"
-#include "ft_printf.h"
-#include <stdlib.h>
 
 int		list_objs_symbols(t_nm_otool *nm_otool, t_obj_handler obj_handler)
 {

@@ -1,5 +1,4 @@
 #include "nm_otool.h"
-#include "ft_printf.h"
 #include <sys/mman.h>
 
 bool		unset_file(t_nm_otool *nm_otool)
