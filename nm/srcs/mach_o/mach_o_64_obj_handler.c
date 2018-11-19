@@ -1,5 +1,22 @@
 #include "nm_otool.h"
 #include "nm.h"
+#include <mach-o/nlist.h>
+
+static void			print_nm(t_nm_otool *nm_otool, int nsyms, int symoff,  int stroff)
+{
+	int				i;
+	char			*stringtable;
+	struct nlist_64	*array;
+
+	array = nm_otool->file.memory + symoff;
+	stringtable = nm_otool->file.memory + stroff;
+	i = 0;
+	while (i < nsyms)
+	{
+		ft_printf("%s\n",stringtable + array[i].n_un.n_strx);
+		i++;
+	}
+}
 
 static void			print_nm(t_nm_otool *nm_otool, int nsyms, int symoff,  int stroff)
 {
