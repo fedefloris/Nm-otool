@@ -1,6 +1,6 @@
 #include "nm_otool.h"
 
-static char			**get_paths(char **env)
+static char		**get_paths(char **env)
 {
 	char			*env_string;
 	int				len;
@@ -25,11 +25,11 @@ static char			**get_paths(char **env)
 		return (NULL);
 }
 
-static void			binary_exists(char **env, char *binary, char **binary_path)
+static void		binary_exists(char **env, char *binary, char **binary_path)
 {
 	struct stat		stat;
-	char					**path;
-	int						i;
+	char			**path;
+	int				i;
 
 	i = 0;
 	path = NULL;
@@ -53,7 +53,7 @@ static void			binary_exists(char **env, char *binary, char **binary_path)
 		*binary_path = ft_strdup(binary + 1);
 }
 
-char				*find_binary(t_nm_otool *nm_otool)
+char			*find_binary(t_nm_otool *nm_otool)
 {
 	char			*tmp_file_name;
 	char			*binary_path;

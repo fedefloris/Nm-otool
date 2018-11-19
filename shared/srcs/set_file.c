@@ -52,7 +52,7 @@ static int	open_file(t_nm_otool *nm_otool)
 	return (fd);
 }
 
-bool				set_file(t_nm_otool *nm_otool)
+bool		set_file(t_nm_otool *nm_otool)
 {
 	int		fd;
 

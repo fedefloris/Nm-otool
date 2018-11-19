@@ -2,7 +2,7 @@
 #include "ft_printf.h"
 #include <elf.h>
 
-static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
+static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {
 	if (header->e_ident[EI_DATA] == ELFDATA2LSB)
 		nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
@@ -13,7 +13,7 @@ static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	return (true);
 }
 
-static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
+static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {
 	if (header->e_ident[EI_CLASS] == ELFCLASS32)
 		nm_otool->file.format = ELF_32_FORMAT;
@@ -29,12 +29,12 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr	*header)
 	return (true);
 }
 
-static bool	has_good_version(Elf32_Ehdr	*header)
+static bool	has_good_version(Elf32_Ehdr *header)
 {
 	return (header->e_ident[EI_VERSION] == EV_CURRENT);
 }
 
-static bool	has_good_magic_number(Elf32_Ehdr	*header)
+static bool	has_good_magic_number(Elf32_Ehdr *header)
 {
 	return (header->e_ident[EI_MAG0] == ELFMAG0
 		&& header->e_ident[EI_MAG1] == ELFMAG1
@@ -42,7 +42,7 @@ static bool	has_good_magic_number(Elf32_Ehdr	*header)
 		&& header->e_ident[EI_MAG3] == ELFMAG3);
 }
 
-bool				set_elf_info(t_nm_otool *nm_otool)
+bool		set_elf_info(t_nm_otool *nm_otool)
 {
 	Elf32_Ehdr	*header;
 
