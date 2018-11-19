@@ -7,7 +7,8 @@ static bool	is_a_regular_file(t_nm_otool *nm_otool, int fd)
 {
 	if (!S_ISREG(nm_otool->file.mode))
 	{
-		close(fd);
+		if (close(fd) == -1)
+			WARNING_LOG("close call failed");
 		return (false);
 	}
 	return (true);
@@ -17,7 +18,8 @@ static bool	map_file_to_memory(t_nm_otool *nm_otool, int fd)
 {
 	nm_otool->file.memory = mmap(0, nm_otool->file.size,
 		PROT_READ, MAP_PRIVATE, fd, 0);
-	close(fd);
+	if (close(fd) == -1)
+		WARNING_LOG("close call failed");
 	if (nm_otool->file.memory == MAP_FAILED)
 		return (false);
 	return (true);
@@ -29,7 +31,8 @@ static bool	set_file_data(t_nm_otool *nm_otool, int fd)
 
 	if (fstat(fd, &stat) < 0)
 	{
-		close(fd);
+		if (close(fd) == -1)
+			WARNING_LOG("close call failed");
 		return (false);
 	}
 	nm_otool->file.size = stat.st_size;
