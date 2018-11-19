@@ -1,6 +1,5 @@
 #include "nm_otool.h"
 #include "nm.h"
-#include <mach-o/nlist.h>
 
 static void			print_nm(t_nm_otool *nm_otool, int nsyms, int symoff,  int stroff)
 {

@@ -10,6 +10,7 @@
 
 # ifdef __APPLE__
 #  include <mach-o/loader.h>
+#  include <mach-o/nlist.h>
 # endif
 
 # define DEFAULT_COLOR "\033[1;0m"
