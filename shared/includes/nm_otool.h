@@ -46,12 +46,6 @@
 
 typedef struct		s_file
 {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> Added mach-o header.
 	char			*name;
 	off_t			size;
 	mode_t			mode;
@@ -59,22 +53,6 @@ typedef struct		s_file
 	int				format;
 	int				endianness;
 }					t_file;
-<<<<<<< HEAD
-=======
-=======
->>>>>>> Added mach-o header.
-	char		*name;
-	off_t		size;
-	mode_t		mode;
-	void		*memory;
-	int			format;
-	int			endianness;
-}									t_file;
-<<<<<<< HEAD
-=======
->>>>>>> Added mach-o header.
->>>>>>> Added mach-o header.
->>>>>>> Added mach-o header.
 
 typedef struct		s_nm_otool
 {

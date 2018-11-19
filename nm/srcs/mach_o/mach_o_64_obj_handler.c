@@ -17,22 +17,6 @@ static void			print_nm(t_nm_otool *nm_otool, int nsyms, int symoff,  int stroff)
 	}
 }
 
-static void			print_nm(t_nm_otool *nm_otool, int nsyms, int symoff,  int stroff)
-{
-	int				i;
-	char			*stringtable;
-	struct nlist_64	*array;
-
-	array = nm_otool->file.memory + symoff;
-	stringtable = nm_otool->file.memory + stroff;
-	i = 0;
-	while (i < nsyms)
-	{
-		ft_printf("%s\n",stringtable + array[i].n_un.n_strx);
-		i++;
-	}
-}
-
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
 	int						ncmds;
