@@ -22,41 +22,66 @@
 # define ELF_32_FORMAT 3
 # define ELF_64_FORMAT 4
 
+# ifdef __APPLE__
+
+# define SET_FILE_INFO(x) set_mach_o_info(x)
+
+# elif __linux__
+
+# define SET_FILE_INFO(x) set_elf_info(x)
+
+# else
+
+# define SET_FILE_INFO(x) set_unknown_info(x)
+
+# endif
+
 typedef struct		s_file
 {
-	char		*name;
-	off_t		size;
-	mode_t	mode;
-	void		*memory;
-	int			format;
-	int			endianness;
-}									t_file;
+	char			*name;
+	off_t			size;
+	mode_t			mode;
+	void			*memory;
+	int				format;
+	int				endianness;
+}					t_file;
 
 typedef struct		s_nm_otool
 {
 	char			**argv;
 	char			**env;
-	t_file		file;
-}									t_nm_otool;
+	t_file			file;
+}					t_nm_otool;
 
-typedef bool	(*t_obj_handler)(t_nm_otool *);
+typedef bool		(*t_obj_handler)(t_nm_otool *);
 
-void			config_nm_otool(t_nm_otool *nm_otool, char **argv, char **env);
+void				config_nm_otool(t_nm_otool *nm_otool,
+		char **argv, char **env);
 
-int				list_objs_symbols(t_nm_otool *nm_otool, t_obj_handler obj_handler);
-int				list_obj_symbols(t_nm_otool *nm_otool, char *file_name,
-	t_obj_handler obj_handler);
+int					list_objs_symbols(t_nm_otool *nm_otool,
+		t_obj_handler obj_handler);
+int					list_obj_symbols(t_nm_otool *nm_otool, char *file_name,
+		t_obj_handler obj_handler);
 
-char			*find_binary(t_nm_otool *nm_otool);
+char				*find_binary(t_nm_otool *nm_otool);
 
-bool			set_file(t_nm_otool *nm_otool);
-bool			set_file_info(t_nm_otool *nm_otool);
+bool				set_file(t_nm_otool *nm_otool);
+bool				set_file_info(t_nm_otool *nm_otool);
 
-#ifdef __APPLE__
-bool			set_mach_o_info(t_nm_otool *nm_otool);
-#elif __linux__
-bool			set_elf_info(t_nm_otool *nm_otool);
-#endif
+# ifdef __APPLE__
 
-bool			unset_file(t_nm_otool *nm_otool);
+bool				set_mach_o_info(t_nm_otool *nm_otool);
+
+# elif __linux__
+
+bool				set_elf_info(t_nm_otool *nm_otool);
+
+# else
+
+bool				set_unknown_info(t_nm_otool *nm_otool);
+
+# endif
+
+bool				unset_file(t_nm_otool *nm_otool);
+
 #endif
