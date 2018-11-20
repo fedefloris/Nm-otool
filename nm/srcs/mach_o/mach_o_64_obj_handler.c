@@ -27,6 +27,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	header = (struct mach_header_64 *)nm_otool->file.memory;
 	number_of_commands = header->ncmds;
 	load_command = nm_otool->file.memory + sizeof(*header);
+	int i = 0;//DELETE
 	while (number_of_commands--)
 	{
 		if (load_command->cmd == LC_SYMTAB)
@@ -36,6 +37,14 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 			break ;
 		}
 		load_command = (void *)load_command + load_command->cmdsize;
+		//load_command += 0;//delete
+		ft_printf("%d\n", i++);
+		ft_printf("SIZ: %x\nEND: %p\nADD: %p\n",
+			nm_otool->file.size, nm_otool->file.end_of_file, load_command);
+		if (!is_safe_address(nm_otool, (void *)load_command))
+		{
+			ft_printf("LOL\n\n\n");
+		}
 	}
 	return (true);
 }
