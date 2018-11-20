@@ -36,7 +36,7 @@ static bool	set_file_data(t_nm_otool *nm_otool, int fd)
 		return (false);
 	}
 	nm_otool->file.size = stat.st_size;
-	nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size;
+	nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1;
 	nm_otool->file.mode = stat.st_mode;
 	return (true);
 }
