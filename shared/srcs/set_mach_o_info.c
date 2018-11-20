@@ -2,7 +2,7 @@
 #include <mach-o/loader.h>
 #include <stdint.h>
 
-static void	check_size_if_64_format(t_nm_otool *nm_otool)
+static bool	check_size_if_64_format(t_nm_otool *nm_otool)
 {
 	if (nm_otool->file.format == MACH_O_64_FORMAT
 		&& nm_otool->file.size < (long)sizeof(struct mach_header_64))
