@@ -35,13 +35,8 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 			print_nm(nm_otool, symtab);
 			break ;
 		}
-		//load_command = (void *)load_command + load_command->cmdsize;
-		load_command += 500;//delete
-		ft_printf("      o\n");
-		if (!is_safe_address(nm_otool, (void *)load_command))
-		{
-			return false;
-		}
+		if (!(load_command = get_safe_address(nm_otool, (char *)load_command + load_command->cmdsize)))
+			return (false);
 	}
 	return (true);
 }
