@@ -77,6 +77,8 @@ char				*find_binary(t_nm_otool *nm_otool);
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
+bool				is_safe_file(t_nm_otool *nm_otool, void *address);
+
 # ifdef __APPLE__
 
 bool				set_mach_o_info(t_nm_otool *nm_otool);
