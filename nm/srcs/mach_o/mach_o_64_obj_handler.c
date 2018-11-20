@@ -25,6 +25,8 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	struct symtab_command	*symtab;
 
 	header = (struct mach_header_64 *)nm_otool->file.memory;
+	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
+		return (false);
 	number_of_commands = header->ncmds;
 	load_command = nm_otool->file.memory + sizeof(*header);
 	while (true)
