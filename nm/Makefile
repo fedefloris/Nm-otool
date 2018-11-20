@@ -29,7 +29,7 @@ ELF_FILES =
 SHARED_FILES = config_nm_otool \
 	list_objs_symbols list_obj_symbols \
 	set_file set_file_info unset_file \
-	find_binary \
+	find_binary is_safe_address\
 
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES += mach_o_obj_handler mach_o_32_obj_handler mach_o_64_obj_handler
