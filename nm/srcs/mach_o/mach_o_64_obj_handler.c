@@ -39,8 +39,8 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 		load_command = (void *)load_command + load_command->cmdsize;
 		//load_command += 0;//delete
 		ft_printf("%d\n", i++);
-		ft_printf("SIZ: %x\nEND: %p\nADD: %p\n",
-			nm_otool->file.size, nm_otool->file.end_of_file, load_command);
+		ft_printf("MEM: %p\nSIZ: %x\nEND: %p\nADD: %p\n",
+			nm_otool->file.memory, nm_otool->file.size, nm_otool->file.end_of_file, load_command);
 		if (!is_safe_address(nm_otool, (void *)load_command))
 		{
 			ft_printf("LOL\n\n\n");
