@@ -50,6 +50,7 @@ typedef struct		s_file
 	off_t			size;
 	mode_t			mode;
 	void			*memory;
+	void			*end_of_file;
 	int				format;
 	int				endianness;
 }					t_file;
