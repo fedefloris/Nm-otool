@@ -29,7 +29,8 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	load_command = nm_otool->file.memory + sizeof(*header);
 	while (number_of_commands--)
 	{
-		if (load_command->cmd == LC_SYMTAB)
+		if (get_safe_address(nm_otool, (char *)load_command + sizeof(*load_command))
+			&& load_command->cmd == LC_SYMTAB)
 		{
 			symtab = (struct symtab_command *) load_command;
 			print_nm(nm_otool, symtab);
