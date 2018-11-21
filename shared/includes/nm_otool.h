@@ -44,6 +44,13 @@
 
 # endif
 
+typedef struct		s_symbol
+{
+	char			*name;
+	char			type;
+	uint64_t		value;
+}					t_symbol;
+
 typedef struct		s_file
 {
 	char			*name;
