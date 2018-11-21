@@ -7,19 +7,21 @@ LIBFT_DIR = libft
 NM_DIR = nm
 OTOOL_DIR = otool
 
-all: comp_libft comp_nm comp_otool $(NAME)
+all: $(NAME)
 
 comp_libft:
 	@make -C $(LIBFT_DIR)/
 
-comp_nm:
+comp_nm: comp_libft
 	@make -C $(NM_DIR)/
 
-comp_otool:
+comp_otool: comp_libft
 	@make -C $(OTOOL_DIR)/
 
-$(NAME): $(NM_DIR)/$(NM) $(OTOOL_DIR)/$(OTOOL)
+$(NM): comp_nm $(NM_DIR)/$(NM)
 	@cp $(NM_DIR)/$(NM) $(NM)
+
+$(OTOOL): comp_otool $(OTOOL_DIR)/$(OTOOL)
 	@cp $(OTOOL_DIR)/$(OTOOL) $(OTOOL)
 
 clean:
