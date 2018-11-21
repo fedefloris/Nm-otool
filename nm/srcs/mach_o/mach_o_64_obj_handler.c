@@ -17,6 +17,8 @@ static bool			print_nm(t_nm_otool *nm_otool, struct symtab_command *symtab)
 	{
 		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
 			return (false);
+		if (!string_is_safe(nm_otool, (char *)str))
+			return (false);
 		ft_printf("%s\n", str);
 		i++;
 	}
