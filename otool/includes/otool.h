@@ -24,6 +24,11 @@ int             archive(t_file *file);
 int             load_file(char *filename, t_file *file);
 
 /*
+** macho_32.c
+*/
+int             macho_32(t_file *file);
+
+/*
 ** macho_64.c
 */
 int             macho_64(t_file *file);
