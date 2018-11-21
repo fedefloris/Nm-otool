@@ -9,9 +9,9 @@ static bool			print_nm(t_nm_otool *nm_otool, struct symtab_command *symtab)
 	struct nlist_64	*array;
 
 	i = 0;
-	if(!(array = (struct nlist_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->symoff)))
+	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->symoff)))
 		return (false);
-	if(!(stringtable = (char *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->stroff)))
+	if (!(stringtable = (char *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->stroff)))
 		return (false);
 	while (i < symtab->nsyms)
 	{
@@ -45,11 +45,10 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 		number_of_commands = header->ncmds;
 	while (true)
 	{
-		if (get_safe_address(nm_otool, (char *)lc + sizeof(*lc))
-			&& lc->cmd == LC_SYMTAB)
+		if (get_safe_address(nm_otool, (char *)lc + sizeof(*lc)) && lc->cmd == LC_SYMTAB)
 		{
-			if(!(symtab = (struct symtab_command *)get_safe_address(nm_otool, (char *)lc))
-				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
+			if (!(symtab = (struct symtab_command *)get_safe_address(nm_otool, (char *)lc))
+				|| !get_safe_address(nm_otool, (char *)symtab + sizeof(*symtab)))
 				return (false);
 			return (print_nm(nm_otool, symtab));
 			break ;
