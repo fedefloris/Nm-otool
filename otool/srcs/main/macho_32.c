@@ -15,7 +15,7 @@ int		parse_text(struct section *section, t_file *file)
 	i = 0;
 	while (i < section->size)
 	{
-		ft_printf("%016lx      ", &sect_addr->addr + i);
+		ft_printf("%08lx      ", (void *)(size_t)(sect_addr->addr + i));
 		j = 0;
 		while (j < WORD_NUM && (i + j) < section->size)
 		{
