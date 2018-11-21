@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool			print_nm(t_nm_otool *nm_otool, struct symtab_command *symtab)
+static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab)
 {
 	uint32_t		i;
 	char			*str;
@@ -52,7 +52,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 			if (!(symtab = (struct symtab_command *)get_safe_address(nm_otool, (char *)lc))
 				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
 				return (false);
-			return (print_nm(nm_otool, symtab));
+			return (get_symbols_64(nm_otool, symtab));
 			break ;
 		}
 		if (lc->cmdsize <= sizeof(*lc))
