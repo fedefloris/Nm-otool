@@ -42,7 +42,7 @@ unsigned long		options(char **argv)
 	while (*argv)
 	{
 		str = *argv;
-		if (!ft_strcmp(*argv, "--"))
+		if (!ft_strcmp(str, "--") || *str != '-')
 			break ;
 		else if (*str == '-')
 		{
