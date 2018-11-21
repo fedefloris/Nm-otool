@@ -26,12 +26,12 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 
 	if (!(header = (struct mach_header_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory)))
 		return (false);
+	if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
+		return (false);
 	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
 		return (false);
 	else
 		number_of_commands = header->ncmds;
-	if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
-		return (false);
 	while (true)
 	{
 		if (get_safe_address(nm_otool, (char *)lc + sizeof(*lc))
