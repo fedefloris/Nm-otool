@@ -48,7 +48,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 		if (get_safe_address(nm_otool, (char *)lc + sizeof(*lc)) && lc->cmd == LC_SYMTAB)
 		{
 			if (!(symtab = (struct symtab_command *)get_safe_address(nm_otool, (char *)lc))
-				|| !get_safe_address(nm_otool, (char *)symtab + sizeof(*symtab)))
+				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
 				return (false);
 			return (print_nm(nm_otool, symtab));
 			break ;
