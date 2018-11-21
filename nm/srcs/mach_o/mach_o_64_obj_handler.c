@@ -15,10 +15,13 @@ static bool			print_nm(t_nm_otool *nm_otool, struct symtab_command *symtab)
 		return (false);
 	while (i < symtab->nsyms)
 	{
+		if (!get_safe_address(nm_otool, (char *)symtab + sizeof(symtab)))
+			return (false);
 		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
+		ft_printf("%16.16x ", array[i].n_value);
 		ft_printf("%s\n", str);
 		i++;
 	}
