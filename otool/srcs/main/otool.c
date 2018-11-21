@@ -16,7 +16,10 @@ int					otool(t_file *file)
         macho_64(file);
     }
     else if (magic == MH_MAGIC || magic == MH_CIGAM)
+    {
         ft_printf("32 bit obj\n");
+        macho_32(file);
+    }
     else if (ft_strncmp((char *)file->map, ARMAG, SARMAG) == 0)
     {
         ft_printf("archive aka: static library\n");
