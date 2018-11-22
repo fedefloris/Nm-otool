@@ -1,6 +1,7 @@
 #ifndef OTOOL_H
 # define OTOOL_H
 
+# include <mach-o/fat.h>
 # include "libft.h"
 
 # define SUCCESS 1
@@ -37,5 +38,10 @@ int             macho_64(t_file *file);
 ** print.c
 */
 void            print_64(unsigned char word);
+
+/*
+** swap.c
+*/
+uint32_t    swap_endian(uint32_t value);
 
 #endif
