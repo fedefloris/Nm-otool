@@ -25,7 +25,7 @@
 # define WARNING_LOG(x) ft_printf("%s %s: %s\n", WARNING_HEADER, x, nm_otool->file.name)
 
 # define LITTLE_ENDIAN_TYPE 1
-# define BIG_ENDIAN_TYPE 1
+# define BIG_ENDIAN_TYPE 2
 
 # define MACH_O_32_FORMAT	1
 # define MACH_O_64_FORMAT	2
