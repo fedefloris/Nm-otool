@@ -53,7 +53,6 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
 				return (false);
 			return (get_symbols_64(nm_otool, symtab));
-			break ;
 		}
 		if (lc->cmdsize <= sizeof(*lc))
 			return (false);
