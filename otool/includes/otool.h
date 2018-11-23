@@ -22,7 +22,7 @@ int             archive(t_file *file);
 /*
 ** fat_64.c
 */
-int             fat_64(t_file *file);
+int             fat(t_file *file);
 
 /*
 ** load_file.c
