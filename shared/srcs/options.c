@@ -17,7 +17,7 @@
 ** Sets left-most-bit in case of non-alphanumeric character
 */
 
-static void			treat_options(char c, unsigned long *options)
+static void			treat_option(char c, unsigned long *options)
 {
 	unsigned long	one;
 
@@ -45,14 +45,19 @@ unsigned long		options(char ***argv)
 	while (*tmp_argv)
 	{
 		str = *tmp_argv;
-		if (!ft_strcmp(str, "--") || *str != '-')
+		if (!ft_strcmp(str, "--"))
+		{
+			tmp_argv++;
+			break ;
+		}
+		else if (*str != '-')
 			break ;
 		else if (*str == '-')
 		{
 			str++;
 			while (*str)
 			{
-				treat_options(*str, &options);
+				treat_option(*str, &options);
 				str++;
 			}
 		}
