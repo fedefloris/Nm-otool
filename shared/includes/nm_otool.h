@@ -90,8 +90,9 @@ bool				set_file_info(t_nm_otool *nm_otool);
 void				*get_safe_address(t_nm_otool *nm_otool, void *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 
-bool				option_check(unsigned long options, char c);
 bool				options(char ***argv, char *valid_options, unsigned long *options);
+bool				option_check(unsigned long options, char c);
+bool				op(t_nm_otool *nm_otool , char c);
 
 # ifdef __APPLE__
 
