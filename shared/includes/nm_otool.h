@@ -13,6 +13,8 @@
 #  include <mach-o/nlist.h>
 # endif
 
+# define NM_OPTIONS "abc"
+
 # define DEFAULT_COLOR "\033[1;0m"
 # define RED_COLOR "\033[1;31m"
 # define YELLOW_COLOR "\033[1;33m"
@@ -66,6 +68,7 @@ typedef struct		s_nm_otool
 {
 	char			**argv;
 	char			**env;
+	unsigned long	options;
 	t_file			file;
 }					t_nm_otool;
 
