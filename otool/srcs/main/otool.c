@@ -1,6 +1,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <ar.h>
+#include <mach-o/fat.h>
 #include "otool.h"
 #include "nm_otool.h"
 #include "ft_printf.h"
@@ -19,6 +20,11 @@ int					otool(t_file *file)
     {
         ft_printf("32 bit obj\n");
         macho_32(file);
+    }
+    else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
+    {
+        ft_printf("fat obj\n");
+        fat(file);
     }
     else if (ft_strncmp((char *)file->map, ARMAG, SARMAG) == 0)
     {
