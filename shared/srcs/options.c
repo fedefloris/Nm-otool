@@ -34,6 +34,7 @@
 ** return (true) if options were read successfully.
 ** return (false) if bad option is detected.
 */
+
 static bool			option_is_valid(char *valid_options, char c)
 {
 	while (*valid_options)
@@ -42,7 +43,9 @@ static bool			option_is_valid(char *valid_options, char c)
 			return (true);
 		valid_options++;
 	}
-	ft_putendl("BAD OPTION");
+	ft_putstr_fd("illegal option: [", 2);
+	ft_putchar_fd(c, 2);
+	ft_putendl_fd("]", 2);
 	return (false);
 }
 
