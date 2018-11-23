@@ -32,16 +32,19 @@ static void			treat_options(char c, unsigned long *options)
 		*options |= (one << 63);
 }
 
-unsigned long		options(char **argv)
+unsigned long		options(char ***argv)
 {
 	unsigned long	options;
+	char			**tmp_argv;
 	char			*str;
 
 	options = 0;
-	argv++;
-	while (*argv)
+	tmp_argv = *argv;
+	if (tmp_argv)
+		tmp_argv++;
+	while (*tmp_argv)
 	{
-		str = *argv;
+		str = *tmp_argv;
 		if (!ft_strcmp(str, "--") || *str != '-')
 			break ;
 		else if (*str == '-')
@@ -53,7 +56,8 @@ unsigned long		options(char **argv)
 				str++;
 			}
 		}
-		argv++;
+		tmp_argv++;
 	}
+	*argv = tmp_argv;
 	return (options);
 }
