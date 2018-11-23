@@ -21,8 +21,8 @@
 
 # define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
 # define WARNING_HEADER YELLOW_COLOR "Warning:" DEFAULT_COLOR
-# define ERROR_LOG(x) ft_printf("%s %s\n", ERROR_HEADER, x)
-# define WARNING_LOG(x) ft_printf("%s %s\n", WARNING_HEADER, x)
+# define ERROR_LOG(x) ft_printf("%s %s: %s\n", ERROR_HEADER, x, nm_otool->file.name)
+# define WARNING_LOG(x) ft_printf("%s %s: %s\n", WARNING_HEADER, x, nm_otool->file.name)
 
 # define LITTLE_ENDIAN_TYPE 1
 # define BIG_ENDIAN_TYPE 1
