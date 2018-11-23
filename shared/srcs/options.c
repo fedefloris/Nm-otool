@@ -69,18 +69,16 @@ static bool			treat_option(char c, char *valid_options, unsigned long *options)
 
 bool				options(char ***argv, char *valid_options, unsigned long *options)
 {
-	char			**tmp_argv;
 	char			*str;
 
 	*options = 0;
-	tmp_argv = *argv;
-	if (tmp_argv)
-		tmp_argv++;
-	while ((str = *tmp_argv))
+	if (*argv)
+		*argv += 1;
+	while ((str = **argv))
 	{
 		if (!ft_strcmp(str, "--"))
 		{
-			tmp_argv++;
+			*argv += 1;
 			break ;
 		}
 		else if (*str != '-')
@@ -91,8 +89,7 @@ bool				options(char ***argv, char *valid_options, unsigned long *options)
 				if (!treat_option(*str, valid_options, options))
 					return (false);
 		}
-		tmp_argv++;
+		*argv += 1;
 	}
-	*argv = tmp_argv;
 	return (true);
 }
