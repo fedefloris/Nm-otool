@@ -42,9 +42,8 @@ unsigned long		options(char ***argv)
 	tmp_argv = *argv;
 	if (tmp_argv)
 		tmp_argv++;
-	while (*tmp_argv)
+	while ((str = *tmp_argv))
 	{
-		str = *tmp_argv;
 		if (!ft_strcmp(str, "--"))
 		{
 			tmp_argv++;
