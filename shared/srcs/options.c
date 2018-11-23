@@ -11,16 +11,30 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdbool.h>
 
 /*
 ** Sets bits for alphanumeric characters.
 ** Sets left-most-bit in case of non-alphanumeric character
 */
+static bool			option_is_valid(char *valid_options, char c)
+{
+	while (*valid_options)
+	{
+		if (c == *valid_options)
+			return (true);
+		valid_options++;
+	}
+	ft_putendl("BAD OPTION");
+	return (false);
+}
 
-static void			treat_option(char c, unsigned long *options)
+static bool			treat_option(char c, char *valid_options, unsigned long *options)
 {
 	unsigned long	one;
 
+	if (!option_is_valid(valid_options, c))
+		return (false);
 	one = 1;
 	if (c >= 'a' && c <= 'z')
 		*options |= (one << (c - 97));
@@ -30,15 +44,15 @@ static void			treat_option(char c, unsigned long *options)
 		*options |= (one << (c + 4));
 	else
 		*options |= (one << 63);
+	return (true);
 }
 
-unsigned long		options(char ***argv)
+bool				options(char ***argv, char *valid_options, unsigned long *options)
 {
-	unsigned long	options;
 	char			**tmp_argv;
 	char			*str;
 
-	options = 0;
+	*options = 0;
 	tmp_argv = *argv;
 	if (tmp_argv)
 		tmp_argv++;
@@ -54,10 +68,11 @@ unsigned long		options(char ***argv)
 		else if (*str == '-')
 		{
 			while (*(++str))
-				treat_option(*str, &options);
+				if (!treat_option(*str, valid_options, options))
+					return (false);
 		}
 		tmp_argv++;
 	}
 	*argv = tmp_argv;
-	return (options);
+	return (true);
 }

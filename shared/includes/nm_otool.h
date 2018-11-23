@@ -88,7 +88,7 @@ void				*get_safe_address(t_nm_otool *nm_otool, void *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 
 bool				check_options(unsigned long options, char c);
-unsigned long		options(char ***argv);
+bool				options(char ***argv, char *valid_options, unsigned long *options);
 
 # ifdef __APPLE__
 
