@@ -71,7 +71,7 @@ typedef struct		s_nm_otool
 
 typedef bool		(*t_obj_handler)(t_nm_otool *);
 
-void				config_nm_otool(t_nm_otool *nm_otool,
+bool				config_nm_otool(t_nm_otool *nm_otool,
 		char **argv, char **env);
 
 int					list_objs_symbols(t_nm_otool *nm_otool,
