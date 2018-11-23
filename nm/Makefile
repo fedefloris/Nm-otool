@@ -30,7 +30,7 @@ SHARED_FILES = config_nm_otool \
 	list_objs_symbols list_obj_symbols \
 	set_file set_file_info unset_file \
 	find_binary get_safe_address string_is_safe\
-	options check_options\
+	options option_check op\
 
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES += mach_o_obj_handler mach_o_32_obj_handler mach_o_64_obj_handler
