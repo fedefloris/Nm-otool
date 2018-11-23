@@ -14,8 +14,25 @@
 #include <stdbool.h>
 
 /*
+** char ***argv
+** Takes pointer to argv
+** After processing options, (external) argv is set to first real argument.
+** note if "--" is detected, options processing stops and a pointer to the
+** next address in argv is set externally.
+**
+** *valid_options
+** Valid options should conain a string of valid options.
+** For example, if valid options are -l -a -f:
+** The valid options string should be set to "afl\0"
+**
+** unsigned long *options
+** Pointer to options variable.
 ** Sets bits for alphanumeric characters.
 ** Sets left-most-bit in case of non-alphanumeric character
+**
+** return: bool
+** return (true) if options were read successfully.
+** return (false) if bad option is detected.
 */
 static bool			option_is_valid(char *valid_options, char c)
 {
