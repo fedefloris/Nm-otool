@@ -54,12 +54,8 @@ unsigned long		options(char ***argv)
 			break ;
 		else if (*str == '-')
 		{
-			str++;
-			while (*str)
-			{
+			while (*(++str))
 				treat_option(*str, &options);
-				str++;
-			}
 		}
 		tmp_argv++;
 	}
