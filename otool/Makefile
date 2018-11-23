@@ -20,7 +20,7 @@ INCLUDES_FILES = otool
 HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
-MAIN_FILES = otool load_file macho_64 macho_32 archive swap
+MAIN_FILES = otool load_file macho_64 macho_32 archive swap fat_64
 SHARED_FILES =
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
