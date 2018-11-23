@@ -1,7 +1,7 @@
 #include "libft.h"
 #include <stdbool.h>//
 
-bool				check_options(unsigned long options, char c)
+bool				option_check(unsigned long options, char c)
 {
 	unsigned long	mask;
 
