@@ -44,21 +44,42 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
 		ft_printf("%16.16x ", array[i].n_value);
-		ft_printf("%c (%d) ", get_type_64(array[i].n_type, array[i].n_value), array[i].n_sect);
+		ft_printf("%c (%u) ", get_type_64(array[i].n_type, array[i].n_value), array[i].n_sect);
 		ft_printf("%s\n", str);
 		i++;
 	}
 	return (true);
 }
 
-t_section			get_sections_64(t_nm_otool *nm_otool, t_section *sections, t_lc *lc, int i)//maybe does not have to be 64 only.
+static bool			get_sections_64(t_nm_otool *nm_otool, t_section *sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
 {
+	uint32_t				i;
+	static unsigned char	sec_number = 1;
+	struct section_64		*sec;
 
+	i = 0;
+	if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)segment + sizeof(*segment))))
+		return (false);
+	while (i++ < segment->nsects)
+	{
+		if (!get_safe_address(nm_otool, (char *)sec + sizeof(*sec)))
+			return (false);
+		if (!string_is_safe(nm_otool, (char *)sec->sectname))
+			return (false);
+		if (!ft_strcmp(sec->sectname, SECT_DATA))
+			sections->data = sec_number;
+		else if (!ft_strcmp(sec->sectname, SECT_BSS))
+			sections->bss = sec_number;
+		else if (!ft_strcmp(sec->sectname, SECT_TEXT))
+			sections->text = sec_number;
+		sec_number++;
+	}	
+	return (true);
 }
 
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
-	uint32_t				i;
+	uint32_t				i;//maybe remove
 	struct mach_header_64	*header;
 	t_lc					*lc;
 	struct symtab_command	*symtab;
@@ -83,12 +104,11 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 				return (false);
 		}
 		if (lc->cmd == LC_SEGMENT_64)
-			get_section(nm_otool, lc, &sections, i);
+			get_sections_64(nm_otool, &sections, (struct segment_command_64 *)lc);
 		if (lc->cmdsize <= sizeof(*lc))
 			return (false);
 		if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)lc + lc->cmdsize)))
 			return (false);
-		ft_printf("num of cmds %d\n", i);
 	}
 	if (symtab)
 		return (get_symbols_64(nm_otool, symtab));
