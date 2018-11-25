@@ -82,7 +82,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 		if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)lc + lc->cmdsize)))
 			return (false);
 		ft_printf("num of cmds %d\n", number_of_commands);
-		if (!number_of_commands--)
+		if (!--number_of_commands)
 			break ;
 	}
 	if (symtab)
