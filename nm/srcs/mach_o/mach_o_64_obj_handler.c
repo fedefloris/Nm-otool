@@ -1,19 +1,24 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static char			get_type(uint8_t n_type)//same for both 64 and 32
+static char			get_type_64(uint8_t n_type, u_int64_t n_value)
 {
 	char			type;
-	bool			external;
 
-	external = (n_type & N_EXT) ? true : false;
-
-	n_type &= N_TYPE;
-	if (n_type == (N_UNDF << 1))
+	type = '0';
+	if ((n_type & N_TYPE) == N_UNDF)
+		type = (n_value) ? 'C' :'U';
+	else if ((n_type & N_TYPE) == N_ABS)
+		type = 'A';
+	else if ((n_type & N_TYPE) == N_PBUD)
 		type = 'U';
-	else
-		type = 'S';
-	if (!external)
+	//else if ((n_type & N_TYPE) == N_SECT)
+	//	type = ???;
+	else if ((n_type & N_TYPE) == N_INDR)
+		type = 'I';
+	if ((n_type & N_STAB) != 0)
+		type = 'Z';
+	if ((n_type & N_EXT) == 0 && type != '?')
 		type += 32;
 	return (type);
 }
@@ -39,7 +44,7 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
 		ft_printf("%16.16x ", array[i].n_value);
-		ft_printf("%c ", get_type(array[i].n_type));
+		ft_printf("%c (%d) ", get_type_64(array[i].n_type, array[i].n_value), array[i].n_sect);
 		ft_printf("%s\n", str);
 		i++;
 	}
