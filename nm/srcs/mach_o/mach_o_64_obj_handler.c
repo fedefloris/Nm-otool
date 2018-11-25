@@ -58,6 +58,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	t_lc					*lc;
 	struct symtab_command	*symtab;
 
+	symtab = NULL;
 	if (!(header = (struct mach_header_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory)))
 		return (false);
 	if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
@@ -70,19 +71,21 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	{
 		if (!get_safe_address(nm_otool, (char *)lc + sizeof(*lc)))
 			return (false);
-		if (lc->cmd == LC_SYMTAB)
+		if (!symtab && lc->cmd == LC_SYMTAB)
 		{
 			if (!(symtab = (struct symtab_command *)get_safe_address(nm_otool, (char *)lc))
 				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
 				return (false);
-			return (get_symbols_64(nm_otool, symtab));
 		}
 		if (lc->cmdsize <= sizeof(*lc))
 			return (false);
 		if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)lc + lc->cmdsize)))
 			return (false);
+		ft_printf("num of cmds %d\n", number_of_commands);
 		if (!number_of_commands--)
-			return (false);
+			break ;
 	}
+	if (symtab)
+		return (get_symbols_64(nm_otool, symtab));
 	return (true);
 }
