@@ -4,12 +4,17 @@
 static char			get_type(uint8_t n_type)//same for both 64 and 32
 {
 	char			type;
+	bool			external;
+
+	external = (n_type & N_EXT) ? true : false;
 
 	n_type &= N_TYPE;
 	if (n_type == (N_UNDF << 1))
 		type = 'U';
 	else
 		type = 'S';
+	if (!external)
+		type += 32;
 	return (type);
 }
 
