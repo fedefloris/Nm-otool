@@ -18,7 +18,7 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value)
 		type = 'I';
 	if ((n_type & N_STAB) != 0)
 		type = 'Z';
-	if ((n_type & N_EXT) == 0 && type != '?')
+	if ((n_type & N_EXT) == 0 && type != '0')
 		type += 32;
 	return (type);
 }
