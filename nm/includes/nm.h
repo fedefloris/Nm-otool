@@ -22,7 +22,14 @@ bool			obj_handler(t_nm_otool *nm_otool);
 # ifdef __APPLE__
 
 typedef struct load_command
-                t_lc;
+				t_lc;
+
+typedef struct	s_section;
+{
+	uint8_t		text;
+	uint8_t		data;
+	uint8_t		bss;
+}
 
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
