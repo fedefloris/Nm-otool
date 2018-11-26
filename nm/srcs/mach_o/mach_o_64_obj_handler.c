@@ -18,6 +18,7 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 		{
 			if (n_sect == sections->sec_number)
 				break ;
+			sections = sections->next;
 		}
 		if (!sections)
 			type = 'S';
@@ -57,8 +58,8 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
-		ft_printf("%16.16x ", array[i].n_value);
-		ft_printf("%c (%u) ", get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections), array[i].n_sect);
+		(array[i].n_value) ? ft_printf("%-17.16x", array[i].n_value) : ft_printf("%17s", "");
+		ft_printf("%c ", get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections));
 		ft_printf("%s\n", str);
 		i++;
 	}
@@ -86,7 +87,7 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 			|| !ft_strcmp(sec->sectname, SECT_TEXT))
 			{
 				if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
-					return (false);
+					return (false);//FREE
 				new->name = sec->sectname;
 				new->sec_number = sec_number;
 				if (!*sections)
@@ -94,7 +95,7 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 				else
 				{
 					new->next = *sections;
-					(*sections)->next = new;
+					*sections = new;
 				}
 			}
 		sec_number++;
@@ -108,7 +109,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	struct mach_header_64	*header;
 	t_lc					*lc;
 	struct symtab_command	*symtab;
-	t_section				*sections;
+	t_section				*sections;//FREE
 
 	i = 0;
 	symtab = NULL;
