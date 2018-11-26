@@ -19,6 +19,13 @@
 
 bool			obj_handler(t_nm_otool *nm_otool);
 
+typedef struct			s_symbol
+{	
+	char				*name;
+	char				type;
+	uint64_t			value;
+}						t_symbol;
+
 # ifdef __APPLE__
 
 typedef struct load_command
