@@ -78,6 +78,7 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 		return (false);
 	while (i++ < segment->nsects)
 	{
+		ft_printf("SEG: [%s]\n", segment->segname);
 		if (!get_safe_address(nm_otool, (char *)sec + sizeof(*sec)))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
@@ -98,6 +99,8 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 				*sections = new;
 			}
 		}
+		if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)sec + sizeof(*sec))))
+			return (false);
 		sec_number++;
 	}	
 	return (true);
