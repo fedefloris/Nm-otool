@@ -29,6 +29,7 @@ int load_file(char *filename, t_file *file)
         return (FAILURE);
     }
 	check_file_stat(filename, &buf);
+    file->file_size = buf.st_size;
     if ((file->map = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
     {
         close(fd);
