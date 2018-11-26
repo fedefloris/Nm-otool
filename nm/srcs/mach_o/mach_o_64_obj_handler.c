@@ -6,13 +6,11 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 	char			type;
 
 	type = '0';
-	if ((n_type & N_TYPE) == N_UNDF)
-		type = (n_value) ? 'C' : 'U';
-	else if ((n_type & N_TYPE) == N_ABS)
-		type = 'A';
-	else if ((n_type & N_TYPE) == N_PBUD)
-		type = 'U';
-	else if ((n_type & N_TYPE) == N_SECT)
+	type = ((n_type & N_TYPE) == N_UNDF && n_value) ? 'C' : type;
+	type = ((n_type & N_TYPE) == N_UNDF && !n_value) ? 'U' : type;
+	type = ((n_type & N_TYPE) == N_ABS && !n_value) ? 'A' : type;
+	type = ((n_type & N_TYPE) == N_PBUD && !n_value) ? 'U' : type;
+	if ((n_type & N_TYPE) == N_SECT)
 	{
 		while (sections)
 		{
@@ -29,12 +27,9 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 			type = (!ft_strcmp(sections->name, SECT_TEXT)) ? 'T' : type;
 		}
 	}
-	else if ((n_type & N_TYPE) == N_INDR)
-		type = 'I';
-	if ((n_type & N_STAB) != 0)
-		type = 'Z';
-	if ((n_type & N_EXT) == 0 && type != '0')
-		type += 32;
+	type = ((n_type & N_TYPE) == N_INDR && !n_value) ? 'I' : type;
+	type = ((n_type & N_STAB) != 0) ? 'Z' : type;
+	type += ((n_type & N_EXT) == 0 && type != '0') ? 32 : 0;
 	return (type);
 }
 
