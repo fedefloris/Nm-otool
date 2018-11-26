@@ -24,6 +24,7 @@ typedef struct			s_symbol
 	char				*name;
 	char				type;
 	uint64_t			value;
+	struct s_symbol		*next;
 }						t_symbol;
 
 # ifdef __APPLE__
