@@ -38,6 +38,19 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 	return (type);
 }
 
+static bool			free_sections(t_section *sections)
+{
+	t_section		*tmp;
+
+	while (sections)
+	{
+		tmp = sections;
+		sections = sections->next;
+		free(tmp);
+	}
+	return (false);
+}
+
 static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab, t_section *sections)
 {
 	uint32_t		i;
@@ -63,6 +76,7 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 		ft_printf("%s\n", str);
 		i++;
 	}
+	free_sections(sections);
 	return (true);
 }
 
@@ -142,5 +156,5 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	}
 	if (symtab)
 		return (get_symbols_64(nm_otool, symtab, sections));
-	return (true);
+	return (true);//Is this good or bad? TRUE/FALSE?
 }
