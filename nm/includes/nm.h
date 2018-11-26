@@ -28,7 +28,7 @@ typedef struct			s_section
 {
 	char				*name;
 	uint8_t				sec_number;
-	struct t_section	*next;
+	struct s_section	*next;
 }						t_section;
 
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
