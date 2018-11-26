@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_section sections)
+static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_section *sections)
 {
 	char			type;
 
@@ -14,11 +14,19 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 		type = 'U';
 	else if ((n_type & N_TYPE) == N_SECT)
 	{
-		ft_printf("Sect %d, Bss %d, data %d, text %d\n", n_sect, sections.bss, sections.data, sections.text);
-		type = (n_sect == sections.bss) ? 'B' : type;
-		type = (n_sect == sections.data) ? 'D' : type;
-		type = (n_sect == sections.text) ? 'T' : type;
-		type = (type == '0') ? 'S' : type;
+		while (sections)
+		{
+			if (n_sect == sections->sec_number)
+				break ;
+		}
+		if (!sections)
+			type = 'S';
+		else
+		{
+			type = (!ft_strcmp(sections->name, SECT_BSS)) ? 'B' : type;
+			type = (!ft_strcmp(sections->name, SECT_DATA)) ? 'D' : type;
+			type = (!ft_strcmp(sections->name, SECT_TEXT)) ? 'T' : type;
+		}
 	}
 	else if ((n_type & N_TYPE) == N_INDR)
 		type = 'I';
@@ -29,7 +37,7 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 	return (type);
 }
 
-static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab, t_section sections)
+static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab, t_section *sections)
 {
 	uint32_t		i;
 	char			*str;
@@ -57,11 +65,12 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 	return (true);
 }
 
-static bool			get_sections_64(t_nm_otool *nm_otool, t_section *sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
+static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
 {
 	uint32_t				i;
 	static unsigned char	sec_number = 1;
 	struct section_64		*sec;
+	t_section				*new;
 
 	i = 0;
 	if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)segment + sizeof(*segment))))
@@ -72,12 +81,22 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section *sections, struct 
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
 			return (false);
-		if (!ft_strcmp(sec->sectname, SECT_DATA))
-			sections->data = sec_number;
-		else if (!ft_strcmp(sec->sectname, SECT_BSS))
-			sections->bss = sec_number;
-		else if (!ft_strcmp(sec->sectname, SECT_TEXT))
-			sections->text = sec_number;
+		if (!ft_strcmp(sec->sectname, SECT_DATA)
+			|| !ft_strcmp(sec->sectname, SECT_BSS)
+			|| !ft_strcmp(sec->sectname, SECT_TEXT))
+			{
+				if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
+					return (false);
+				new->name = sec->sectname;
+				new->sec_number = sec_number;
+				if (!*sections)
+					*sections = new;
+				else
+				{
+					new->next = *sections;
+					(*sections)->next = new;
+				}
+			}
 		sec_number++;
 	}	
 	return (true);
@@ -89,10 +108,11 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	struct mach_header_64	*header;
 	t_lc					*lc;
 	struct symtab_command	*symtab;
-	t_section				sections;
+	t_section				*sections;
 
 	i = 0;
 	symtab = NULL;
+	sections = NULL;
 	if (!(header = (struct mach_header_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory)))
 		return (false);
 	if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
@@ -110,7 +130,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 				return (false);
 		}
 		if (lc->cmd == LC_SEGMENT_64)
-			get_sections_64(nm_otool, &sections, (struct segment_command_64 *)lc);
+			get_sections_64(nm_otool, &sections, (struct segment_command_64 *)lc);//MAKE BOOL FIX
 		if (lc->cmdsize <= sizeof(*lc))
 			return (false);
 		if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)lc + lc->cmdsize)))
