@@ -7,7 +7,7 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 
 	type = '0';
 	if ((n_type & N_TYPE) == N_UNDF)
-		type = (n_value) ? 'C' :'U';
+		type = (n_value) ? 'C' : 'U';
 	else if ((n_type & N_TYPE) == N_ABS)
 		type = 'A';
 	else if ((n_type & N_TYPE) == N_PBUD)
@@ -85,19 +85,19 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 		if (!ft_strcmp(sec->sectname, SECT_DATA)
 			|| !ft_strcmp(sec->sectname, SECT_BSS)
 			|| !ft_strcmp(sec->sectname, SECT_TEXT))
+		{
+			if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
+				return (false);//FREE
+			new->name = sec->sectname;
+			new->sec_number = sec_number;
+			if (!*sections)
+				*sections = new;
+			else
 			{
-				if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
-					return (false);//FREE
-				new->name = sec->sectname;
-				new->sec_number = sec_number;
-				if (!*sections)
-					*sections = new;
-				else
-				{
-					new->next = *sections;
-					*sections = new;
-				}
+				new->next = *sections;
+				*sections = new;
 			}
+		}
 		sec_number++;
 	}	
 	return (true);
