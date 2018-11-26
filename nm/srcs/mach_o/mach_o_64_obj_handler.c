@@ -117,11 +117,11 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
-	uint32_t				i;//maybe remove
+	uint32_t				i;
 	struct mach_header_64	*header;
 	t_lc					*lc;
 	struct symtab_command	*symtab;
-	t_section				*sections;//FREE
+	t_section				*sections;
 
 	i = 0;
 	symtab = NULL;
@@ -143,7 +143,8 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 				return (free_sections(sections));
 		}
 		if (lc->cmd == LC_SEGMENT_64)
-			get_sections_64(nm_otool, &sections, (struct segment_command_64 *)lc);//MAKE BOOL FIX
+			if (!get_sections_64(nm_otool, &sections, (struct segment_command_64 *)lc))
+				return (free_sections(sections));
 		if (lc->cmdsize <= sizeof(*lc))
 			return (free_sections(sections));
 		if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)lc + lc->cmdsize)))
