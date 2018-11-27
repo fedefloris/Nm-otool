@@ -70,6 +70,8 @@ int     macho_64(t_file *file)
     struct load_command         *lcmd;
     uint32_t                    i;
 
+    if (file->filetype != ARCHIVE && file->filetype != FAT)
+        ft_printf("%s:\n", file->filename);
     header = (struct mach_header_64 *)file->map;
     lcmd = (void *)file->map + sizeof(*header);
     i = 0;

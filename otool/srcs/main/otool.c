@@ -19,6 +19,8 @@ int					otool(t_file *file)
         fat(file);
     else if (ft_strncmp((char *)file->map, ARMAG, SARMAG) == 0)
     {
+        ft_printf("Archive : %s\n", file->filename);
+        file->filetype = ARCHIVE;
         archive(file);
     }
     return (SUCCESS);
@@ -36,6 +38,7 @@ int					main(int argc, char **argv)
         ft_bzero(&file, sizeof(t_file));
         if ((ret = load_file(argv[i], &file) == SUCCESS))
         {
+            otool(&file);
             free(file.filename);
             munmap(file.map, file.file_size);
         }
