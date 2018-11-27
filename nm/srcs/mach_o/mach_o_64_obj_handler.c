@@ -46,6 +46,16 @@ static bool			free_sections(t_section *sections)
 	return (false);
 }
 
+static void			print_symbols(t_symbol *symbol)
+{
+	while (symbol)
+	{
+		(symbol->value) ? ft_printf("%-17.16x", symbol->value) : ft_printf("%17s", "");
+		ft_printf("%c %s\n", symbol->type, symbol->name);
+		symbol = symbol->next;
+	}
+}
+
 static bool			free_symbols(t_symbol *symbol)
 {
 	t_symbol		*tmp;
@@ -114,6 +124,7 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 			return (free_symbols(symbol));
 		i++;
 	}
+	print_symbols(symbol);
 	free_sections(sections);
 	free_symbols(symbol);
 	return (true);
