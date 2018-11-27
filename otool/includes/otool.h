@@ -51,7 +51,7 @@ int             otool(t_file *file);
 /*
 ** print.c
 */
-void            print_64(unsigned char word);
+void            print_filename(t_file *file, char *current_file);
 
 /*
 ** swap.c
