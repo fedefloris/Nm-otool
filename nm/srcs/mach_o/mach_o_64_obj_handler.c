@@ -46,53 +46,61 @@ static bool			free_sections(t_section *sections)
 	return (false);
 }
 
-static void			print_symbols(t_symbol *symbol)
+static t_symbol		*sort_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
 {
-	while (symbol)
+	if (op(nm_otool, 'p'))
+		return (symbols);
+	return (symbols);
+}
+
+static void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
+{
+	while (symbols)
 	{
-		(symbol->value) ? ft_printf("%-17.16jx", symbol->value) : ft_printf("%17s", "");
-		ft_printf("%c %s\n", symbol->type, symbol->name);
-		symbol = symbol->next;
+		symbols = sort_symbols(nm_otool, symbols);
+		(symbols->value) ? ft_printf("%-17.16jx", symbols->value) : ft_printf("%17s", "");
+		ft_printf("%c %s\n", symbols->type, symbols->name);
+		symbols = symbols->next;
 	}
 }
 
-static bool			free_symbols(t_symbol *symbol)
+static bool			free_symbols(t_symbol *symbols)
 {
 	t_symbol		*tmp;
 
-	while (symbol)
+	while (symbols)
 	{
-		tmp = symbol;
-		symbol = symbol->next;
+		tmp = symbols;
+		symbols = symbols->next;
 		free(tmp);
 	}
 	return (false);
 }
 
-static bool			add_symbol(t_symbol **symbol, uint64_t n_value, char type, char *name)
+static bool			add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name)
 {
 	t_symbol		*new;
 	t_symbol		*head;
 
 	if (!(new = (t_symbol *)malloc(sizeof(t_symbol))))
 	{
-		free_symbols(*symbol);
-		*symbol = NULL;
+		free_symbols(*symbols);
+		*symbols = NULL;
 		return (false);
 	}
 	new->value = n_value;
 	new->type = type;
 	new->name = name;
 	new->next = NULL;
-	if (!*symbol)
-		*symbol = new;
+	if (!*symbols)
+		*symbols = new;
 	else
 	{
-		head = *symbol;
-		while (*symbol && (*symbol)->next)
-			*symbol = (*symbol)->next;
-		(*symbol)->next = new;
-		*symbol = head;
+		head = *symbols;
+		while (*symbols && (*symbols)->next)
+			*symbols = (*symbols)->next;
+		(*symbols)->next = new;
+		*symbols = head;
 	}
 	return (true);
 }
@@ -103,33 +111,33 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 	char			*str;
 	char			*stringtable;
 	struct nlist_64	*array;
-	t_symbol		*symbol;
+	t_symbol		*symbols;
 
 	i = 0;
-	symbol = NULL;
+	symbols = NULL;
 	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->symoff)))
-		return (free_symbols(symbol));
+		return (free_symbols(symbols));
 	if (!(stringtable = (char *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->stroff)))
-		return (free_symbols(symbol));
+		return (free_symbols(symbols));
 	while (i < symtab->nsyms)
 	{
 		if (!get_safe_address(nm_otool, (char *)array + sizeof(*array)))
-			return (free_symbols(symbol));
+			return (free_symbols(symbols));
 		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
-			return (free_symbols(symbol));
+			return (free_symbols(symbols));
 		if (!string_is_safe(nm_otool, (char *)str))
-			return (free_symbols(symbol));
+			return (free_symbols(symbols));
 		if ((array[i].n_type & N_STAB) == 0)
 		{
-			if (!(add_symbol(&symbol, array[i].n_value,
+			if (!(add_symbol(&symbols, array[i].n_value,
 				get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
-				return (free_symbols(symbol));
+				return (free_symbols(symbols));
 		}
 		i++;
 	}
-	print_symbols(symbol);
+	display_symbols(nm_otool, symbols);
 	free_sections(sections);
-	free_symbols(symbol);
+	free_symbols(symbols);
 	return (true);
 }
 
