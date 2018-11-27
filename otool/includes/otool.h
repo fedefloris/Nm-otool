@@ -7,11 +7,15 @@
 # define SUCCESS 1
 # define FAILURE 0
 # define WORD_NUM 16
+# define ARCHIVE 'a'
+# define FAT 'f'
 
 typedef struct  s_file
 {
     size_t      file_size;
     char        *map;
+    char        *filename;
+    char        filetype;
 }               t_file;
 
 /*
