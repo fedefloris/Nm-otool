@@ -71,7 +71,6 @@ int     macho_64(t_file *file)
     uint32_t                    i;
 
     header = (struct mach_header_64 *)file->map;
-	filetype_64(header);
     lcmd = (void *)file->map + sizeof(*header);
     i = 0;
     while (i < header->ncmds)

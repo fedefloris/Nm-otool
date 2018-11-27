@@ -12,23 +12,13 @@ int					otool(t_file *file)
 
     magic = *(uint32_t *)file->map;
     if (magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
-    {
-        ft_printf("64 bit obj\n");
         macho_64(file);
-    }
     else if (magic == MH_MAGIC || magic == MH_CIGAM)
-    {
-        ft_printf("32 bit obj\n");
         macho_32(file);
-    }
     else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
-    {
-        ft_printf("fat obj\n");
         fat(file);
-    }
     else if (ft_strncmp((char *)file->map, ARMAG, SARMAG) == 0)
     {
-        ft_printf("archive aka: static library\n");
         archive(file);
     }
     return (SUCCESS);
