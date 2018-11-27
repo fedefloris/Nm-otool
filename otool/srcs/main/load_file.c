@@ -14,12 +14,23 @@ int	check_file_stat(char *filename, struct stat *buf)
 	return (SUCCESS);
 }
 
+int load_filename(char *filename, t_file *file)
+{
+    if (!filename)
+        return (FAILURE);
+    file->filename = (char *)malloc(sizeof(char) * (ft_strlen(filename) + 1));
+    if (!file->filename)
+        return (FAILURE);
+    ft_strcpy(file->filename, filename);
+    return (SUCCESS);
+}
+
 int load_file(char *filename, t_file *file)
 {
     int			fd;
     struct stat	buf;
 
-    if (!filename)
+    if (!load_filename(filename, file))
         return (FAILURE);
     if ((fd = open(filename, O_RDONLY)) < 0)
         return (FAILURE);
