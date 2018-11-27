@@ -46,24 +46,45 @@ static bool			free_sections(t_section *sections)
 	return (false);
 }
 
-static t_symbol		*add_symbol(t_symbol *symbol, uint64_t n_value, char type, char *name)
+static bool			free_symbols(t_symbol *symbol)
+{
+	t_symbol		*tmp;
+
+	while (symbol)
+	{
+		tmp = symbol;
+		symbol = symbol->next;
+		free(tmp);
+	}
+	return (false);
+}
+
+static bool			add_symbol(t_symbol **symbol, uint64_t n_value, char type, char *name)
 {
 	t_symbol		*new;
 	t_symbol		*head;
 
 	if (!(new = (t_symbol *)malloc(sizeof(t_symbol))))
-		return (NULL);//free everything
+	{
+		free_symbols(*symbol);
+		*symbol = NULL;
+		return (false);
+	}
 	new->value = n_value;
 	new->type = type;
 	new->name = name;
 	new->next = NULL;
-	if (!symbol)
-		return (new);
-	head = symbol;
-	while (symbol && symbol->next)
-		symbol = symbol->next;
-	symbol->next = new;
-	return (head);
+	if (!*symbol)
+		*symbol = new;
+	else
+	{
+		head = *symbol;
+		while (*symbol && (*symbol)->next)
+			*symbol = (*symbol)->next;
+		(*symbol)->next = new;
+		*symbol = head;
+	}
+	return (true);
 }
 
 static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab, t_section *sections)
@@ -88,7 +109,7 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
-		symbol = add_symbol(symbol, array[i].n_value,
+		add_symbol(&symbol, array[i].n_value,
 			get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str);//MALLOC FAIL
 		i++;
 	}

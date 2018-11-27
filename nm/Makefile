@@ -2,7 +2,7 @@ NAME = ft_nm
 
 OS_TYPE = $(shell uname)
 
-GCC_FLAGS = -Werror -Wextra -Wall
+GCC_FLAGS = -Werror -Wextra -Wall -g
 
 OBJS_DIR = objs
 SRCS_DIR = srcs
