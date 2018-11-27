@@ -50,7 +50,7 @@ static void			print_symbols(t_symbol *symbol)
 {
 	while (symbol)
 	{
-		(symbol->value) ? ft_printf("%-17.16x", symbol->value) : ft_printf("%17s", "");
+		(symbol->value) ? ft_printf("%-17.16jx", symbol->value) : ft_printf("%17s", "");
 		ft_printf("%c %s\n", symbol->type, symbol->name);
 		symbol = symbol->next;
 	}
@@ -145,7 +145,6 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 		return (false);
 	while (i++ < segment->nsects)
 	{
-		ft_printf("SEG: [%s]\n", segment->segname);
 		if (!get_safe_address(nm_otool, (char *)sec + sizeof(*sec)))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
