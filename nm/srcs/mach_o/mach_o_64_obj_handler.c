@@ -98,22 +98,24 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 	i = 0;
 	symbol = NULL;
 	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->symoff)))
-		return (false);
+		return (free_symbols(symbol));
 	if (!(stringtable = (char *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->stroff)))
-		return (false);
+		return (free_symbols(symbol));
 	while (i < symtab->nsyms)
 	{
 		if (!get_safe_address(nm_otool, (char *)array + sizeof(*array)))
-			return (false);
+			return (free_symbols(symbol));
 		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
-			return (false);
+			return (free_symbols(symbol));
 		if (!string_is_safe(nm_otool, (char *)str))
-			return (false);
-		add_symbol(&symbol, array[i].n_value,
-			get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str);//MALLOC FAIL
+			return (free_symbols(symbol));
+		if (!(add_symbol(&symbol, array[i].n_value,
+			get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
+			return (free_symbols(symbol));
 		i++;
 	}
 	free_sections(sections);
+	free_symbols(symbol);
 	return (true);
 }
 
