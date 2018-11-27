@@ -28,8 +28,8 @@ static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_
 		}
 	}
 	type = ((n_type & N_TYPE) == N_INDR && !n_value) ? 'I' : type;
-	type = ((n_type & N_STAB) != 0) ? 'Z' : type;
-	type += ((n_type & N_EXT) == 0 && type != '0') ? 32 : 0;
+	type = ((n_type & N_STAB) != 0) ? '-' : type;
+	type += ((n_type & N_EXT) == 0 && type != '0' && type != '-') ? 32 : 0;
 	return (type);
 }
 
