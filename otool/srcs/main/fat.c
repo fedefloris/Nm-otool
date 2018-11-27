@@ -17,6 +17,7 @@ int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file,\
     {
         ft_bzero(&fat, sizeof(t_file));
         fat.map = (void *)file->map + swap_endian(fat_ptr->offset);
+        fat.filetype = FAT;
         macho(&fat);
         fat_ptr = (struct fat_arch *)((void *)fat_ptr + sizeof(struct fat_arch));
         i++;
@@ -48,6 +49,7 @@ int fat(t_file *file)
     struct fat_arch     *arch;
     uint32_t            nfat_arch;
 
+    ft_printf("%s:\n", file->filename);
     header = (struct fat_header *)file->map;
     nfat_arch = swap_endian(header->nfat_arch);
     arch = (struct fat_arch *)((void *)file->map + sizeof(struct fat_header));
