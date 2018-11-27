@@ -36,7 +36,7 @@ int					main(int argc, char **argv)
         ft_bzero(&file, sizeof(t_file));
         if ((ret = load_file(argv[i], &file) == SUCCESS))
         {
-            ft_printf("return status of otool: %d\n", otool(&file));
+            free(file.filename);
             munmap(file.map, file.file_size);
         }
     }
