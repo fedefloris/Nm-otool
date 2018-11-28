@@ -162,7 +162,7 @@ static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct
 			|| !ft_strcmp(sec->sectname, SECT_TEXT))
 		{
 			if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
-				return (false);//FREE
+				return (false);
 			new->name = sec->sectname;
 			new->sec_number = sec_number;
 			if (!*sections)
