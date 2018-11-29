@@ -11,14 +11,16 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool, struct nlist_64 *arra
 	{
 		if (!get_safe_address(nm_otool, (char *)array + sizeof(*array)))
 			return (false);
-		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
+		if (!(str = (char *)get_safe_address(nm_otool,
+				(char *)stringtable + array[i].n_un.n_strx)))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
 		if ((array[i].n_type & N_STAB) == 0)
 		{
 			if (!(add_symbol(symbols, array[i].n_value,
-				get_type(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
+					get_type(array[i].n_type, array[i].n_value,
+					array[i].n_sect, sections), str)))
 				return (false);
 		}
 		i++;
@@ -29,17 +31,19 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool, struct nlist_64 *arra
 static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 		t_sym *symtab, t_section *sections)
 {
-	
 	char			*stringtable;
 	struct nlist_64	*array;
 	t_symbol		*symbols;
 
 	symbols = NULL;
-	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->symoff)))
+	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool,
+			(char *)nm_otool->file.memory + symtab->symoff)))
 		return (free_symbols(symbols));
-	if (!(stringtable = (char *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->stroff)))
+	if (!(stringtable = (char *)get_safe_address(nm_otool,
+			(char *)nm_otool->file.memory + symtab->stroff)))
 		return (free_symbols(symbols));
-	if (!(mach_o_64_read_symbols(nm_otool, array, sections, &symbols, symtab, stringtable)))
+	if (!(mach_o_64_read_symbols(nm_otool, array,
+			sections, &symbols, symtab, stringtable)))
 		return (free_symbols(symbols));
 	display_symbols(nm_otool, symbols);
 	free_sections(sections);
