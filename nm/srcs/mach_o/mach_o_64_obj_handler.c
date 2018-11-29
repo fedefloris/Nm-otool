@@ -2,7 +2,7 @@
 #include "nm.h"
 
 static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
-		struct symtab_command *symtab, t_section *sections)
+		t_sc *symtab, t_section *sections)
 {
 	uint32_t		i;
 	char			*str;
@@ -94,9 +94,9 @@ static int			mach_o_64_get_first_load_command(t_nm_otool *nm_otool,
 	return ((int)header->ncmds);
 }
 
-static struct symtab_command	*mach_o_64_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands)
+static t_sc			*mach_o_64_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands)
 {
-	struct symtab_command	*symtab;
+	t_sc			*symtab;
 
 	symtab = NULL;
 	while (number_of_commands--)
@@ -105,7 +105,7 @@ static struct symtab_command	*mach_o_64_read_load_commands(t_nm_otool *nm_otool,
 			return (NULL);
 		if (!symtab && lc->cmd == LC_SYMTAB)
 		{
-			if (!(symtab = (struct symtab_command *)get_safe_address(nm_otool, (char *)lc))
+			if (!(symtab = (t_sc *)get_safe_address(nm_otool, (char *)lc))
 				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
 				return (NULL);
 		}
@@ -124,8 +124,8 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
 	int						number_of_commands;
 	t_lc					*lc;
+	t_sc					*symtab;
 	t_section				*sections;
-	struct symtab_command	*symtab;
 
 	sections = NULL;
 	if ((number_of_commands = mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
