@@ -96,18 +96,16 @@ static int			mach_o_64_get_first_load_command(t_nm_otool *nm_otool,
 
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
-	int						i;
 	int						number_of_commands;
 	t_lc					*lc;
 	t_section				*sections;
 	struct symtab_command	*symtab;
 
-	i = 0;
 	symtab = NULL;
 	sections = NULL;
 	if ((number_of_commands = mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
 		return (free_sections(sections));
-	while (i++ < number_of_commands)
+	while (number_of_commands--)
 	{
 		if (!get_safe_address(nm_otool, (char *)lc + sizeof(*lc)))
 			return (free_sections(sections));
