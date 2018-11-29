@@ -2,14 +2,6 @@
 #include <mach-o/loader.h>
 #include <stdint.h>
 
-static bool	check_size_if_64_format(t_nm_otool *nm_otool)
-{
-	if (nm_otool->file.format == MACH_O_64_FORMAT
-		&& nm_otool->file.size < (long)sizeof(struct mach_header_64))
-		return (false);
-	return (true);
-}
-
 static bool	set_mach_o(t_nm_otool *nm_otool, uint32_t magic_number)
 {
 	if (magic_number == MH_MAGIC || magic_number == MH_CIGAM)
@@ -17,7 +9,7 @@ static bool	set_mach_o(t_nm_otool *nm_otool, uint32_t magic_number)
 	else if (magic_number == MH_MAGIC_64 || magic_number == MH_CIGAM_64)
 	{
 		nm_otool->file.format = MACH_O_64_FORMAT;
-		if(!check_size_if_64_format(nm_otool))
+		if (nm_otool->file.size < (long)sizeof(struct mach_header_64))
 		{
 			ERROR_LOG("Bad size");
 			return (false);
@@ -31,12 +23,26 @@ static bool	set_mach_o(t_nm_otool *nm_otool, uint32_t magic_number)
 	return (true);
 }
 
+static bool	set_fat(t_nm_otool *nm_otool, uint32_t magic_number)
+{
+	if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
+		nm_otool->file.format = MACH_O_FAT_32;
+	else if (magic_number == FAT_MAGIC_64 || magic_number == FAT_CIGAM_64)
+		nm_otool->file.format = MACH_O_FAT_64;
+	else
+		return (false);
+	nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
+	if (magic_number == FAT_CIGAM || magic_number == FAT_CIGAM_64)
+		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
+	return (true);
+}
+
 static bool	set_format(t_nm_otool *nm_otool)
 {
 	uint32_t		magic_number;
 
 	magic_number = *(uint32_t *)nm_otool->file.memory;
-	if (!set_mach_o(nm_otool, magic_number))
+	if (!set_mach_o(nm_otool, magic_number) && !set_fat(nm_otool, magic_number))
 		return (false);
 	return (true);
 }
