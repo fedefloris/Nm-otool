@@ -47,6 +47,7 @@ bool			free_symbols(t_symbol *symbols);
 char			get_type(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_section *sections);
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
+bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment);
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
 t_symbol		*sort_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 
