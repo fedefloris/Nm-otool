@@ -34,13 +34,13 @@ SHARED_FILES = config_nm_otool \
 
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES +=	add_symbol \
-					display_symbol.c \
-					free_sections.c \
-					free_symbols.c \
+					display_symbols \
+					free_sections \
+					free_symbols \
 					mach_o_obj_handler \
 					mach_o_32_obj_handler \
 					mach_o_64_obj_handler \
-					sort_symbols.c
+					sort_symbols
 	SHARED_FILES += set_mach_o_info
 else ifeq ($(OS_TYPE), Linux)
 	ELF_FILES += elf_obj_handler elf_32_obj_handler elf_64_obj_handler
