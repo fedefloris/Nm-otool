@@ -1,45 +1,8 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static char			get_type_section_64(char type, u_int8_t n_sect, t_section *sections)
-{
-	while (sections)
-		{
-			if (n_sect == sections->sec_number)
-				break ;
-			sections = sections->next;
-		}
-		if (!sections)
-			type = 'S';
-		else
-		{
-			type = (!ft_strcmp(sections->name, SECT_BSS)) ? 'B' : type;
-			type = (!ft_strcmp(sections->name, SECT_DATA)) ? 'D' : type;
-			type = (!ft_strcmp(sections->name, SECT_TEXT)) ? 'T' : type;
-		}
-		return (type);
-}
-
-static char			get_type_64(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_section *sections)
-{
-	char			type;
-
-	type = '0';
-	type = ((n_type & N_TYPE) == N_UNDF && n_value) ? 'C' : type;
-	type = ((n_type & N_TYPE) == N_UNDF && !n_value) ? 'U' : type;
-	type = ((n_type & N_TYPE) == N_ABS && !n_value) ? 'A' : type;
-	type = ((n_type & N_TYPE) == N_PBUD && !n_value) ? 'U' : type;
-	if ((n_type & N_TYPE) == N_SECT)
-	{
-		type = get_type_section_64(type, n_sect, sections);
-	}
-	type = ((n_type & N_TYPE) == N_INDR && !n_value) ? 'I' : type;
-	type = ((n_type & N_STAB) != 0) ? '-' : type;
-	type += ((n_type & N_EXT) == 0 && type != '0' && type != '-') ? 32 : 0;
-	return (type);
-}
-
-static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab, t_section *sections)
+static bool			get_symbols_64(t_nm_otool *nm_otool,
+		struct symtab_command *symtab, t_section *sections)
 {
 	uint32_t		i;
 	char			*str;
@@ -64,7 +27,7 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 		if ((array[i].n_type & N_STAB) == 0)
 		{
 			if (!(add_symbol(&symbols, array[i].n_value,
-				get_type_64(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
+				get_type(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
 				return (free_symbols(symbols));
 		}
 		i++;
@@ -75,7 +38,8 @@ static bool			get_symbols_64(t_nm_otool *nm_otool, struct symtab_command *symtab
 	return (true);
 }
 
-static bool			get_sections_64(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
+static bool			get_sections_64(t_nm_otool *nm_otool,
+		t_section **sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
 {
 	uint32_t				i;
 	static unsigned char	sec_number = 1;
