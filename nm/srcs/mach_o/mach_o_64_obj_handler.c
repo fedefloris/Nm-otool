@@ -94,7 +94,8 @@ static int			mach_o_64_get_first_load_command(t_nm_otool *nm_otool,
 	return ((int)header->ncmds);
 }
 
-static t_sc			*mach_o_64_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands)
+static t_sc			*mach_o_64_read_load_commands(t_nm_otool *nm_otool, t_lc *lc,
+		t_section **sections, int number_of_commands)
 {
 	t_sc			*symtab;
 
