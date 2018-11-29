@@ -1,7 +1,8 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-bool				add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name)
+bool				add_symbol(t_symbol **symbols,
+		uint64_t n_value, char type, char *name)
 {
 	t_symbol		*new;
 	t_symbol		*head;
