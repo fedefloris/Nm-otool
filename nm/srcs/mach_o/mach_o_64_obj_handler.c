@@ -23,12 +23,10 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
 		if ((array[i].n_type & N_STAB) == 0)
-		{
 			if (!(add_symbol(symbols, array[i].n_value,
 					get_type(array[i].n_type, array[i].n_value,
 					array[i].n_sect, sections), str)))
 				return (false);
-		}
 		i++;
 	}
 	return (true);
@@ -53,13 +51,30 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	return (true);
 }
 
+static bool			mach_o_64_create_section(t_section **sections, struct section_64 *sec, unsigned char sec_number)
+{
+	t_section				*new;
+
+	if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
+		return (false);
+	new->name = sec->sectname;
+	new->sec_number = sec_number;
+	if (!*sections)
+		*sections = new;
+	else
+	{
+		new->next = *sections;
+		*sections = new;
+	}
+	return (true);
+}
+
 static bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
 		t_section **sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
 {
 	uint32_t				i;
 	static unsigned char	sec_number = 1;
 	struct section_64		*sec;
-	t_section				*new;
 
 	i = 0;
 	if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)segment + sizeof(*segment))))
@@ -71,21 +86,10 @@ static bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
 			return (false);
 		if (!ft_strcmp(sec->sectname, SECT_DATA)
-			|| !ft_strcmp(sec->sectname, SECT_BSS)
-			|| !ft_strcmp(sec->sectname, SECT_TEXT))
-		{
-			if (!(new = (t_section *)ft_memalloc(sizeof(t_section))))
+				|| !ft_strcmp(sec->sectname, SECT_BSS)
+				|| !ft_strcmp(sec->sectname, SECT_TEXT))
+			if (!(mach_o_64_create_section(sections, sec, sec_number)))
 				return (false);
-			new->name = sec->sectname;
-			new->sec_number = sec_number;
-			if (!*sections)
-				*sections = new;
-			else
-			{
-				new->next = *sections;
-				*sections = new;
-			}
-		}
 		if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)sec + sizeof(*sec))))
 			return (false);
 		sec_number++;
