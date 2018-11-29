@@ -78,24 +78,36 @@ static bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
 	return (true);
 }
 
+static int			mach_o_64_get_first_load_command(t_nm_otool *nm_otool,
+		t_lc **lc)
+{
+	struct mach_header_64	*header;
+
+	if (!(header = (struct mach_header_64 *)get_safe_address(
+			nm_otool, (char *)nm_otool->file.memory)))
+		return (-1);
+	if (!(*lc = (t_lc *)get_safe_address(
+			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
+		return (-1);
+	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
+		return (-1);
+	return ((int)header->ncmds);
+}
+
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
-	uint32_t				i;
+	int						i;
+	int						number_of_commands;
 	t_lc					*lc;
 	t_section				*sections;
-	struct mach_header_64	*header;
 	struct symtab_command	*symtab;
 
 	i = 0;
 	symtab = NULL;
 	sections = NULL;
-	if (!(header = (struct mach_header_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory)))
+	if ((number_of_commands = mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
 		return (free_sections(sections));
-	if (!(lc = (t_lc *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
-		return (free_sections(sections));
-	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
-		return (free_sections(sections));
-	while (i++ < header->ncmds)
+	while (i++ < number_of_commands)
 	{
 		if (!get_safe_address(nm_otool, (char *)lc + sizeof(*lc)))
 			return (free_sections(sections));
