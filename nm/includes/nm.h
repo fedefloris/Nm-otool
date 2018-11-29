@@ -38,10 +38,14 @@ typedef struct			s_section
 	uint8_t				sec_number;
 	struct s_section	*next;
 }						t_section;
-
+bool			add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name);
+void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
+bool			free_sections(t_section *sections);
+bool			free_symbols(t_symbol *symbols);
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
+t_symbol		*sort_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 
 # elif __linux__
 
