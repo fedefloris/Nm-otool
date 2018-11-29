@@ -2,7 +2,7 @@
 #include <mach-o/loader.h>
 #include <stdint.h>
 
-static bool	set_mach_o(t_nm_otool *nm_otool, uint32_t magic_number)
+static bool	set_mach_o_format(t_nm_otool *nm_otool, uint32_t magic_number)
 {
 	if (magic_number == MH_MAGIC || magic_number == MH_CIGAM)
 		nm_otool->file.format = MACH_O_32_FORMAT;
@@ -23,7 +23,7 @@ static bool	set_mach_o(t_nm_otool *nm_otool, uint32_t magic_number)
 	return (true);
 }
 
-static bool	set_fat_type(t_nm_otool *nm_otool, uint32_t magic_number)
+static bool	set_fat_format(t_nm_otool *nm_otool, uint32_t magic_number)
 {
 	if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
 		nm_otool->file.format = MACH_O_FAT_32;
@@ -37,12 +37,12 @@ static bool	set_fat_type(t_nm_otool *nm_otool, uint32_t magic_number)
 	return (true);
 }
 
-static bool	set_format_type(t_nm_otool *nm_otool)
+static bool	set_format(t_nm_otool *nm_otool)
 {
 	uint32_t		magic_number;
 
 	magic_number = *(uint32_t *)nm_otool->file.memory;
-	if (!set_mach_o_type(nm_otool, magic_number) && !set_fat_type(nm_otool, magic_number))
+	if (!set_mach_o_format(nm_otool, magic_number) && !set_fat_format(nm_otool, magic_number))
 		return (false);
 	return (true);
 }
