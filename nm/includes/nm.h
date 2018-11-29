@@ -29,8 +29,7 @@ typedef struct			s_symbol
 
 # ifdef __APPLE__
 
-typedef struct load_command
-						t_lc;
+typedef struct load_command		t_lc;
 typedef struct symtab_command	t_sym;
 
 typedef struct			s_section
