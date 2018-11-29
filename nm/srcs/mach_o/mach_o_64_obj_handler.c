@@ -1,15 +1,21 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool, struct nlist_64 *array, t_section *sections, t_symbol **symbols, t_sym *symtab, char *stringtable)
+static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
+		struct nlist_64 *array, t_section *sections,
+		t_symbol **symbols, t_sym *symtab)
 {
 	uint32_t		i;
 	char			*str;
+	char			*stringtable;
 
 	i = 0;
+	if (!(stringtable = (char *)get_safe_address(nm_otool,
+			(char *)nm_otool->file.memory + symtab->stroff)))
+		return (false);
 	while (i < symtab->nsyms)
 	{
-		if (!get_safe_address(nm_otool, (char *)array + sizeof(*array)))
+		if (!get_safe_address(nm_otool, (char *)&array[i] + sizeof(array[i])))
 			return (false);
 		if (!(str = (char *)get_safe_address(nm_otool,
 				(char *)stringtable + array[i].n_un.n_strx)))
@@ -31,7 +37,6 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool, struct nlist_64 *arra
 static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 		t_sym *symtab, t_section *sections)
 {
-	char			*stringtable;
 	struct nlist_64	*array;
 	t_symbol		*symbols;
 
@@ -39,11 +44,8 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool,
 			(char *)nm_otool->file.memory + symtab->symoff)))
 		return (free_symbols(symbols));
-	if (!(stringtable = (char *)get_safe_address(nm_otool,
-			(char *)nm_otool->file.memory + symtab->stroff)))
-		return (free_symbols(symbols));
 	if (!(mach_o_64_read_symbols(nm_otool, array,
-			sections, &symbols, symtab, stringtable)))
+			sections, &symbols, symtab)))
 		return (free_symbols(symbols));
 	display_symbols(nm_otool, symbols);
 	free_sections(sections);
