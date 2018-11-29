@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool			get_symbols_64(t_nm_otool *nm_otool,
+static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 		struct symtab_command *symtab, t_section *sections)
 {
 	uint32_t		i;
@@ -38,7 +38,7 @@ static bool			get_symbols_64(t_nm_otool *nm_otool,
 	return (true);
 }
 
-static bool			get_sections_64(t_nm_otool *nm_otool,
+static bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
 		t_section **sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
 {
 	uint32_t				i;
@@ -81,10 +81,10 @@ static bool			get_sections_64(t_nm_otool *nm_otool,
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 {
 	uint32_t				i;
-	struct mach_header_64	*header;
 	t_lc					*lc;
-	struct symtab_command	*symtab;
 	t_section				*sections;
+	struct mach_header_64	*header;
+	struct symtab_command	*symtab;
 
 	i = 0;
 	symtab = NULL;
@@ -106,7 +106,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 				return (free_sections(sections));
 		}
 		if (lc->cmd == LC_SEGMENT_64)
-			if (!get_sections_64(nm_otool, &sections, (struct segment_command_64 *)lc))
+			if (!mach_o_64_get_sections(nm_otool, &sections, (struct segment_command_64 *)lc))
 				return (free_sections(sections));
 		if (lc->cmdsize <= sizeof(*lc))
 			return (free_sections(sections));
@@ -114,6 +114,6 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 			return (free_sections(sections));
 	}
 	if (symtab)
-		return (get_symbols_64(nm_otool, symtab, sections));
+		return (mach_o_64_get_symbols(nm_otool, symtab, sections));
 	return (true);//Is this good or bad? TRUE/FALSE?
 }
