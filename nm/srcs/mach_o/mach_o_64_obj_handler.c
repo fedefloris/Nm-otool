@@ -131,9 +131,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	sections = NULL;
 	if ((number_of_commands = mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
 		return (free_sections(sections));
-	if (!(symtab = mach_o_64_read_load_commands(nm_otool, lc, &sections, number_of_commands)))
-			return (free_sections(sections));
-	if (symtab)
+	if ((symtab = mach_o_64_read_load_commands(nm_otool, lc, &sections, number_of_commands)))
 		return (mach_o_64_get_symbols(nm_otool, symtab, sections));
 	return (true);//Is this good or bad? TRUE/FALSE?
 }
