@@ -51,7 +51,8 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	return (true);
 }
 
-static bool			mach_o_64_create_section(t_section **sections, struct section_64 *sec, unsigned char sec_number)
+static bool			mach_o_64_create_section(t_section **sections,
+		struct section_64 *sec, unsigned char sec_number)
 {
 	t_section				*new;
 
@@ -70,14 +71,15 @@ static bool			mach_o_64_create_section(t_section **sections, struct section_64 *
 }
 
 static bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
-		t_section **sections, struct segment_command_64 *segment)//maybe does not have to be 64 only.
+		t_section **sections, struct segment_command_64 *segment)
 {
 	uint32_t				i;
 	static unsigned char	sec_number = 1;
 	struct section_64		*sec;
 
 	i = 0;
-	if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)segment + sizeof(*segment))))
+	if (!(sec = (struct section_64 *)get_safe_address(
+			nm_otool, (char *)segment + sizeof(*segment))))
 		return (false);
 	while (i++ < segment->nsects)
 	{
@@ -90,7 +92,8 @@ static bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
 				|| !ft_strcmp(sec->sectname, SECT_TEXT))
 			if (!(mach_o_64_create_section(sections, sec, sec_number)))
 				return (false);
-		if (!(sec = (struct section_64 *)get_safe_address(nm_otool, (char *)sec + sizeof(*sec))))
+		if (!(sec = (struct section_64 *)get_safe_address(
+				nm_otool, (char *)sec + sizeof(*sec))))
 			return (false);
 		sec_number++;
 	}
