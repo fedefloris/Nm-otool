@@ -1,37 +1,46 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
-		t_sym *symtab, t_section *sections)
+static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool, struct nlist_64 *array, t_section *sections, t_symbol **symbols, t_sym *symtab, char *stringtable)
 {
 	uint32_t		i;
 	char			*str;
+
+	i = 0;
+	while (i < symtab->nsyms)
+	{
+		if (!get_safe_address(nm_otool, (char *)array + sizeof(*array)))
+			return (false);
+		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
+			return (false);
+		if (!string_is_safe(nm_otool, (char *)str))
+			return (false);
+		if ((array[i].n_type & N_STAB) == 0)
+		{
+			if (!(add_symbol(symbols, array[i].n_value,
+				get_type(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
+				return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
+		t_sym *symtab, t_section *sections)
+{
+	
 	char			*stringtable;
 	struct nlist_64	*array;
 	t_symbol		*symbols;
 
-	i = 0;
 	symbols = NULL;
 	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->symoff)))
 		return (free_symbols(symbols));
 	if (!(stringtable = (char *)get_safe_address(nm_otool, (char *)nm_otool->file.memory + symtab->stroff)))
 		return (free_symbols(symbols));
-	while (i < symtab->nsyms)
-	{
-		if (!get_safe_address(nm_otool, (char *)array + sizeof(*array)))
-			return (free_symbols(symbols));
-		if (!(str = (char *)get_safe_address(nm_otool, (char *)stringtable + array[i].n_un.n_strx)))
-			return (free_symbols(symbols));
-		if (!string_is_safe(nm_otool, (char *)str))
-			return (free_symbols(symbols));
-		if ((array[i].n_type & N_STAB) == 0)
-		{
-			if (!(add_symbol(&symbols, array[i].n_value,
-				get_type(array[i].n_type, array[i].n_value, array[i].n_sect, sections), str)))
-				return (free_symbols(symbols));
-		}
-		i++;
-	}
+	if (!(mach_o_64_read_symbols(nm_otool, array, sections, &symbols, symtab, stringtable)))
+		return (free_symbols(symbols));
 	display_symbols(nm_otool, symbols);
 	free_sections(sections);
 	free_symbols(symbols);
