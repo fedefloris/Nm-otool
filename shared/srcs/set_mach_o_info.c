@@ -10,20 +10,25 @@ static bool	check_size_if_64_format(t_nm_otool *nm_otool)
 	return (true);
 }
 
-static void	set_64_format(t_nm_otool *nm_otool, uint32_t magic_number)
+static bool	set_mach_o(t_nm_otool *nm_otool, uint32_t magic_number)
 {
-	nm_otool->file.format = MACH_O_64_FORMAT;
+	if (magic_number == MH_MAGIC || magic_number == MH_CIGAM)
+		nm_otool->file.format = MACH_O_32_FORMAT;
+	else if (magic_number == MH_MAGIC_64 || magic_number == MH_CIGAM_64)
+	{
+		nm_otool->file.format = MACH_O_64_FORMAT;
+		if(!check_size_if_64_format(nm_otool))
+		{
+			ERROR_LOG("Bad size");
+			return (false);
+		}
+	}
+	else
+		return (false);
 	nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
-	if (magic_number == MH_CIGAM_64)
+	if (magic_number == MH_CIGAM || magic_number == MH_CIGAM_64)
 		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
-}
-
-static void	set_32_format(t_nm_otool *nm_otool, uint32_t magic_number)
-{
-	nm_otool->file.format = MACH_O_32_FORMAT;
-	nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
-	if (magic_number == MH_CIGAM)
-		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
+	return (true);
 }
 
 static bool	set_format(t_nm_otool *nm_otool)
@@ -31,11 +36,7 @@ static bool	set_format(t_nm_otool *nm_otool)
 	uint32_t		magic_number;
 
 	magic_number = *(uint32_t *)nm_otool->file.memory;
-	if (magic_number == MH_MAGIC || magic_number == MH_CIGAM)
-		set_32_format(nm_otool, magic_number);
-	else if (magic_number == MH_MAGIC_64 || magic_number == MH_CIGAM_64)
-		set_64_format(nm_otool, magic_number);
-	else
+	if (!set_mach_o(nm_otool, magic_number))
 		return (false);
 	return (true);
 }
@@ -46,8 +47,6 @@ bool		set_mach_o_info(t_nm_otool *nm_otool)
 		ERROR_LOG("Bad size");
 	else if (!set_format(nm_otool))
 		ERROR_LOG("Bad magic number");
-	else if(!check_size_if_64_format(nm_otool))
-		ERROR_LOG("Bad size");
 	else
 		return (true);
 	return (false);
