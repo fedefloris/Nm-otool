@@ -31,7 +31,7 @@ typedef struct			s_symbol
 
 typedef struct load_command
 						t_lc;
-typedef struct symtab_command	t_sc;
+typedef struct symtab_command	t_sym;
 
 typedef struct			s_section
 {
