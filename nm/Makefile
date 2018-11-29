@@ -39,6 +39,8 @@ ifeq ($(OS_TYPE), Darwin)
 					free_symbols \
 					get_type \
 					mach_o_obj_handler \
+					mach_fat_32_obj_handler \
+					mach_fat_64_obj_handler \
 					mach_o_32_obj_handler \
 					mach_o_64_get_sections \
 					mach_o_64_obj_handler \
