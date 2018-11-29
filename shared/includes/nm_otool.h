@@ -30,8 +30,10 @@
 
 # define MACH_O_32_FORMAT	1
 # define MACH_O_64_FORMAT	2
-# define ELF_32_FORMAT 3
-# define ELF_64_FORMAT 4
+# define ELF_32_FORMAT 		3
+# define ELF_64_FORMAT 		4
+# define MACH_O_FAT_32		5
+# define MACH_O_FAT_64		6
 
 # ifdef __APPLE__
 
