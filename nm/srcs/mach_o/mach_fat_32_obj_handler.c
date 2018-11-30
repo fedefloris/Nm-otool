@@ -44,12 +44,14 @@ uint32_t    swap_endian(uint32_t value)
 
 bool process_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*macho)(t_nm_otool *))
 {
+	bool			status;
 	struct fat_arch *fat_ptr;
 	t_file          fat;
 	t_file			tmp;
 
 	tmp = nm_otool->file;
 	fat_ptr = arch;
+	status = false;
 	while (nfat_arch--)
 	{
 		ft_bzero(&fat, sizeof(t_file));
@@ -61,11 +63,12 @@ bool process_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch
 		fat.format = 0;
 		fat.endianness = BIG_ENDIAN_TYPE;
 		nm_otool->file = fat;
-		macho(nm_otool);
+		if (macho(nm_otool))
+			status = true;
 		nm_otool->file = tmp;
 		fat_ptr = (struct fat_arch *)((void *)fat_ptr + sizeof(struct fat_arch));
 	}
-	return (true);
+	return (status);
 }
 
 bool handle_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
