@@ -28,78 +28,78 @@ void	 swap_64(unsigned char word)
 
 uint32_t    swap_endian(uint32_t value)
 {
-    uint32_t    result;
-    uint32_t    byte1;
-    uint32_t    byte2;
-    uint32_t    byte3;
-    uint32_t    byte4;
+	uint32_t    result;
+	uint32_t    byte1;
+	uint32_t    byte2;
+	uint32_t    byte3;
+	uint32_t    byte4;
 
-    byte1 = (value & 0xFF) << 24;
-    byte2 = (value & 0xFF00) << 8;
-    byte3 = (value & 0xFF0000) >> 8;
-    byte4 = (value & 0xFF000000) >> 24;
-    result = byte1 | byte2 | byte3 | byte4;
-    return (result);
+	byte1 = (value & 0xFF) << 24;
+	byte2 = (value & 0xFF00) << 8;
+	byte3 = (value & 0xFF0000) >> 8;
+	byte4 = (value & 0xFF000000) >> 24;
+	result = byte1 | byte2 | byte3 | byte4;
+	return (result);
 }
 
 bool process_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*macho)(t_nm_otool *))
 {
-    struct fat_arch *fat_ptr;
-    uint32_t        i;
-    t_file          fat;
+	struct fat_arch *fat_ptr;
+	uint32_t        i;
+	t_file          fat;
 	t_file			tmp;
 
 	tmp = nm_otool->file;
-    fat_ptr = arch;
-    i = 0;
-    while (i < nfat_arch)
-    {
-		ft_putendl("Process");
-        ft_bzero(&fat, sizeof(t_file));
+	fat_ptr = arch;
+	i = 0;
+	while (i < nfat_arch)
+	{
+		ft_bzero(&fat, sizeof(t_file));
 		fat.name = strdup("SOME_BINARY");
 		fat.size = arch->size;//Check this is good size.
 		fat.mode = 0;
-        fat.memory = (void *)nm_otool->file.memory + swap_endian(fat_ptr->offset);
+		fat.memory = (void *)nm_otool->file.memory + swap_endian(fat_ptr->offset);
 		fat.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1;
 		fat.format = 0;
 		fat.endianness = BIG_ENDIAN_TYPE;
 		nm_otool->file = fat;
-        macho(nm_otool);
+		macho(nm_otool);
 		nm_otool->file = tmp;
-        fat_ptr = (struct fat_arch *)((void *)fat_ptr + sizeof(struct fat_arch));
-        i++;
-    }
-    return (true);
+		fat_ptr = (struct fat_arch *)((void *)fat_ptr + sizeof(struct fat_arch));
+		i++;
+	}
+	return (true);
 }
 
 bool handle_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
 {
-    int ret;
+	int ret;
 
-    ret = false;
-    if (swap_endian(arch->cputype) == CPU_TYPE_X86_64)
-    {
-        process_fat(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler);
-        ret = true;
-    }
-    else if (swap_endian(arch->cputype) == CPU_TYPE_I386)
-    {
-        process_fat(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler);
-        ret = true;
-    }
-    return (ret);
+	ret = false;
+	if (swap_endian(arch->cputype) == CPU_TYPE_X86_64)
+	{
+		process_fat(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler);
+		ret = true;
+	}
+	else if (swap_endian(arch->cputype) == CPU_TYPE_I386)
+	{
+		process_fat(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler);
+		ret = true;
+	}
+	return (ret);
 }
 
-bool		mach_fat_32_obj_handler(t_nm_otool *nm_otool)
+bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
 {
-    struct fat_header   *header;
-    struct fat_arch     *arch;
-    uint32_t            nfat_arch;
+	struct fat_header	*header;
+	struct fat_arch		*arch;
+	uint32_t			nfat_arch;
 
-    ft_printf("FAT32          %s:\n", nm_otool->file.name);
-    header = (struct fat_header *)nm_otool->file.memory;
-    nfat_arch = swap_endian(header->nfat_arch);
-    arch = (struct fat_arch *)((void *)nm_otool->file.memory + sizeof(struct fat_header));
-    handle_fat(nm_otool, arch, nfat_arch);
-    return (true);
+	if (!(header = (struct fat_header *)get_safe_address(
+			nm_otool, (char *)nm_otool->file.memory)))
+		return (false);
+	nfat_arch = swap_endian(header->nfat_arch);
+	arch = (struct fat_arch *)((void *)nm_otool->file.memory + sizeof(struct fat_header));
+	handle_fat(nm_otool, arch, nfat_arch);
+	return (true);
 }
