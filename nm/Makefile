@@ -44,6 +44,7 @@ ifeq ($(OS_TYPE), Darwin)
 					mach_o_32_obj_handler \
 					mach_o_64_get_sections \
 					mach_o_64_obj_handler \
+					mach_o_read_load_commands \
 					sort_symbols
 	SHARED_FILES += set_mach_o_info
 else ifeq ($(OS_TYPE), Linux)
