@@ -73,22 +73,13 @@ bool process_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch
 
 bool handle_fat(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
 {
-	int ret;
-
-	ret = false;
 	if (!get_safe_address(nm_otool, (char *)arch + sizeof(*arch)))
 		return (false);
 	if (swap_endian(arch->cputype) == CPU_TYPE_X86_64)
-	{
-		process_fat(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler);
-		ret = true;
-	}
+		return (process_fat(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler));
 	else if (swap_endian(arch->cputype) == CPU_TYPE_I386)
-	{
-		process_fat(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler);
-		ret = true;
-	}
-	return (ret);
+		return (process_fat(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler));
+	return (false);
 }
 
 bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
