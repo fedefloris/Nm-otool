@@ -42,24 +42,28 @@ uint32_t    swap_endian(uint32_t value)
 	return (result);
 }
 
-static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*macho)(t_nm_otool *))
+static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*mach_o_function)(t_nm_otool *))
 {
 	bool			status;
 	t_file			file_data;
 
-	file_data = nm_otool->file;
 	status = false;
+	file_data = nm_otool->file;
 	while (nfat_arch--)
 	{
+		if (!get_safe_address(nm_otool, (char *)arch + sizeof(*arch)))
+			return (false);
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = arch->size;//Check this is good size.
 		nm_otool->file.memory = (void *)file_data.memory + swap_endian(arch->offset);
 		nm_otool->file.end_of_file = file_data.memory + file_data.size - 1;
 		nm_otool->file.endianness = file_data.endianness;
-		if (macho(nm_otool))
+		if (mach_o_function(nm_otool))
 			status = true;
-		arch = (struct fat_arch *)((void *)arch + sizeof(struct fat_arch));
+		if (!(arch = (struct fat_arch *)get_safe_address(
+			nm_otool, (char *)arch + sizeof(*arch))))
+			return (false);
 	}
 	nm_otool->file = file_data;
 	return (status);
