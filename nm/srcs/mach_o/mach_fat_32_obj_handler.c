@@ -98,8 +98,12 @@ bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
 	if (!(header = (struct fat_header *)get_safe_address(
 			nm_otool, (char *)nm_otool->file.memory)))
 		return (false);
+	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
+		return (false);
 	nfat_arch = swap_endian(header->nfat_arch);
-	arch = (struct fat_arch *)((void *)nm_otool->file.memory + sizeof(struct fat_header));
+	if (!(arch = (struct fat_arch *)get_safe_address(
+			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
+		return (false);
 	handle_fat(nm_otool, arch, nfat_arch);
 	return (true);
 }
