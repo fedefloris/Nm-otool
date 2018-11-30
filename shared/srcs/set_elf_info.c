@@ -49,7 +49,7 @@ bool		set_elf_info(t_nm_otool *nm_otool)
 	if (nm_otool->file.size < (long)sizeof(*header))
 		ERROR_LOG("Bad size");
 	else if (!has_good_magic_number(header))
-		ERROR_LOG("Bad magic number");
+		;//ERROR_LOG("Bad magic number");
 	else if (!has_good_version(header))
 		ERROR_LOG("Wrong version");
 	else if (!set_format(nm_otool, header))
