@@ -30,7 +30,8 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 
 static bool	has_good_version(Elf32_Ehdr *header)
 {
-	return (header->e_ident[EI_VERSION] == EV_CURRENT);
+	return (header->e_ident[EI_VERSION] == EV_CURRENT
+		&& header->e_version == EV_CURRENT);
 }
 
 static bool	has_good_magic_number(Elf32_Ehdr *header)
