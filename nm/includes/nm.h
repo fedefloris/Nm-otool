@@ -47,6 +47,7 @@ char			get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect, t_section *sec
 bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool);
 bool			mach_fat_64_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
+bool			mach_o_32_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command *segment);
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment);
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
