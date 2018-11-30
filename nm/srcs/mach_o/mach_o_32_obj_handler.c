@@ -67,35 +67,6 @@ static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 	return ((int)header->ncmds);
 }
 
-static t_sym		*mach_o_32_read_load_commands(t_nm_otool *nm_otool,
-		t_lc *lc, t_section **sections, int number_of_commands)
-{
-	t_sym			*symtab;
-
-	symtab = NULL;
-	while (number_of_commands--)
-	{
-		if (!get_safe_address(nm_otool, (char *)lc + sizeof(*lc)))
-			return (NULL);
-		if (!symtab && lc->cmd == LC_SYMTAB)
-		{
-			if (!(symtab = (t_sym *)get_safe_address(nm_otool, (char *)lc))
-				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
-				return (NULL);
-		}
-		if (lc->cmd == LC_SEGMENT_64)
-			if (!mach_o_64_get_sections(nm_otool, sections,
-					(struct segment_command_64 *)lc))
-				return (NULL);
-		if (lc->cmdsize <= sizeof(*lc))
-			return (NULL);
-		if (!(lc = (t_lc *)get_safe_address(nm_otool,
-				(char *)lc + lc->cmdsize)))
-			return (NULL);
-	}
-	return (symtab);
-}
-
 bool				mach_o_32_obj_handler(t_nm_otool *nm_otool)
 {
 	int						number_of_commands;
@@ -107,7 +78,7 @@ bool				mach_o_32_obj_handler(t_nm_otool *nm_otool)
 	if ((number_of_commands =
 			mach_o_32_get_first_load_command(nm_otool, &lc)) < 0)
 		return (free_sections(sections));
-	if ((symtab = mach_o_32_read_load_commands(nm_otool, lc,
+	if ((symtab = mach_o_read_load_commands(nm_otool, lc,
 			&sections, number_of_commands)))
 		return (mach_o_32_get_symbols(nm_otool, symtab, sections));
 	return (true);//Is this good or bad? TRUE/FALSE?
