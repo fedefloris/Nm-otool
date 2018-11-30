@@ -2,7 +2,7 @@
 #include "nm.h"
 
 static bool			mach_o_32_read_symbols(t_nm_otool *nm_otool,
-		struct nlist_64 *array, t_section *sections,
+		struct nlist *array, t_section *sections,
 		t_symbol **symbols, t_sym *symtab)
 {
 	uint32_t		i;
@@ -35,11 +35,11 @@ static bool			mach_o_32_read_symbols(t_nm_otool *nm_otool,
 static bool			mach_o_32_get_symbols(t_nm_otool *nm_otool,
 		t_sym *symtab, t_section *sections)
 {
-	struct nlist_64	*array;
+	struct nlist	*array;
 	t_symbol		*symbols;
 
 	symbols = NULL;
-	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool,
+	if (!(array = (struct nlist *)get_safe_address(nm_otool,
 			(char *)nm_otool->file.memory + symtab->symoff)))
 		return (free_symbols(symbols));
 	if (!(mach_o_32_read_symbols(nm_otool, array,
