@@ -63,7 +63,7 @@ static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
 		return (-1);
 	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
-		return (-1);
+		return (-1);//Is this redundant?
 	return ((int)header->ncmds);
 }
 
