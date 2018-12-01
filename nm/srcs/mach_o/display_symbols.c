@@ -3,9 +3,9 @@
 
 void				display_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
 {
+	sort_symbols(nm_otool, &symbols);
 	while (symbols)
 	{
-		symbols = sort_symbols(nm_otool, symbols);
 		(symbols->value)
 			? ft_printf("%-17.16jx", symbols->value)
 			: ft_printf("%17s", "");
