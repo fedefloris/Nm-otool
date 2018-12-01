@@ -32,9 +32,7 @@ char				get_type(uint8_t n_type, uint64_t n_value,
 	type = ((n_type & N_TYPE) == N_ABS && !n_value) ? 'A' : type;
 	type = ((n_type & N_TYPE) == N_PBUD && !n_value) ? 'U' : type;
 	if ((n_type & N_TYPE) == N_SECT)
-	{
 		type = get_type_section(type, n_sect, sections);
-	}
 	type = ((n_type & N_TYPE) == N_INDR && !n_value) ? 'I' : type;
 	type = ((n_type & N_STAB) != 0) ? '-' : type;
 	type += ((n_type & N_EXT) == 0 && type != '0' && type != '-') ? 32 : 0;
