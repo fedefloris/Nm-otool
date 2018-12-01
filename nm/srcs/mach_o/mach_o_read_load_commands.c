@@ -19,11 +19,11 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 		}
 		if (lc->cmd == LC_SEGMENT)//ENSURE variable load command sizes are within binary.
 			if (!mach_o_32_get_sections(nm_otool, sections,
-					(struct segment_command *)lc))//DOES THIS NEED TO BE COMMON OR UNIQUE?
+					(struct segment_command *)lc, false))//DOES THIS NEED TO BE COMMON OR UNIQUE?
 				return (NULL);
 		if (lc->cmd == LC_SEGMENT_64)//ENSURE variable load command sizes are within binary.
 			if (!mach_o_64_get_sections(nm_otool, sections,
-					(struct segment_command_64 *)lc))//DOES THIS NEED TO BE COMMON OR UNIQUE?
+					(struct segment_command_64 *)lc, false))//DOES THIS NEED TO BE COMMON OR UNIQUE?
 				return (NULL);
 		if (lc->cmdsize <= sizeof(*lc))
 			return (NULL);

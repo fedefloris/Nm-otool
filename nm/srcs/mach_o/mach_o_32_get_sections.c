@@ -2,12 +2,17 @@
 #include "nm.h"
 
 bool				mach_o_32_get_sections(t_nm_otool *nm_otool,
-		t_section **sections, struct segment_command *segment)
+		t_section **sections, struct segment_command *segment, bool reset)
 {
 	uint32_t				i;
 	static unsigned char	sec_number = 1;
 	struct section			*sec;
 
+	if (reset)
+	{
+		sec_number = 1;
+		return (true);
+	}
 	i = 0;
 	if (!(sec = (struct section *)get_safe_address(
 			nm_otool, (char *)segment + sizeof(*segment))))
