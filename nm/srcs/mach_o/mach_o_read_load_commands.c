@@ -9,12 +9,11 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 	symtab = NULL;
 	while (number_of_commands--)
 	{
-		if (!get_safe_address(nm_otool, (char *)lc + sizeof(*lc)))
+		if (!STRUCT_IS_SAFE(lc))
 			return (NULL);
 		if (!symtab && lc->cmd == LC_SYMTAB)
 		{
-			if (!(symtab = (t_sym *)get_safe_address(nm_otool, (char *)lc))
-				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
+			if (!(SET(symtab, lc)) || !STRUCT_IS_SAFE(symtab))
 				return (NULL);
 		}
 		if (lc->cmd == LC_SEGMENT)//ENSURE variable load command sizes are within binary.
@@ -27,8 +26,7 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 				return (NULL);
 		if (lc->cmdsize <= sizeof(*lc))
 			return (NULL);
-		if (!(lc = (t_lc *)get_safe_address(nm_otool,
-				(char *)lc + lc->cmdsize)))
+		if (!(SET(lc, lc + lc->cmdsize)))
 			return (NULL);
 	}
 	return (symtab);
