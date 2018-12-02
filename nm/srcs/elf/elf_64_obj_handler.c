@@ -15,7 +15,6 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 
 	i = 0;
 	header = (Elf64_Ehdr*)nm_otool->file.memory;
-	ft_printf("Elf64, File_name: %s\n", nm_otool->file.name);
 	section = (Elf64_Shdr*)((char*)nm_otool->file.memory + header->e_shoff);
 	while (i < header->e_shnum)
 	{
