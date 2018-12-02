@@ -51,7 +51,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 	file_data = nm_otool->file;
 	while (nfat_arch--)
 	{
-		if (!get_safe_address(nm_otool, (char *)arch + sizeof(*arch)))
+		if (!STRUCT_IS_SAFE(arch))
 			return (false);
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
@@ -61,8 +61,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 		nm_otool->file.endianness = file_data.endianness;
 		if (mach_o_function(nm_otool))
 			status = true;
-		if (!(arch = (struct fat_arch *)get_safe_address(
-			nm_otool, (char *)arch + sizeof(*arch))))
+		if (!(NEXT_STRUCT(arch)))
 			return (false);
 	}
 	nm_otool->file = file_data;
@@ -71,7 +70,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 
 static bool			mach_fat_32_handle_format(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
 {
-	if (!get_safe_address(nm_otool, (char *)arch + sizeof(*arch)))
+	if (!STRUCT_IS_SAFE(arch))
 		return (false);
 	if (swap_endian(arch->cputype) == CPU_TYPE_X86_64)
 		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler));
@@ -86,14 +85,12 @@ bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
 	struct fat_arch		*arch;
 	uint32_t			nfat_arch;
 
-	if (!(header = (struct fat_header *)get_safe_address(
-			nm_otool, (char *)nm_otool->file.memory)))
+	if (!(SET(header, nm_otool->file.memory)))
 		return (false);
-	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
+	if (!STRUCT_IS_SAFE(header))
 		return (false);
 	nfat_arch = swap_endian(header->nfat_arch);
-	if (!(arch = (struct fat_arch *)get_safe_address(
-			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
+	if (!(SET(arch, header + sizeof(*header))))
 		return (false);
 	return (mach_fat_32_handle_format(nm_otool, arch, nfat_arch));
 }
