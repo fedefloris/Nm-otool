@@ -28,8 +28,7 @@ bool				mach_o_32_get_sections(t_nm_otool *nm_otool,
 				|| !ft_strcmp(sec->sectname, SECT_TEXT))
 			if (!(mach_o_create_section(sections, sec->sectname, sec_number)))
 				return (false);
-		if (!(sec = (struct section *)get_safe_address(
-				nm_otool, (char *)sec + sizeof(*sec))))
+		if (!(NEXT_STRUCT(sec)))
 			return (false);
 		sec_number++;
 	}
