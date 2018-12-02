@@ -50,7 +50,6 @@ static bool			mach_o_32_get_symbols(t_nm_otool *nm_otool,
 	free_symbols(symbols);
 	return (true);
 }
-
 static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 		t_lc **lc)
 {
@@ -58,15 +57,9 @@ static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 
 	if (!(SET(header, nm_otool->file.memory)))
 		return (-1);
-	//if (!(header = (typeof(header))get_safe_address(
-	//		nm_otool, (char *)nm_otool->file.memory)))
-	//	return (-1);
-	if (!(*lc = (t_lc *)get_safe_address(
-			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
+	if (!(SET(*lc, header + sizeof(*header))))
 		return (-1);
-	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
-		return (-1);//Is this redundant?
-	return ((int)header->ncmds);
+	return ((STRUCT_IS_SAFE(header)) ? (int)header->ncmds : -1);
 }
 
 bool				mach_o_32_obj_handler(t_nm_otool *nm_otool)
