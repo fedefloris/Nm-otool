@@ -14,12 +14,11 @@ bool				mach_o_32_get_sections(t_nm_otool *nm_otool,
 		return (true);
 	}
 	i = 0;
-	if (!(sec = (struct section *)get_safe_address(
-			nm_otool, (char *)segment + sizeof(*segment))))
+	if(!(SET(sec, segment + sizeof(*segment))))
 		return (false);
 	while (i++ < segment->nsects)
 	{
-		if (!get_safe_address(nm_otool, (char *)sec + sizeof(*sec)))
+		if (!STRUCT_IS_SAFE(sec))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
 			return (false);
