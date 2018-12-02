@@ -14,12 +14,11 @@ bool				mach_o_64_get_sections(t_nm_otool *nm_otool,
 		return (true);
 	}
 	i = 0;
-	if (!(sec = (struct section_64 *)get_safe_address(
-			nm_otool, (char *)segment + sizeof(*segment))))
+	if(!(SET(sec, segment + sizeof(*segment))))
 		return (false);
 	while (i++ < segment->nsects)
 	{
-		if (!get_safe_address(nm_otool, (char *)sec + sizeof(*sec)))
+		if (!STRUCT_IS_SAFE(sec))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
 			return (false);
@@ -28,8 +27,7 @@ bool				mach_o_64_get_sections(t_nm_otool *nm_otool,
 				|| !ft_strcmp(sec->sectname, SECT_TEXT))
 			if (!(mach_o_create_section(sections, sec->sectname, sec_number)))
 				return (false);
-		if (!(sec = (struct section_64 *)get_safe_address(
-				nm_otool, (char *)sec + sizeof(*sec))))
+		if (!(NEXT_STRUCT(sec)))
 			return (false);
 		sec_number++;
 	}
