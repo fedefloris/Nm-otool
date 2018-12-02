@@ -21,10 +21,16 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 		nm_otool->file.format = ELF_64_FORMAT;
 		if (nm_otool->file.size <
 				(long)sizeof(*(Elf64_Ehdr*)nm_otool->file.memory))
-			return (false);
+			{
+				ERROR_LOG("Bad size");
+				return (false);
+			}
 	}
 	else
+	{
+		ERROR_LOG("Architecture not supported");
 		return (false);
+	}
 	return (true);
 }
 
@@ -54,7 +60,7 @@ bool		set_elf_info(t_nm_otool *nm_otool)
 	else if (!has_good_version(header))
 		ERROR_LOG("Wrong version");
 	else if (!set_format(nm_otool, header))
-		ERROR_LOG("Architecture not supported");
+		;
 	else if (!set_endianness(nm_otool, header))
 		ERROR_LOG("Bad endianness");
 	else
