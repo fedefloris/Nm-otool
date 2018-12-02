@@ -1,6 +1,5 @@
 #include "nm_otool.h"
 #include "nm.h"
-#include <elf.h>
 
 bool		elf_32_obj_handler(t_nm_otool *nm_otool)
 {

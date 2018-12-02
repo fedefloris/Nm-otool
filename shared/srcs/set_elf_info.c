@@ -1,5 +1,4 @@
 #include "nm_otool.h"
-#include <elf.h>
 
 static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {

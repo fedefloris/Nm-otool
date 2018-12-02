@@ -13,6 +13,8 @@
 #  include <mach-o/loader.h>
 #  include <mach-o/nlist.h>
 #  include <mach-o/fat.h>
+# elif __linux__
+#  include <elf.h>
 # endif
 
 # define NM_OPTIONS "abc"
