@@ -56,9 +56,11 @@ static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 {
 	struct mach_header		*header;
 
-	if (!(header = (struct mach_header *)get_safe_address(
-			nm_otool, (char *)nm_otool->file.memory)))
+	if (!(SET(header, nm_otool->file.memory)))
 		return (-1);
+	//if (!(header = (typeof(header))get_safe_address(
+	//		nm_otool, (char *)nm_otool->file.memory)))
+	//	return (-1);
 	if (!(*lc = (t_lc *)get_safe_address(
 			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
 		return (-1);

@@ -6,6 +6,7 @@
 # ifdef __APPLE__
 
 # define OBJ_HANDLER(x) mach_o_obj_handler(x)
+# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
 
 # elif __linux__
 
