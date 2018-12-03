@@ -37,6 +37,7 @@ SHARED_FILES = config_nm_otool \
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES +=	free_sections \
 					get_type \
+					mach_o_archive \
 					mach_o_obj_handler \
 					mach_fat_32_obj_handler \
 					mach_fat_64_obj_handler \
