@@ -38,6 +38,7 @@
 # define ELF_64_FORMAT 		4
 # define MACH_O_FAT_32		5
 # define MACH_O_FAT_64		6
+# define MACH_O_ARCHIVE		7
 
 # ifdef __APPLE__
 
