@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include <ar.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <stdbool.h>
