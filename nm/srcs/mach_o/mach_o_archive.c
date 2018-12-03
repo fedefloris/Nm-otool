@@ -1,18 +1,6 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-void    print_filename(t_file *file, char *current_file)
-{
-    if (file->filetype == ARCHIVE)
-    {
-        if (!current_file)
-            return ;
-        ft_printf("%s(%s):\n", file->filename, current_file);
-    }
-    else
-        ft_printf("%s:\n", file->filename);
-}
-
 int					get_ar_name_length(char  *ar_name)
 {
 	char    *ar_name_len;
@@ -25,16 +13,17 @@ int					get_ar_name_length(char  *ar_name)
 
 bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 {
-	int             ar_size;
-	int             ar_name_len;
-	char            *filename;
-	t_file          ar;
+	int				ar_size;
+	int				ar_name_len;
+	char			*filename;
+	t_file			ar;
 
 	while (ar_ptr)
 	{
-		ar_size = ft_atoi(ar_ptr->ar_size);
+		ar_size = ft_atoi(ar_ptr->ar_size);//Check is safe.
 		filename = (char *)ar_ptr + sizeof(struct ar_hdr);
-		print_filename(file, filename);
+        ft_printf("%s(%s):\n", nm_otool->file.name, current_file);
+		print_filename(nm_otool, filename);
 		ar_name_len = get_ar_name_length(ar_ptr->ar_name);
 		ft_bzero(&ar, sizeof(t_file));
 		ar.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
