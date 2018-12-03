@@ -22,7 +22,9 @@ INCLUDES_FILES = nm
 HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
-MAIN_FILES = nm obj_handler
+MAIN_FILES = nm obj_handler \
+	display_symbols add_symbol \
+	sort_symbols free_symbols
 MACH_O_FILES =
 ELF_FILES =
 
@@ -30,13 +32,10 @@ SHARED_FILES = config_nm_otool \
 	list_objs_symbols list_obj_symbols \
 	set_file set_file_info unset_file \
 	find_binary get_safe_address string_is_safe\
-	options option_check op\
+	options option_check op
 
 ifeq ($(OS_TYPE), Darwin)
-	MACH_O_FILES +=	add_symbol \
-					display_symbols \
-					free_sections \
-					free_symbols \
+	MACH_O_FILES +=	free_sections \
 					get_type \
 					mach_o_obj_handler \
 					mach_fat_32_obj_handler \

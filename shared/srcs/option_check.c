@@ -1,5 +1,4 @@
-#include "libft.h"
-#include <stdbool.h>//
+#include "nm_otool.h"
 
 bool				option_check(unsigned long options, char c)
 {
