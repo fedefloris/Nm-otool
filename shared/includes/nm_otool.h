@@ -87,6 +87,13 @@ char				*find_binary(t_nm_otool *nm_otool);
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
+void				*get_safe_address(t_nm_otool *nm_otool, void *address);
+bool				string_is_safe(t_nm_otool *nm_otool, char *str);
+
+bool				options(char ***argv, char *valid_options, unsigned long *options);
+bool				option_check(unsigned long options, char c);
+bool				op(t_nm_otool *nm_otool , char c);
+
 # ifdef __APPLE__
 
 bool				set_mach_o_info(t_nm_otool *nm_otool);
