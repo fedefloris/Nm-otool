@@ -3,6 +3,26 @@
 
 # define DEFAULT_ARGUMENT	"a.out"
 
+# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
+# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
+# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x))) && STRUCT_IS_SAFE(x)
+
+# ifdef __APPLE__
+
+# define OBJ_HANDLER(x) mach_o_obj_handler(x)
+
+# elif __linux__
+
+# define OBJ_HANDLER(x) elf_obj_handler(x)
+
+# else
+
+# define OBJ_HANDLER(x) unknown_obj_handler(x)
+
+# endif
+
+bool			obj_handler(t_nm_otool *nm_otool);
+
 typedef struct			s_symbol
 {
 	char				*name;
@@ -33,13 +53,19 @@ typedef struct			s_section
 }						t_section;
 
 bool			free_sections(t_section *sections);
-char			get_type(uint8_t n_type, u_int64_t n_value, u_int8_t n_sect, t_section *sections);
+bool			free_symbols(t_symbol *symbols);
+char			get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect, t_section *sections);
 bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool);
 bool			mach_fat_64_obj_handler(t_nm_otool *nm_otool);
+bool			mach_o_create_section(t_section **sections, char *sectname, unsigned char sec_number);
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
+bool			mach_o_32_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command *segment, bool reset);
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
-bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment);
+bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment, bool reset);
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
+t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands);
+t_symbol		*sort_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
+
 
 # elif __linux__
 

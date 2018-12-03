@@ -10,15 +10,13 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 	char			*stringtable;
 
 	i = 0;
-	if (!(stringtable = (char *)get_safe_address(nm_otool,
-			(char *)nm_otool->file.memory + symtab->stroff)))
+	if (!(SET(stringtable, nm_otool->file.memory + symtab->stroff)))
 		return (false);
 	while (i < symtab->nsyms)
 	{
-		if (!get_safe_address(nm_otool, (char *)&array[i] + sizeof(array[i])))
+		if (!STRUCT_IS_SAFE(&array[i]))
 			return (false);
-		if (!(str = (char *)get_safe_address(nm_otool,
-				(char *)stringtable + array[i].n_un.n_strx)))
+		if (!(SET(str, stringtable + array[i].n_un.n_strx)))
 			return (false);
 		if (!string_is_safe(nm_otool, (char *)str))
 			return (false);
@@ -39,8 +37,7 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	t_symbol		*symbols;
 
 	symbols = NULL;
-	if (!(array = (struct nlist_64 *)get_safe_address(nm_otool,
-			(char *)nm_otool->file.memory + symtab->symoff)))
+	if (!(SET(array, nm_otool->file.memory + symtab->symoff)))
 		return (free_symbols(symbols));
 	if (!(mach_o_64_read_symbols(nm_otool, array,
 			sections, &symbols, symtab)))
@@ -56,44 +53,11 @@ static int			mach_o_64_get_first_load_command(t_nm_otool *nm_otool,
 {
 	struct mach_header_64	*header;
 
-	if (!(header = (struct mach_header_64 *)get_safe_address(
-			nm_otool, (char *)nm_otool->file.memory)))
+	if (!(SET(header, nm_otool->file.memory)))
 		return (-1);
-	if (!(*lc = (t_lc *)get_safe_address(
-			nm_otool, (char *)nm_otool->file.memory + sizeof(*header))))
+	if (!(SET(*lc, header + sizeof(*header))))
 		return (-1);
-	if (!get_safe_address(nm_otool, (char *)header + sizeof(*header)))
-		return (-1);
-	return ((int)header->ncmds);
-}
-
-static t_sym		*mach_o_64_read_load_commands(t_nm_otool *nm_otool,
-		t_lc *lc, t_section **sections, int number_of_commands)
-{
-	t_sym			*symtab;
-
-	symtab = NULL;
-	while (number_of_commands--)
-	{
-		if (!get_safe_address(nm_otool, (char *)lc + sizeof(*lc)))
-			return (NULL);
-		if (!symtab && lc->cmd == LC_SYMTAB)
-		{
-			if (!(symtab = (t_sym *)get_safe_address(nm_otool, (char *)lc))
-				|| !get_safe_address(nm_otool, (char *)lc + sizeof(*symtab)))
-				return (NULL);
-		}
-		if (lc->cmd == LC_SEGMENT_64)
-			if (!mach_o_64_get_sections(nm_otool, sections,
-					(struct segment_command_64 *)lc))
-				return (NULL);
-		if (lc->cmdsize <= sizeof(*lc))
-			return (NULL);
-		if (!(lc = (t_lc *)get_safe_address(nm_otool,
-				(char *)lc + lc->cmdsize)))
-			return (NULL);
-	}
-	return (symtab);
+	return ((STRUCT_IS_SAFE(header)) ? (int)header->ncmds : -1);
 }
 
 bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
@@ -107,7 +71,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	if ((number_of_commands =
 			mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
 		return (free_sections(sections));
-	if ((symtab = mach_o_64_read_load_commands(nm_otool, lc,
+	if ((symtab = mach_o_read_load_commands(nm_otool, lc,
 			&sections, number_of_commands)))
 		return (mach_o_64_get_symbols(nm_otool, symtab, sections));
 	return (true);//Is this good or bad? TRUE/FALSE?

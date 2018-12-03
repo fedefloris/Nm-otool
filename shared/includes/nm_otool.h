@@ -68,6 +68,7 @@ typedef struct		s_nm_otool
 	char			**argv;
 	char			**env;
 	unsigned long	options;
+	bool			print_file_name;
 	t_file			file;
 }					t_nm_otool;
 
