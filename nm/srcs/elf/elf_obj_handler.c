@@ -17,7 +17,7 @@ bool		elf_obj_handler(t_nm_otool *nm_otool)
 {
 	if (!has_good_type(nm_otool))
 		return (false);
-	if (nm_otool->file.format == ELF_32_FORMAT)
+	if (nm_otool->file.format == ELF_32)
 		return (elf_32_obj_handler(nm_otool));
 	return (elf_64_obj_handler(nm_otool));
 }

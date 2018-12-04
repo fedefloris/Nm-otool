@@ -14,10 +14,10 @@ static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {
 	if (header->e_ident[EI_CLASS] == ELFCLASS32)
-		nm_otool->file.format = ELF_32_FORMAT;
+		nm_otool->file.format = ELF_32;
 	else if (header->e_ident[EI_CLASS] == ELFCLASS64)
 	{
-		nm_otool->file.format = ELF_64_FORMAT;
+		nm_otool->file.format = ELF_64;
 		if (nm_otool->file.size <
 				(long)sizeof(*(Elf64_Ehdr*)nm_otool->file.memory))
 				return (ERROR_LOG("Bad size"));
