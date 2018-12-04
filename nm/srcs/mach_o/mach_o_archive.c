@@ -42,7 +42,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 	file_data = nm_otool->file;
 	while (true)
 	{
-		if (!(SET(filename, ar_ptr + sizeof(*ar_ptr))))
+		if (!SET(filename, ar_ptr + sizeof(*ar_ptr)))
 			return (false);
 		if (!string_is_safe(nm_otool, filename))
 			return (false);
@@ -62,7 +62,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 		if (!set_file_info_on_macos(nm_otool) || !mach_o_obj_handler(nm_otool))
 			status = false;
 		nm_otool->file = file_data;
-		if (!(SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr))))
+		if (!SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr)))
 			break ;
 	}
 	return (status);
@@ -74,13 +74,13 @@ bool				mach_o_archive(t_nm_otool *nm_otool)
 	struct ar_hdr   *ar_ptr;
 	int             ar_size;
 
-	if(!(SET(header, nm_otool->file.memory + SARMAG)))
+	if(!SET(header, nm_otool->file.memory + SARMAG))
 		return (false);
 	if (!STRUCT_IS_SAFE(header))
 		return (false);
 	if ((ar_size = safe_atoi(nm_otool, header->ar_size)) < 0)
 		return (false);
-	if (!(SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr))))
+	if (!SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr)))
 		return (false);
 	return (handle_archive_objects(nm_otool, ar_ptr));
 }

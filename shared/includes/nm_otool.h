@@ -13,6 +13,7 @@
 # ifdef __APPLE__
 
 #  include <mach-o/loader.h>
+#  include <mach/machine.h>
 #  include <mach-o/nlist.h>
 #  include <mach-o/fat.h>
 #  include "elf.h"
