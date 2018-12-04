@@ -21,10 +21,15 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 	file_data = nm_otool->file;
 	while (ar_ptr)
 	{
-		filename = (char *)ar_ptr + sizeof(struct ar_hdr);
+		if (!(SET(filename, ar_ptr + sizeof(*ar_ptr))))
+			return (false);
+		if (!string_is_safe(nm_otool, filename))
+			return (false);
         ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
-		ar_size = ft_atoi(ar_ptr->ar_size);
-		ar_name_len = get_ar_name_length(ar_ptr->ar_name);
+
+		ar_size = ft_atoi(ar_ptr->ar_size);//Protect this (maybe is is not '\0' Terminated??)
+		if ((ar_name_len = get_ar_name_length(ar_ptr->ar_name)) < 0)
+			return (false);
 
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
@@ -32,6 +37,7 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 		nm_otool->file.memory = (void *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
 		nm_otool->file.end_of_file = file_data.memory + file_data.size - 1;
 		nm_otool->file.endianness = file_data.endianness;
+
 		set_mach_o_info(nm_otool);//Maybe fails
 		mach_o_obj_handler(nm_otool);//Maybe fails
 
@@ -54,6 +60,6 @@ bool				mach_o_archive(t_nm_otool *nm_otool)
 		return (false);
 	ar_size = ft_atoi(header->ar_size);//Protect size of string (Ends with ' ' not '\0')
 	if (!(SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr))))
-	ar_ptr = (struct ar_hdr *)((void *)nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr));
+		return (false);
 	return (handle_archive_objects(nm_otool, ar_ptr));
 }
