@@ -9,10 +9,7 @@ static bool	has_good_type(t_nm_otool *nm_otool)
 	if (header->e_type != ET_REL
 		&& header->e_type != ET_EXEC
 		&& header->e_type != ET_DYN)
-	{
-		ERROR_LOG("Type not supported");
-		return (false);
-	}
+		return (ERROR_LOG("Type not supported"));
 	return (true);
 }
 
