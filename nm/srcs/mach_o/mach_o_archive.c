@@ -16,8 +16,10 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 	int				ar_size;
 	int				ar_name_len;
 	char			*filename;
+	bool			status;
 	t_file			file_data;
 
+	status = true;
 	file_data = nm_otool->file;
 	while (true)
 	{
@@ -38,16 +40,14 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 		nm_otool->file.end_of_file = file_data.memory + file_data.size - 1;
 		nm_otool->file.endianness = file_data.endianness;
 
-		if (!set_mach_o_info(nm_otool))
-			return (false);
-		if (!mach_o_obj_handler(nm_otool))
-			return (false);
+		if (!set_mach_o_info(nm_otool) || !mach_o_obj_handler(nm_otool))
+			status = false;
 
 		if (!(SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr))))
 			break ;
 	}
 	nm_otool->file = file_data;
-	return (true);
+	return (status);
 }
 
 bool				mach_o_archive(t_nm_otool *nm_otool)
