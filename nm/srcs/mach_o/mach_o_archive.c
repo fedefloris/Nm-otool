@@ -48,9 +48,12 @@ bool				mach_o_archive(t_nm_otool *nm_otool)
 	struct ar_hdr   *ar_ptr;
 	int             ar_size;
 
-	header = (struct ar_hdr *)((void *)nm_otool->file.memory + SARMAG);
-	ar_size = ft_atoi(header->ar_size);
-	ar_ptr = (struct ar_hdr *)((void *)nm_otool->file.memory + SARMAG\
-			+ ar_size + sizeof(struct ar_hdr));
+	if(!(SET(header, nm_otool->file.memory + SARMAG)))
+		return (false);
+	if (!STRUCT_IS_SAFE(header))
+		return (false);
+	ar_size = ft_atoi(header->ar_size);//Protect size of string (Ends with ' ' not '\0')
+	if (!(SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr))))
+	ar_ptr = (struct ar_hdr *)((void *)nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr));
 	return (handle_archive_objects(nm_otool, ar_ptr));
 }
