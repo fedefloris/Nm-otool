@@ -1,17 +1,31 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-int					get_ar_name_length(char  *ar_name)
+static int			safe_atoi(t_nm_otool *nm_otool, char *str)
 {
-	char    *ar_name_len;
+	int				result;
 
-	ar_name_len = ft_strstr(ar_name, "/");
-	if (ar_name_len)
-		return (ft_atoi(ar_name_len + 1));
+	result = 0;
+	while (get_safe_address(nm_otool, str) && *str >= '0' && *str <= '9')
+		result = (result * 10) + (*(str++) - '0');
+	return (result);
+}
+
+static int			get_ar_name_length(t_nm_otool *nm_otool, char  *ar_name)//Super unsafe function.
+{
+	char			*ptr;
+
+	ptr = ar_name;
+	while (get_safe_address(nm_otool, ptr))
+	{
+		if (*ptr && *ptr == '/')
+			return (safe_atoi(nm_otool, ptr + 1));
+		ptr++;
+	}
 	return (-1);
 }
 
-bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
+static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 {
 	int				ar_size;
 	int				ar_name_len;
@@ -29,8 +43,8 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 			return (false);
         ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
 
-		ar_size = ft_atoi(ar_ptr->ar_size);//Protect this (maybe is is not '\0' Terminated??)
-		if ((ar_name_len = get_ar_name_length(ar_ptr->ar_name)) < 0)
+		ar_size = safe_atoi(nm_otool, ar_ptr->ar_size);//Protect this (maybe is is not '\0' Terminated??)
+		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
 			return (false);
 
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
@@ -60,7 +74,7 @@ bool				mach_o_archive(t_nm_otool *nm_otool)
 		return (false);
 	if (!STRUCT_IS_SAFE(header))
 		return (false);
-	ar_size = ft_atoi(header->ar_size);//Protect size of string (Ends with ' ' not '\0')
+	ar_size = safe_atoi(nm_otool, header->ar_size);//Protect size of string (Ends with ' ' not '\0')
 	if (!(SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr))))
 		return (false);
 	return (handle_archive_objects(nm_otool, ar_ptr));
