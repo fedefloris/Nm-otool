@@ -10,12 +10,16 @@
 # include <sys/types.h>
 
 # ifdef __APPLE__
+
 #  include <mach-o/loader.h>
 #  include <mach-o/nlist.h>
 #  include <mach-o/fat.h>
 #  include "elf.h"
-# elif __linux__
+
+# else
+
 #  include <elf.h>
+
 # endif
 
 # define NM_OPTIONS "abc"
@@ -45,15 +49,11 @@
 
 # ifdef __APPLE__
 
-# define SET_FILE_INFO(x) set_mach_o_info(x)
-
-# elif __linux__
-
-# define SET_FILE_INFO(x) set_elf_info(x)
+# define SET_FILE_INFO(x) set_file_info_on_macos(x)
 
 # else
 
-# define SET_FILE_INFO(x) set_unknown_info(x)
+# define SET_FILE_INFO(x) set_file_info_on_linux(x)
 
 # endif
 
@@ -104,15 +104,11 @@ bool				op(t_nm_otool *nm_otool , char c);
 
 # ifdef __APPLE__
 
-bool				set_mach_o_info(t_nm_otool *nm_otool);
-
-# elif __linux__
-
-bool				set_elf_info(t_nm_otool *nm_otool);
+bool				set_file_info_on_macos(t_nm_otool *nm_otool);
 
 # else
 
-bool				set_unknown_info(t_nm_otool *nm_otool);
+bool				set_file_info_on_linux(t_nm_otool *nm_otool);
 
 # endif
 

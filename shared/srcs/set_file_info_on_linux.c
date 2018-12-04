@@ -47,7 +47,7 @@ static bool	has_good_magic_number(Elf32_Ehdr *header)
 		&& header->e_ident[EI_MAG3] == ELFMAG3);
 }
 
-bool		set_elf_info(t_nm_otool *nm_otool)
+bool				set_file_info_on_linux(t_nm_otool *nm_otool)
 {
 	Elf32_Ehdr	*header;
 

@@ -47,7 +47,7 @@ static bool	set_format(t_nm_otool *nm_otool)
 	return (true);
 }
 
-bool		set_mach_o_info(t_nm_otool *nm_otool)
+bool		set_file_info_on_macos(t_nm_otool *nm_otool)
 {
 	if (nm_otool->file.size < (long)sizeof(struct mach_header))
 		ERROR_LOG("Bad size");

@@ -31,7 +31,7 @@ ELF_FILES = elf_obj_handler elf_32_obj_handler elf_64_obj_handler
 
 SHARED_FILES = error_log warning_log config_nm_otool \
 	list_objs_symbols list_obj_symbols \
-	set_file set_file_info set_elf_info \
+	set_file set_file_info set_file_info_on_linux \
 	unset_file find_binary get_safe_address string_is_safe \
 	options option_check op
 
@@ -47,7 +47,7 @@ ifeq ($(OS_TYPE), Darwin)
 					mach_o_64_get_sections \
 					mach_o_64_obj_handler \
 					mach_o_read_load_commands
-	SHARED_FILES += set_mach_o_info
+	SHARED_FILES += set_file_info_on_macos
 endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
