@@ -48,7 +48,8 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 			return (false);
         ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
 
-		ar_size = safe_atoi(nm_otool, ar_ptr->ar_size);//Protect this (maybe is is not '\0' Terminated??)
+		if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
+			return (false);
 		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
 			return (false);
 
@@ -79,7 +80,8 @@ bool				mach_o_archive(t_nm_otool *nm_otool)
 		return (false);
 	if (!STRUCT_IS_SAFE(header))
 		return (false);
-	ar_size = safe_atoi(nm_otool, header->ar_size);//Protect size of string (Ends with ' ' not '\0')
+	if ((ar_size = safe_atoi(nm_otool, header->ar_size)) < 0)
+		return (false);
 	if (!(SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr))))
 		return (false);
 	return (handle_archive_objects(nm_otool, ar_ptr));
