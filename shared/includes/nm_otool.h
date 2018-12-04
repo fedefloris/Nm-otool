@@ -26,11 +26,8 @@
 
 # define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
 # define WARNING_HEADER YELLOW_COLOR "Warning:" DEFAULT_COLOR
-# define ERROR_LOG(x) ft_printf("%s %s: %s\n", ERROR_HEADER, x, nm_otool->file.name)
-# define WARNING_LOG(x) ft_printf("%s %s: %s\n", WARNING_HEADER, x, nm_otool->file.name)
-
-# define LITTLE_ENDIAN_TYPE 1
-# define BIG_ENDIAN_TYPE 2
+# define ERROR_LOG(x) error_log(nm_otool->file.name, x)
+# define WARNING_LOG(x) warning_log(nm_otool->file.name, x)
 
 # define MACH_O_32_FORMAT	1
 # define MACH_O_64_FORMAT	2
@@ -38,6 +35,13 @@
 # define ELF_64_FORMAT 		4
 # define MACH_O_FAT_32		5
 # define MACH_O_FAT_64		6
+
+# define LITTLE_ENDIAN_TYPE 1
+# define BIG_ENDIAN_TYPE 2
+
+# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
+# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
+# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x))) && STRUCT_IS_SAFE(x)
 
 # ifdef __APPLE__
 
@@ -74,6 +78,9 @@ typedef struct		s_nm_otool
 }					t_nm_otool;
 
 typedef bool		(*t_obj_handler)(t_nm_otool *);
+
+bool				error_log(char *message, char *file_name);
+bool				warning_log(char *message, char *file_name);
 
 bool				config_nm_otool(t_nm_otool *nm_otool,
 		char **argv, char **env);

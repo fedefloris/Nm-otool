@@ -29,7 +29,7 @@ MAIN_FILES = nm obj_handler \
 MACH_O_FILES =
 ELF_FILES = elf_obj_handler elf_32_obj_handler elf_64_obj_handler
 
-SHARED_FILES = config_nm_otool \
+SHARED_FILES = error_log warning_log config_nm_otool \
 	list_objs_symbols list_obj_symbols \
 	set_file set_file_info set_elf_info \
 	unset_file find_binary get_safe_address string_is_safe\

@@ -3,10 +3,6 @@
 
 # define DEFAULT_ARGUMENT	"a.out"
 
-# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
-# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
-# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x))) && STRUCT_IS_SAFE(x)
-
 # ifdef __APPLE__
 
 # define OBJ_HANDLER(x) mach_o_obj_handler(x)
