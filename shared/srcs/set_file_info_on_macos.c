@@ -30,13 +30,23 @@ static bool	set_fat_format(t_nm_otool *nm_otool, uint32_t magic_number)
 	return (true);
 }
 
-static bool	set_format(t_nm_otool *nm_otool)
+static bool			set_archive_format(t_nm_otool *nm_otool)
+{
+	if (!ft_strncmp((char *)nm_otool->file.memory, ARMAG, SARMAG))
+		nm_otool->file.format = MACH_O_ARCHIVE;
+	else
+		return (false);
+	return (true);
+}
+
+static bool			set_format(t_nm_otool *nm_otool)
 {
 	uint32_t		magic_number;
 
 	magic_number = *(uint32_t *)nm_otool->file.memory;
 	if (!set_mach_o_format(nm_otool, magic_number)
-		&& !set_fat_format(nm_otool, magic_number))
+		&& !set_fat_format(nm_otool, magic_number)
+		&& !set_archive_format(nm_otool))
 		return (ERROR_LOG("Bad magic number"));
 	if (nm_otool->file.format == MACH_O_64_FORMAT
 		&& nm_otool->file.size < (long)sizeof(struct mach_header_64))

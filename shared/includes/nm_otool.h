@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include <ar.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <stdbool.h>
@@ -39,6 +40,7 @@
 # define ELF_64_FORMAT 		4
 # define MACH_O_FAT_32		5
 # define MACH_O_FAT_64		6
+# define MACH_O_ARCHIVE		7
 
 # define IS_ELF_FORMAT(x) x == ELF_32_FORMAT || x == ELF_64_FORMAT
 

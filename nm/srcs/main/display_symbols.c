@@ -10,13 +10,13 @@ void				display_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
 	{
 		if (nm_otool->file.format == MACH_O_32_FORMAT)
 		{
-			(symbols->value)
+			(symbols->value || symbols->type == 'T')
 				? ft_printf("%-9.8jx", symbols->value)
 				: ft_printf("%9s", "");
 		}
 		else
 		{
-			(symbols->value)
+			(symbols->value || symbols->type == 'T')
 				? ft_printf("%-17.16jx", symbols->value)
 				: ft_printf("%17s", "");
 		}
