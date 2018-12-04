@@ -47,6 +47,7 @@ static bool	parse_section_headers(t_nm_otool *nm_otool,
 	{
 		if (!STRUCT_IS_SAFE(&section_header[i]))
 			return (false);
+		// Need to fix and protect it
 		str_section = (char*)header + (&section_header[section_header->sh_link])->sh_offset;
 		parse_section_header(nm_otool, section_header + i, str_section);
 		i++;
@@ -60,8 +61,8 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 
 	if (!(SET(header, nm_otool->file.memory)))
 		return (false);
-	// check header->e_shoff
-	// check header->e_shnum
+	if (header->e_shoff <= sizeof(header))
+		return (false);
 	if (!parse_section_headers(nm_otool, header))
 		return (false);
 	return (true);
