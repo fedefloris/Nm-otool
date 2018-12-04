@@ -19,7 +19,7 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 	t_file			file_data;
 
 	file_data = nm_otool->file;
-	while (ar_ptr)
+	while (true)
 	{
 		if (!(SET(filename, ar_ptr + sizeof(*ar_ptr))))
 			return (false);
@@ -38,11 +38,13 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 		nm_otool->file.end_of_file = file_data.memory + file_data.size - 1;
 		nm_otool->file.endianness = file_data.endianness;
 
-		set_mach_o_info(nm_otool);//Maybe fails
-		mach_o_obj_handler(nm_otool);//Maybe fails
+		if (!set_mach_o_info(nm_otool))
+			return (false);
+		if (!mach_o_obj_handler(nm_otool))
+			return (false);
 
-		if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file_data.memory + file_data.size)
-			ar_ptr = NULL;
+		if (!(SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr))))
+			break ;
 	}
 	nm_otool->file = file_data;
 	return (true);
