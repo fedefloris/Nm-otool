@@ -62,7 +62,9 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 	if (!(SET(header, nm_otool->file.memory)))
 		return (false);
 	if (header->e_shoff <= sizeof(header))
-		return (false);
+		return (false); // Warning or Error?
+	if (header->e_shnum == 0)
+		return (false); // Warning or Error? (Also see man for SHN_LORESERVE)
 	if (!parse_section_headers(nm_otool, header))
 		return (false);
 	return (true);
