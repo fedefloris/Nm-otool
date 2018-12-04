@@ -22,7 +22,7 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 	while (ar_ptr)
 	{
 		filename = (char *)ar_ptr + sizeof(struct ar_hdr);
-        ft_printf("%s(%s):\n", nm_otool->file.name, filename);
+        ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
 		ar_size = ft_atoi(ar_ptr->ar_size);
 		ar_name_len = get_ar_name_length(ar_ptr->ar_name);
 
@@ -33,7 +33,7 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 		nm_otool->file.end_of_file = file_data.memory + file_data.size - 1;
 		nm_otool->file.endianness = file_data.endianness;
 		set_mach_o_info(nm_otool);//Maybe fails
-		set_mach_o_info(nm_otool);//Maybe fails
+		mach_o_obj_handler(nm_otool);//Maybe fails
 
 		if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file_data.memory + file_data.size)
 			ar_ptr = NULL;
