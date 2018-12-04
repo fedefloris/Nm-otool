@@ -95,6 +95,9 @@ char				*find_binary(t_nm_otool *nm_otool);
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
+bool				set_file_info_on_linux(t_nm_otool *nm_otool);
+bool				has_good_ELF_magic_number(Elf32_Ehdr *header);
+
 char				*get_safe_address(t_nm_otool *nm_otool, char *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 
@@ -105,10 +108,6 @@ bool				op(t_nm_otool *nm_otool , char c);
 # ifdef __APPLE__
 
 bool				set_file_info_on_macos(t_nm_otool *nm_otool);
-
-# else
-
-bool				set_file_info_on_linux(t_nm_otool *nm_otool);
 
 # endif
 

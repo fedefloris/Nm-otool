@@ -33,14 +33,6 @@ static bool	has_good_version(Elf32_Ehdr *header)
 		&& header->e_version == EV_CURRENT);
 }
 
-static bool	has_good_magic_number(Elf32_Ehdr *header)
-{
-	return (header->e_ident[EI_MAG0] == ELFMAG0
-		&& header->e_ident[EI_MAG1] == ELFMAG1
-		&& header->e_ident[EI_MAG2] == ELFMAG2
-		&& header->e_ident[EI_MAG3] == ELFMAG3);
-}
-
 bool				set_file_info_on_linux(t_nm_otool *nm_otool)
 {
 	Elf32_Ehdr	*header;
@@ -48,7 +40,7 @@ bool				set_file_info_on_linux(t_nm_otool *nm_otool)
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
 	if (nm_otool->file.size < (long)sizeof(*header))
 		return (ERROR_LOG("Bad size"));
-	else if (!has_good_magic_number(header))
+	else if (!has_good_ELF_magic_number(header))
 		return (ERROR_LOG("Bad magic number"));
 	else if (!has_good_version(header))
 		return (ERROR_LOG("Wrong version"));
