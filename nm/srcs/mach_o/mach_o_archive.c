@@ -6,9 +6,14 @@ static int			safe_atoi(t_nm_otool *nm_otool, char *str)
 	int				result;
 
 	result = 0;
-	while (get_safe_address(nm_otool, str) && *str >= '0' && *str <= '9')
-		result = (result * 10) + (*(str++) - '0');
-	return (result);
+	while (get_safe_address(nm_otool, str))
+	{
+		if (*str >= '0' && *str <= '9')
+			result = (result * 10) + (*(str++) - '0');
+		else
+			return (result);
+	}
+	return (-1);
 }
 
 static int			get_ar_name_length(t_nm_otool *nm_otool, char  *ar_name)//Super unsafe function.
