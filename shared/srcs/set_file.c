@@ -16,7 +16,7 @@ static bool	is_a_regular_file(t_nm_otool *nm_otool, int fd)
 
 static bool	map_file_to_memory(t_nm_otool *nm_otool, int fd)
 {
-	nm_otool->file.memory = mmap(0, nm_otool->file.size,
+	nm_otool->file.memory = (char*)mmap(0, nm_otool->file.size,
 		PROT_READ, MAP_PRIVATE, fd, 0);
 	if (close(fd) == -1)
 		WARNING_LOG("close call failed");

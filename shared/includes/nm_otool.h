@@ -13,6 +13,7 @@
 # ifdef __APPLE__
 
 #  include <mach-o/loader.h>
+#  include <mach/machine.h>
 #  include <mach-o/nlist.h>
 #  include <mach-o/fat.h>
 #  include "elf.h"
@@ -34,22 +35,24 @@
 # define ERROR_LOG(x) error_log(nm_otool->file.name, x)
 # define WARNING_LOG(x) warning_log(nm_otool->file.name, x)
 
-# define MACH_O_32_FORMAT	1
-# define MACH_O_64_FORMAT	2
-# define ELF_32_FORMAT 		3
-# define ELF_64_FORMAT 		4
-# define MACH_O_FAT_32		5
-# define MACH_O_FAT_64		6
-# define MACH_O_ARCHIVE		7
+# define MACH_O_FAT_32 1
+# define MACH_O_FAT_64 2
+# define MACH_O_ARCHIVE 3
+# define MACH_O_32 4
+# define MACH_O_64 5
+# define ELF_32 6
+# define ELF_64 7
 
-# define IS_ELF_FORMAT(x) x == ELF_32_FORMAT || x == ELF_64_FORMAT
+# define IS_ELF_32(x) x & ELF_32
+# define IS_ELF_64(x) x & ELF_64
+# define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
 
 # define LITTLE_ENDIAN_TYPE 1
 # define BIG_ENDIAN_TYPE 2
 
-# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
+# define SET(x,y) (x = (typeof(x))get_safe_address(nm_otool, (char *)y))
 # define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
-# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x))) && STRUCT_IS_SAFE(x)
+# define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
 
 # ifdef __APPLE__
 

@@ -23,9 +23,11 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 	$(SHARED_INCLUDES_DIR)/elf.h
 
-MAIN_FILES = nm obj_handler \
-	display_symbols add_symbol \
-	sort_symbols merge_sort_symbols free_symbols
+MAIN_FILES = nm obj_handler
+SYMBOLS_FILES = display_symbols \
+	add_symbol \
+	sort_symbols merge_sort_symbols \
+	free_symbols
 MACH_O_FILES =
 ELF_FILES = elf_obj_handler elf_32_obj_handler elf_64_obj_handler
 
@@ -53,18 +55,22 @@ ifeq ($(OS_TYPE), Darwin)
 endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
+SYMBOLS_OBJS = $(addsuffix .o, $(SYMBOLS_FILES))
 MACH_O_OBJS = $(addsuffix .o, $(MACH_O_FILES))
 ELF_OBJS = $(addsuffix .o, $(ELF_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))
 
 MAIN_OBJS_DIR = $(OBJS_DIR)/main
+SYMBOLS_OBJS_DIR = $(OBJS_DIR)/symbols
 MACH_O_OBJS_DIR = $(OBJS_DIR)/mach_o
 ELF_OBJS_DIR = $(OBJS_DIR)/elf
 SHARED_OBJS_DIR = $(OBJS_DIR)/shared
-OBJS_DIRS = $(MAIN_OBJS_DIR) $(SHARED_OBJS_DIR) \
+OBJS_DIRS = $(MAIN_OBJS_DIR) \
+	$(SHARED_OBJS_DIR) $(SYMBOLS_OBJS_DIR) \
 	$(MACH_O_OBJS_DIR) $(ELF_OBJS_DIR)
 
 OBJS = $(patsubst %, $(MAIN_OBJS_DIR)/%, $(MAIN_OBJS))
+OBJS += $(patsubst %, $(SYMBOLS_OBJS_DIR)/%, $(SYMBOLS_OBJS))
 OBJS += $(patsubst %, $(MACH_O_OBJS_DIR)/%, $(MACH_O_OBJS))
 OBJS += $(patsubst %, $(ELF_OBJS_DIR)/%, $(ELF_OBJS))
 OBJS += $(patsubst %, $(SHARED_OBJS_DIR)/%, $(SHARED_OBJS))

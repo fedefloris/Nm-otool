@@ -1,13 +1,6 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-#include <mach-o/fat.h>
-#include <mach/machine.h>
-#include "ft_printf.h"
-#include "nm_otool.h"
-
-#include <mach-o/fat.h>
-
 void	 swap_64(unsigned char word)
 {
 	unsigned char	tmp;
@@ -56,7 +49,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = arch->size;
-		nm_otool->file.memory = (void *)file_data.memory + swap_endian(arch->offset);
+		nm_otool->file.memory = file_data.memory + swap_endian(arch->offset);
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)
 			return (false);
 		nm_otool->file.endianness = file_data.endianness;
@@ -86,12 +79,12 @@ bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
 	struct fat_arch		*arch;
 	uint32_t			nfat_arch;
 
-	if (!(SET(header, nm_otool->file.memory)))
+	if (!SET(header, nm_otool->file.memory))
 		return (false);
 	if (!STRUCT_IS_SAFE(header))
 		return (false);
 	nfat_arch = swap_endian(header->nfat_arch);
-	if (!(SET(arch, header + sizeof(*header))))
+	if (!SET(arch, header + sizeof(*header)))
 		return (false);
 	return (mach_fat_32_handle_format(nm_otool, arch, nfat_arch));
 }

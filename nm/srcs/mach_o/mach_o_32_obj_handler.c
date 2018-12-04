@@ -10,15 +10,15 @@ static bool			mach_o_32_read_symbols(t_nm_otool *nm_otool,
 	char			*stringtable;
 
 	i = 0;
-	if (!(SET(stringtable, nm_otool->file.memory + symtab->stroff)))
+	if (!SET(stringtable, nm_otool->file.memory + symtab->stroff))
 		return (false);
 	while (i < symtab->nsyms)
 	{
 		if (!STRUCT_IS_SAFE(&array[i]))
 			return (false);
-		if (!(SET(str, stringtable + array[i].n_un.n_strx)))
+		if (!SET(str, stringtable + array[i].n_un.n_strx))
 			return (false);
-		if (!string_is_safe(nm_otool, (char *)str))
+		if (!string_is_safe(nm_otool, str))
 			return (false);
 		if ((array[i].n_type & N_STAB) == 0)
 			if (!(add_symbol(symbols, array[i].n_value,
@@ -37,7 +37,7 @@ static bool			mach_o_32_get_symbols(t_nm_otool *nm_otool,
 	t_symbol		*symbols;
 
 	symbols = NULL;
-	if (!(SET(array, nm_otool->file.memory + symtab->symoff)))
+	if (!SET(array, nm_otool->file.memory + symtab->symoff))
 		return (free_symbols(symbols));
 	if (!(mach_o_32_read_symbols(nm_otool, array,
 			sections, &symbols, symtab)))
@@ -52,9 +52,9 @@ static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 {
 	struct mach_header		*header;
 
-	if (!(SET(header, nm_otool->file.memory)))
+	if (!SET(header, nm_otool->file.memory))
 		return (-1);
-	if (!(SET(*lc, header + sizeof(*header))))
+	if (!SET(*lc, header + sizeof(*header)))
 		return (-1);
 	return ((STRUCT_IS_SAFE(header)) ? (int)header->ncmds : -1);
 }
@@ -75,4 +75,3 @@ bool				mach_o_32_obj_handler(t_nm_otool *nm_otool)
 		return (mach_o_32_get_symbols(nm_otool, symtab, sections));
 	return (true);//Is this good or bad? TRUE/FALSE?
 }
-

@@ -14,7 +14,7 @@ bool				mach_o_32_get_sections(t_nm_otool *nm_otool,
 		return (true);
 	}
 	i = 0;
-	if(!(SET(sec, segment + sizeof(*segment))))
+	if(!SET(sec, segment + sizeof(*segment)))
 		return (false);
 	while (i++ < segment->nsects)
 	{

@@ -12,7 +12,7 @@ static bool	parse_section_header(t_nm_otool *nm_otool,
 	if ((section_header->sh_type == SHT_SYMTAB)
 		|| (section_header->sh_type == SHT_DYNSYM)) // DYNSYM only if -D
 	{
-		sym = (Elf64_Sym*)(((char*)nm_otool->file.memory) + section_header->sh_offset);
+		sym = (Elf64_Sym*)(nm_otool->file.memory + section_header->sh_offset);
 		symbols_count = section_header->sh_size / sizeof(Elf64_Sym);
 		while (symbols_count--)
 		{
@@ -40,7 +40,7 @@ static bool	parse_section_headers(t_nm_otool *nm_otool,
 	char				*str_section;
 	uint16_t		i;
 
-	if (!(SET(section_header, (char*)header + header->e_shoff)))
+	if (!SET(section_header, (char*)header + header->e_shoff))
 		return (false);
 	i = 0;
 	while (i < header->e_shnum)
@@ -59,7 +59,8 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 {
 	Elf64_Ehdr	*header;
 
-	if (!(SET(header, nm_otool->file.memory)))
+	if (!SET(header, nm_otool->file.memory)
+		|| !STRUCT_IS_SAFE(header))
 		return (false);
 	if (header->e_shoff <= sizeof(header))
 		return (false); // Warning or Error?
