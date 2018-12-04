@@ -16,23 +16,28 @@ bool				handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
 	int				ar_size;
 	int				ar_name_len;
 	char			*filename;
-	t_file			ar;
+	t_file			file_data;
 
+	file_data = nm_otool->file;
 	while (ar_ptr)
 	{
-		ar_size = ft_atoi(ar_ptr->ar_size);//Check is safe.
 		filename = (char *)ar_ptr + sizeof(struct ar_hdr);
-        ft_printf("%s(%s):\n", nm_otool->file.name, current_file);
-		print_filename(nm_otool, filename);
+        ft_printf("%s(%s):\n", nm_otool->file.name, filename);
+		ar_size = ft_atoi(ar_ptr->ar_size);
+
+		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
+		nm_otool->file.name = file_data.name;
+		nm_otool->file.size = (off_t)ar_size;//Check is safe.
+		nm_otool->file.memory = (void *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
+		nm_otool->file.end_of_file = file_data.memory + file_data.size - 1;
+		nm_otool->file.endianness = file_data.endianness;
+
 		ar_name_len = get_ar_name_length(ar_ptr->ar_name);
-		ft_bzero(&ar, sizeof(t_file));
-		ar.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
-				 + ar_name_len;
-		ar.format = ARCHIVE;
-		otool(&ar);
-		if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)nm_otool->file.memory + file->file_size)
+		//otool(&ar);
+		if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file_data.memory + file_data.size)
 			ar_ptr = NULL;
 	}
+	nm_otool->file = file_data;
 	return (true);
 }
 
