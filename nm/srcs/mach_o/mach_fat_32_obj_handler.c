@@ -56,7 +56,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = arch->size;
-		nm_otool->file.memory = (void *)file_data.memory + swap_endian(arch->offset);
+		nm_otool->file.memory = file_data.memory + swap_endian(arch->offset);
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)
 			return (false);
 		nm_otool->file.endianness = file_data.endianness;

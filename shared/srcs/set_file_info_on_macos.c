@@ -32,7 +32,7 @@ static bool	set_fat_format(t_nm_otool *nm_otool, uint32_t magic_number)
 
 static bool			set_archive_format(t_nm_otool *nm_otool)
 {
-	if (!ft_strncmp((char *)nm_otool->file.memory, ARMAG, SARMAG))
+	if (!ft_strncmp(nm_otool->file.memory, ARMAG, SARMAG))
 		nm_otool->file.format = MACH_O_ARCHIVE;
 	else
 		return (false);

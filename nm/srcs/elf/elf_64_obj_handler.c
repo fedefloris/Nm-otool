@@ -12,7 +12,7 @@ static bool	parse_section_header(t_nm_otool *nm_otool,
 	if ((section_header->sh_type == SHT_SYMTAB)
 		|| (section_header->sh_type == SHT_DYNSYM)) // DYNSYM only if -D
 	{
-		sym = (Elf64_Sym*)(((char*)nm_otool->file.memory) + section_header->sh_offset);
+		sym = (Elf64_Sym*)(nm_otool->file.memory + section_header->sh_offset);
 		symbols_count = section_header->sh_size / sizeof(Elf64_Sym);
 		while (symbols_count--)
 		{

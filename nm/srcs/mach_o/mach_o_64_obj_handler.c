@@ -18,7 +18,7 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 			return (false);
 		if (!(SET(str, stringtable + array[i].n_un.n_strx)))
 			return (false);
-		if (!string_is_safe(nm_otool, (char *)str))
+		if (!string_is_safe(nm_otool, str))
 			return (false);
 		if ((array[i].n_type & N_STAB) == 0)
 			if (!(add_symbol(symbols, array[i].n_value,

@@ -18,9 +18,8 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 	else if (header->e_ident[EI_CLASS] == ELFCLASS64)
 	{
 		nm_otool->file.format = ELF_64;
-		if (nm_otool->file.size <
-				(long)sizeof(*(Elf64_Ehdr*)nm_otool->file.memory))
-				return (ERROR_LOG("Bad size"));
+		if (nm_otool->file.size < (long)sizeof(Elf64_Ehdr))
+			return (ERROR_LOG("Bad size"));
 	}
 	else
 		return (ERROR_LOG("Architecture not supported"));
@@ -38,7 +37,7 @@ bool				set_file_info_on_linux(t_nm_otool *nm_otool)
 	Elf32_Ehdr	*header;
 
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
-	if (nm_otool->file.size < (long)sizeof(*header))
+	if (nm_otool->file.size < (long)sizeof(Elf32_Ehdr))
 		return (ERROR_LOG("Bad size"));
 	else if (!has_good_ELF_magic_number(header))
 		return (ERROR_LOG("Bad magic number"));

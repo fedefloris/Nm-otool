@@ -55,7 +55,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = (off_t)ar_size;//Check is safe.
-		nm_otool->file.memory = (void *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
+		nm_otool->file.memory = (char *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)
 			return (false);
 		nm_otool->file.endianness = file_data.endianness;
