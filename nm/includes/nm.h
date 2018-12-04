@@ -21,8 +21,6 @@
 
 # endif
 
-bool			obj_handler(t_nm_otool *nm_otool);
-
 typedef struct			s_symbol
 {
 	char				*name;
@@ -32,6 +30,10 @@ typedef struct			s_symbol
 }						t_symbol;
 
 bool			obj_handler(t_nm_otool *nm_otool);
+
+bool			elf_obj_handler(t_nm_otool *nm_otool);
+bool			elf_32_obj_handler(t_nm_otool *nm_otool);
+bool			elf_64_obj_handler(t_nm_otool *nm_otool);
 
 bool			add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
@@ -68,10 +70,6 @@ t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **s
 # elif __linux__
 
 # define OBJ_HANDLER(x) elf_obj_handler(x)
-
-bool			elf_obj_handler(t_nm_otool *nm_otool);
-bool			elf_32_obj_handler(t_nm_otool *nm_otool);
-bool			elf_64_obj_handler(t_nm_otool *nm_otool);
 
 # else
 
