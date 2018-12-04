@@ -13,7 +13,10 @@ int					list_obj_symbols(t_nm_otool *nm_otool, char *file_name,
 	if (!set_file(nm_otool))
 		return (EXIT_FAILURE);
 	if (obj_handler && !obj_handler(nm_otool))
+	{
+		ERROR_LOG("Bad format");
 		return (EXIT_FAILURE);
+	}
 	if (!unset_file(nm_otool))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
