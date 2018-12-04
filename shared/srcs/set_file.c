@@ -60,18 +60,16 @@ bool		set_file(t_nm_otool *nm_otool)
 	int		fd;
 
 	if ((fd = open_file(nm_otool)) < 0)
-		ERROR_LOG("file not found");
+		return (ERROR_LOG("file not found"));
 	else if (!set_file_data(nm_otool, fd))
-		ERROR_LOG("fstat call failed");
+		return (ERROR_LOG("fstat call failed"));
 	else if (nm_otool->file.size == 0)
-		ERROR_LOG("Bad size");
+		return (ERROR_LOG("Bad size"));
 	else if (!is_a_regular_file(nm_otool, fd))
-		ERROR_LOG("not a regular file");
+		return (ERROR_LOG("not a regular file"));
 	else if (!map_file_to_memory(nm_otool, fd))
-		ERROR_LOG("mmap call failed");
+		return (ERROR_LOG("mmap call failed"));
 	else if (!set_file_info(nm_otool))
-		;
-	else
-		return (true);
-	return (false);
+		return (false);
+	return (true);
 }
