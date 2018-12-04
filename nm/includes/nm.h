@@ -3,26 +3,6 @@
 
 # define DEFAULT_ARGUMENT	"a.out"
 
-# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
-# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
-# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x))) && STRUCT_IS_SAFE(x)
-
-# ifdef __APPLE__
-
-# define OBJ_HANDLER(x) mach_o_obj_handler(x)
-
-# elif __linux__
-
-# define OBJ_HANDLER(x) elf_obj_handler(x)
-
-# else
-
-# define OBJ_HANDLER(x) unknown_obj_handler(x)
-
-# endif
-
-bool			obj_handler(t_nm_otool *nm_otool);
-
 typedef struct			s_symbol
 {
 	char				*name;
@@ -33,14 +13,19 @@ typedef struct			s_symbol
 
 bool			obj_handler(t_nm_otool *nm_otool);
 
+bool			elf_obj_handler(t_nm_otool *nm_otool);
+bool			elf_32_obj_handler(t_nm_otool *nm_otool);
+bool			elf_64_obj_handler(t_nm_otool *nm_otool);
+
 bool			add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 bool			free_symbols(t_symbol *symbols);
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
+t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
 
 # ifdef __APPLE__
 
-# define OBJ_HANDLER(x) mach_o_obj_handler(x)
+# define MAC_OBJ_HANDLER(x) mach_o_obj_handler(x)
 
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_sym;
@@ -64,20 +49,9 @@ bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
 t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands);
 
-
-# elif __linux__
-
-# define OBJ_HANDLER(x) elf_obj_handler(x)
-
-bool			elf_obj_handler(t_nm_otool *nm_otool);
-bool			elf_32_obj_handler(t_nm_otool *nm_otool);
-bool			elf_64_obj_handler(t_nm_otool *nm_otool);
-
 # else
 
-# define OBJ_HANDLER(x) unknown_obj_handler(x)
-
-bool			unknown_obj_handler(t_nm_otool *nm_otool);
+# define MAC_OBJ_HANDLER(x) ERROR_LOG("Unrecognized format")
 
 # endif
 

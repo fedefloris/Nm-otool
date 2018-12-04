@@ -10,11 +10,16 @@
 # include <sys/types.h>
 
 # ifdef __APPLE__
+
 #  include <mach-o/loader.h>
 #  include <mach-o/nlist.h>
 #  include <mach-o/fat.h>
-# elif __linux__
+#  include "elf.h"
+
+# else
+
 #  include <elf.h>
+
 # endif
 
 # define NM_OPTIONS "abc"
@@ -25,11 +30,8 @@
 
 # define ERROR_HEADER RED_COLOR "Error:" DEFAULT_COLOR
 # define WARNING_HEADER YELLOW_COLOR "Warning:" DEFAULT_COLOR
-# define ERROR_LOG(x) ft_printf("%s %s: %s\n", ERROR_HEADER, x, nm_otool->file.name)
-# define WARNING_LOG(x) ft_printf("%s %s: %s\n", WARNING_HEADER, x, nm_otool->file.name)
-
-# define LITTLE_ENDIAN_TYPE 1
-# define BIG_ENDIAN_TYPE 2
+# define ERROR_LOG(x) error_log(nm_otool->file.name, x)
+# define WARNING_LOG(x) warning_log(nm_otool->file.name, x)
 
 # define MACH_O_32_FORMAT	1
 # define MACH_O_64_FORMAT	2
@@ -38,17 +40,22 @@
 # define MACH_O_FAT_32		5
 # define MACH_O_FAT_64		6
 
+# define IS_ELF_FORMAT(x) x == ELF_32_FORMAT || x == ELF_64_FORMAT
+
+# define LITTLE_ENDIAN_TYPE 1
+# define BIG_ENDIAN_TYPE 2
+
+# define SET(x,y) x = (typeof(x))get_safe_address(nm_otool, (char *)y)
+# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
+# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x))) && STRUCT_IS_SAFE(x)
+
 # ifdef __APPLE__
 
-# define SET_FILE_INFO(x) set_mach_o_info(x)
-
-# elif __linux__
-
-# define SET_FILE_INFO(x) set_elf_info(x)
+# define SET_FILE_INFO(x) set_file_info_on_macos(x)
 
 # else
 
-# define SET_FILE_INFO(x) set_unknown_info(x)
+# define SET_FILE_INFO(x) set_file_info_on_linux(x)
 
 # endif
 
@@ -57,8 +64,8 @@ typedef struct		s_file
 	char			*name;
 	off_t			size;
 	mode_t			mode;
-	void			*memory;
-	void			*end_of_file;
+	char			*memory;
+	char			*end_of_file;
 	int				format;
 	int				endianness;
 }					t_file;
@@ -74,6 +81,9 @@ typedef struct		s_nm_otool
 
 typedef bool		(*t_obj_handler)(t_nm_otool *);
 
+bool				error_log(char *message, char *file_name);
+bool				warning_log(char *message, char *file_name);
+
 bool				config_nm_otool(t_nm_otool *nm_otool,
 		char **argv, char **env);
 
@@ -87,7 +97,10 @@ char				*find_binary(t_nm_otool *nm_otool);
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
-void				*get_safe_address(t_nm_otool *nm_otool, void *address);
+bool				set_file_info_on_linux(t_nm_otool *nm_otool);
+bool				has_good_ELF_magic_number(Elf32_Ehdr *header);
+
+char				*get_safe_address(t_nm_otool *nm_otool, char *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 
 bool				options(char ***argv, char *valid_options, unsigned long *options);
@@ -96,24 +109,10 @@ bool				op(t_nm_otool *nm_otool , char c);
 
 # ifdef __APPLE__
 
-bool				set_mach_o_info(t_nm_otool *nm_otool);
-
-# elif __linux__
-
-bool				set_elf_info(t_nm_otool *nm_otool);
-
-# else
-
-bool				set_unknown_info(t_nm_otool *nm_otool);
+bool				set_file_info_on_macos(t_nm_otool *nm_otool);
 
 # endif
 
 bool				unset_file(t_nm_otool *nm_otool);
 
-void				*get_safe_address(t_nm_otool *nm_otool, void *address);
-bool				string_is_safe(t_nm_otool *nm_otool, char *str);
-
-bool				options(char ***argv, char *valid_options, unsigned long *options);
-bool				option_check(unsigned long options, char c);
-bool				op(t_nm_otool *nm_otool , char c);
 #endif
