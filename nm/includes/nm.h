@@ -3,20 +3,6 @@
 
 # define DEFAULT_ARGUMENT	"a.out"
 
-# ifdef __APPLE__
-
-# define OBJ_HANDLER(x) mach_o_obj_handler(x)
-
-# elif __linux__
-
-# define OBJ_HANDLER(x) elf_obj_handler(x)
-
-# else
-
-# define OBJ_HANDLER(x) unknown_obj_handler(x)
-
-# endif
-
 typedef struct			s_symbol
 {
 	char				*name;
@@ -39,7 +25,7 @@ t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
 
 # ifdef __APPLE__
 
-# define OBJ_HANDLER(x) mach_o_obj_handler(x)
+# define MAC_OBJ_HANDLER(x) mach_o_obj_handler(x)
 
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_sym;
@@ -63,15 +49,9 @@ bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
 t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands);
 
-# elif __linux__
-
-# define OBJ_HANDLER(x) elf_obj_handler(x)
-
 # else
 
-# define OBJ_HANDLER(x) unknown_obj_handler(x)
-
-bool			unknown_obj_handler(t_nm_otool *nm_otool);
+# define MAC_OBJ_HANDLER(x) ERROR_LOG("Unrecognized format")
 
 # endif
 

@@ -40,6 +40,8 @@
 # define MACH_O_FAT_32		5
 # define MACH_O_FAT_64		6
 
+# define IS_ELF_FORMAT(x) x == ELF_32_FORMAT || x == ELF_64_FORMAT
+
 # define LITTLE_ENDIAN_TYPE 1
 # define BIG_ENDIAN_TYPE 2
 
