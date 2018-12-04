@@ -57,8 +57,8 @@ typedef struct		s_file
 	char			*name;
 	off_t			size;
 	mode_t			mode;
-	void			*memory;
-	void			*end_of_file;
+	char			*memory;
+	char			*end_of_file;
 	int				format;
 	int				endianness;
 }					t_file;
@@ -87,7 +87,7 @@ char				*find_binary(t_nm_otool *nm_otool);
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
-void				*get_safe_address(t_nm_otool *nm_otool, void *address);
+char				*get_safe_address(t_nm_otool *nm_otool, char *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 
 bool				options(char ***argv, char *valid_options, unsigned long *options);
@@ -110,10 +110,4 @@ bool				set_unknown_info(t_nm_otool *nm_otool);
 
 bool				unset_file(t_nm_otool *nm_otool);
 
-void				*get_safe_address(t_nm_otool *nm_otool, void *address);
-bool				string_is_safe(t_nm_otool *nm_otool, char *str);
-
-bool				options(char ***argv, char *valid_options, unsigned long *options);
-bool				option_check(unsigned long options, char c);
-bool				op(t_nm_otool *nm_otool , char c);
 #endif
