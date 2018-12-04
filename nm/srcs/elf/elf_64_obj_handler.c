@@ -40,13 +40,14 @@ static bool	parse_section_headers(t_nm_otool *nm_otool,
 	char				*str_section;
 	uint16_t		i;
 
+	// Check if e_shnum is larger than or equal to SHN_LORESERVE (man elf)
 	if (!SET(section_header, (char*)header + header->e_shoff))
-		return (false);
+		return (ERROR_LOG("Not enough space for the first section header"));
 	i = 0;
 	while (i < header->e_shnum)
 	{
 		if (!STRUCT_IS_SAFE(&section_header[i]))
-			return (false);
+			return (ERROR_LOG("Not enough space for an other section header"));
 		// Need to fix and protect it
 		str_section = (char*)header + (&section_header[section_header->sh_link])->sh_offset;
 		parse_section_header(nm_otool, section_header + i, str_section);
@@ -62,10 +63,8 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 	if (!SET(header, nm_otool->file.memory)
 		|| !STRUCT_IS_SAFE(header))
 		return (false);
-	if (header->e_shoff <= sizeof(header))
-		return (false); // Warning or Error?
-	if (header->e_shnum == 0)
-		return (false); // Warning or Error? (Also see man for SHN_LORESERVE)
+	if (header->e_shoff == 0 || header->e_shnum == 0)
+		return (true);
 	if (!parse_section_headers(nm_otool, header))
 		return (false);
 	return (true);
