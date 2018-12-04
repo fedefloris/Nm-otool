@@ -25,14 +25,14 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 
 MAIN_FILES = nm obj_handler \
 	display_symbols add_symbol \
-	sort_symbols free_symbols
+	sort_symbols merge_sort_symbols free_symbols
 MACH_O_FILES =
 ELF_FILES = elf_obj_handler elf_32_obj_handler elf_64_obj_handler
 
 SHARED_FILES = error_log warning_log config_nm_otool \
 	list_objs_symbols list_obj_symbols \
 	set_file set_file_info set_elf_info \
-	unset_file find_binary get_safe_address string_is_safe\
+	unset_file find_binary get_safe_address string_is_safe \
 	options option_check op
 
 ifeq ($(OS_TYPE), Darwin)

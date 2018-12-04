@@ -35,6 +35,7 @@ bool			add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 bool			free_symbols(t_symbol *symbols);
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
+t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
 
 # ifdef __APPLE__
 
@@ -61,7 +62,6 @@ bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
 bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment, bool reset);
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
 t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands);
-
 
 # elif __linux__
 
