@@ -1,6 +1,6 @@
 NAME = ft_otool
 
-GCC_FLAGS = -Werror -Wextra -Wall
+GCC_FLAGS = -Werror -Wextra -Wall -g
 
 OBJS_DIR = objs
 SRCS_DIR = srcs
