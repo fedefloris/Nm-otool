@@ -24,8 +24,6 @@
 
 # endif
 
-# define NM_OPTIONS "abc"
-
 # define DEFAULT_COLOR "\033[1;0m"
 # define RED_COLOR "\033[1;31m"
 # define YELLOW_COLOR "\033[1;33m"
@@ -90,8 +88,8 @@ typedef bool		(*t_obj_handler)(t_nm_otool *);
 bool				error_log(char *message, char *file_name);
 bool				warning_log(char *message, char *file_name);
 
-bool				config_nm_otool(t_nm_otool *nm_otool,
-		char **argv, char **env);
+bool				config_nm_otool(t_nm_otool *nm_otool, char **argv,
+	char **env, char *valid_options);
 
 int					list_objs_symbols(t_nm_otool *nm_otool,
 		t_obj_handler obj_handler);
