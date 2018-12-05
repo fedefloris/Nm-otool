@@ -1,9 +1,5 @@
 #include "nm_otool.h"
 #include "otool.h"
-#include "otool.h"
-#include "nm_otool.h"
-#include "ft_printf.h"
-#include "otool.h"
 
 void    print_filename(t_file *file, char *current_file)
 {
