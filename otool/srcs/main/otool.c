@@ -6,7 +6,7 @@
 #include "nm_otool.h"
 #include "ft_printf.h"
 
-int					otool(t_file *file)
+int					otool(t_file2 *file)
 {
     uint32_t    magic;
 
@@ -30,12 +30,12 @@ int					main(int argc, char **argv)
 {
     int     i;
     int     ret;
-    t_file  file;
+    t_file2  file;
 
     i = 0;
     while (++i < argc)
     {
-        ft_bzero(&file, sizeof(t_file));
+        ft_bzero(&file, sizeof(t_file2));
         if ((ret = load_file(argv[i], &file) == SUCCESS))
         {
             otool(&file);

@@ -14,7 +14,7 @@ int	check_file_stat(char *filename, struct stat *buf)
 	return (SUCCESS);
 }
 
-int load_filename(char *filename, t_file *file)
+int load_filename(char *filename, t_file2 *file)
 {
     if (!filename)
         return (FAILURE);
@@ -25,7 +25,7 @@ int load_filename(char *filename, t_file *file)
     return (SUCCESS);
 }
 
-int load_file(char *filename, t_file *file)
+int load_file(char *filename, t_file2 *file)
 {
     int			fd;
     struct stat	buf;

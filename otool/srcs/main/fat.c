@@ -2,20 +2,20 @@
 #include <mach/machine.h>
 #include "ft_printf.h"
 #include "nm_otool.h"
-#include "otool.h" 
+#include "otool.h"
 
-int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file,\
-        int (*macho)(t_file *file))
+int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file2 *file,\
+        int (*macho)(t_file2 *file))
 {
     struct fat_arch *fat_ptr;
     uint32_t        i;
-    t_file          fat;
+    t_file2          fat;
 
     fat_ptr = arch;
     i = 0;
     while (i < nfat_arch)
     {
-        ft_bzero(&fat, sizeof(t_file));
+        ft_bzero(&fat, sizeof(t_file2));
         fat.map = (void *)file->map + swap_endian(fat_ptr->offset);
         fat.filetype = FAT;
         macho(&fat);
@@ -25,7 +25,7 @@ int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file,\
     return (SUCCESS);
 }
 
-int handle_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file)
+int handle_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file2 *file)
 {
     int ret;
 
@@ -43,7 +43,7 @@ int handle_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file)
     return (ret);
 }
 
-int fat(t_file *file)
+int fat(t_file2 *file)
 {
     struct fat_header   *header;
     struct fat_arch     *arch;

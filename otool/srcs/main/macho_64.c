@@ -2,7 +2,7 @@
 #include "otool.h"
 #include "ft_printf.h"
 
-int		parse_text_64(struct section_64 *section, t_file *file)
+int		parse_text_64(struct section_64 *section, t_file2 *file)
 {
 	struct section_64	*sect_ptr;
 	struct section_64	*sect_addr;
@@ -31,7 +31,7 @@ int		parse_text_64(struct section_64 *section, t_file *file)
 	return (SUCCESS);
 }
 
-int     text_segment_64(struct load_command *lcmd, t_file *file)
+int     text_segment_64(struct load_command *lcmd, t_file2 *file)
 {
     struct segment_command_64   *segment;
 	struct section_64			*section;
@@ -64,7 +64,7 @@ int		filetype_64(struct mach_header_64 *header)
 	return (SUCCESS);
 }
 
-int     macho_64(t_file *file)
+int     macho_64(t_file2 *file)
 {
     struct mach_header_64       *header;
     struct load_command         *lcmd;

@@ -12,12 +12,12 @@ int     get_ar_name_length(char  *ar_name)
     return (-1);
 }
 
-int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
+int     handle_archive_objects(t_file2 *file, struct ar_hdr *ar_ptr)
 {
     int             ar_size;
     int             ar_name_len;
     char            *filename;
-    t_file          ar;
+    t_file2          ar;
 
     while (ar_ptr)
     {
@@ -25,7 +25,7 @@ int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
         filename = (char *)ar_ptr + sizeof(struct ar_hdr);
         print_filename(file, filename);
         ar_name_len = get_ar_name_length(ar_ptr->ar_name);
-        ft_bzero(&ar, sizeof(t_file));
+        ft_bzero(&ar, sizeof(t_file2));
         ar.map = (void *)ar_ptr + sizeof(struct ar_hdr)\
                  + ar_name_len;
         ar.filetype = ARCHIVE;
@@ -36,7 +36,7 @@ int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
     return (SUCCESS);
 }
 
-int     archive(t_file *file)
+int     archive(t_file2 *file)
 {
     struct ar_hdr   *header;
     struct ar_hdr   *ar_ptr;
