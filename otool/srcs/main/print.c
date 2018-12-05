@@ -1,3 +1,7 @@
+#include "nm_otool.h"
+#include "otool.h"
+#include "otool.h"
+#include "nm_otool.h"
 #include "ft_printf.h"
 #include "otool.h"
 
