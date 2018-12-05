@@ -1,9 +1,8 @@
+#include "nm_otool.h"
+#include "otool.h"
 #include <fcntl.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <sys/mman.h>
-#include "ft_printf.h"
-#include "otool.h"
 
 int	check_file_stat(char *filename, struct stat *buf)
 {

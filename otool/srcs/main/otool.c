@@ -1,10 +1,7 @@
+#include "nm_otool.h"
+#include "otool.h"
 #include <sys/stat.h>
 #include <sys/mman.h>
-#include <ar.h>
-#include <mach-o/fat.h>
-#include "otool.h"
-#include "nm_otool.h"
-#include "ft_printf.h"
 
 int					otool(t_file *file)
 {

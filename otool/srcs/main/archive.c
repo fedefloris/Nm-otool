@@ -1,6 +1,5 @@
-#include <ar.h>
+#include "nm_otool.h"
 #include "otool.h"
-#include "ft_printf.h"
 
 int     get_ar_name_length(char  *ar_name)
 {
@@ -26,9 +25,9 @@ int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
         print_filename(file, filename);
         ar_name_len = get_ar_name_length(ar_ptr->ar_name);
         ft_bzero(&ar, sizeof(t_file));
-        ar.map = (void *)ar_ptr + sizeof(struct ar_hdr)\
+        ar.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
                  + ar_name_len;
-        ar.filetype = ARCHIVE;
+        ar.format = ARCHIVE;
         otool(&ar);
         if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file->memory + file->size)
             ar_ptr = NULL;

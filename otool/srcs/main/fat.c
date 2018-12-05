@@ -1,6 +1,3 @@
-#include <mach-o/fat.h>
-#include <mach/machine.h>
-#include "ft_printf.h"
 #include "nm_otool.h"
 #include "otool.h"
 
@@ -16,8 +13,8 @@ int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file,\
     while (i < nfat_arch)
     {
         ft_bzero(&fat, sizeof(t_file));
-        fat.map = (void *)file->memory + swap_endian(fat_ptr->offset);
-        fat.filetype = FAT;
+        fat.memory = (void *)file->memory + swap_endian(fat_ptr->offset);
+        fat.format = FAT;
         macho(&fat);
         fat_ptr = (struct fat_arch *)((void *)fat_ptr + sizeof(struct fat_arch));
         i++;

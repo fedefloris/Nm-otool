@@ -1,6 +1,5 @@
 #include "nm_otool.h"
 #include "otool.h"
-#include "ft_printf.h"
 
 int		parse_text_64(struct section_64 *section, t_file *file)
 {
@@ -57,9 +56,9 @@ int     text_segment_64(struct load_command *lcmd, t_file *file)
 
 int		filetype_64(struct mach_header_64 *header)
 {
-	if (header->format == MH_OBJECT)
+	if (header->filetype == MH_OBJECT)
 		ft_printf("filetype: object\n");
-	else if (header->format == MH_EXECUTE)
+	else if (header->filetype == MH_EXECUTE)
 		ft_printf("filetype: executable\n");
 	return (SUCCESS);
 }
