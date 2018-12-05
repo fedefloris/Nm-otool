@@ -4,19 +4,19 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file2 *file,\
-        int (*macho)(t_file2 *file))
+int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file,\
+        int (*macho)(t_file *file))
 {
     struct fat_arch *fat_ptr;
     uint32_t        i;
-    t_file2          fat;
+    t_file          fat;
 
     fat_ptr = arch;
     i = 0;
     while (i < nfat_arch)
     {
-        ft_bzero(&fat, sizeof(t_file2));
-        fat.map = (void *)file->map + swap_endian(fat_ptr->offset);
+        ft_bzero(&fat, sizeof(t_file));
+        fat.map = (void *)file->memory + swap_endian(fat_ptr->offset);
         fat.filetype = FAT;
         macho(&fat);
         fat_ptr = (struct fat_arch *)((void *)fat_ptr + sizeof(struct fat_arch));
@@ -25,7 +25,7 @@ int process_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file2 *file,\
     return (SUCCESS);
 }
 
-int handle_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file2 *file)
+int handle_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file *file)
 {
     int ret;
 
@@ -43,16 +43,16 @@ int handle_fat(struct fat_arch *arch, uint32_t nfat_arch, t_file2 *file)
     return (ret);
 }
 
-int fat(t_file2 *file)
+int fat(t_file *file)
 {
     struct fat_header   *header;
     struct fat_arch     *arch;
     uint32_t            nfat_arch;
 
-    ft_printf("%s:\n", file->filename);
-    header = (struct fat_header *)file->map;
+    ft_printf("%s:\n", file->name);
+    header = (struct fat_header *)file->memory;
     nfat_arch = swap_endian(header->nfat_arch);
-    arch = (struct fat_arch *)((void *)file->map + sizeof(struct fat_header));
+    arch = (struct fat_arch *)((void *)file->memory + sizeof(struct fat_header));
     handle_fat(arch, nfat_arch, file);
     return (SUCCESS);
 }

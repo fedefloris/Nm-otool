@@ -2,7 +2,7 @@
 #include "otool.h"
 #include "ft_printf.h"
 
-int		parse_text(struct section *section, t_file2 *file)
+int		parse_text(struct section *section, t_file *file)
 {
 	struct section	    *sect_ptr;
 	struct section	    *sect_addr;
@@ -10,7 +10,7 @@ int		parse_text(struct section *section, t_file2 *file)
 	uint32_t			j;
 	unsigned char		word;
 
-	sect_ptr = (void *)file->map + section->offset;
+	sect_ptr = (void *)file->memory + section->offset;
 	sect_addr = section;
 	i = 0;
 	while (i < section->size)
@@ -31,7 +31,7 @@ int		parse_text(struct section *section, t_file2 *file)
 	return (SUCCESS);
 }
 
-int     text_segment(struct load_command *lcmd, t_file2 *file)
+int     text_segment(struct load_command *lcmd, t_file *file)
 {
     struct segment_command      *segment;
 	struct section  			*section;
@@ -57,23 +57,23 @@ int     text_segment(struct load_command *lcmd, t_file2 *file)
 
 int		filetype(struct mach_header *header)
 {
-	if (header->filetype == MH_OBJECT)
+	if (header->format == MH_OBJECT)
 		ft_printf("filetype: object\n");
-	else if (header->filetype == MH_EXECUTE)
+	else if (header->format == MH_EXECUTE)
 		ft_printf("filetype: executable\n");
 	return (SUCCESS);
 }
 
-int     macho_32(t_file2 *file)
+int     macho_32(t_file *file)
 {
     struct mach_header          *header;
     struct load_command         *lcmd;
     uint32_t                    i;
 
-    if (file->filetype != ARCHIVE && file->filetype != FAT)
-        ft_printf("%s:\n", file->filename);
-    header = (struct mach_header *)file->map;
-    lcmd = (void *)file->map + sizeof(*header);
+    if (file->format != ARCHIVE && file->format != FAT)
+        ft_printf("%s:\n", file->name);
+    header = (struct mach_header *)file->memory;
+    lcmd = (void *)file->memory + sizeof(*header);
     i = 0;
     while (i < header->ncmds)
     {

@@ -1,14 +1,14 @@
 #include "ft_printf.h"
 #include "otool.h"
 
-void    print_filename(t_file2 *file, char *current_file2)
+void    print_filename(t_file *file, char *current_file)
 {
-    if (file->filetype == ARCHIVE)
+    if (file->format == ARCHIVE)
     {
-        if (!current_file2)
+        if (!current_file)
             return ;
-        ft_printf("%s(%s):\n", file->filename, current_file2);
+        ft_printf("%s(%s):\n", file->name, current_file);
     }
     else
-        ft_printf("%s:\n", file->filename);
+        ft_printf("%s:\n", file->name);
 }
