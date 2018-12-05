@@ -9,14 +9,14 @@ static bool	has_good_type(t_nm_otool *nm_otool)
 	if (header->e_type != ET_REL
 		&& header->e_type != ET_EXEC
 		&& header->e_type != ET_DYN)
-		return (ERROR_LOG("Type not supported"));
+		return (false);
 	return (true);
 }
 
 bool		elf_obj_handler(t_nm_otool *nm_otool)
 {
 	if (!has_good_type(nm_otool))
-		return (false);
+		return (ERROR_LOG("Type not supported"));
 	if (nm_otool->file.format == ELF_32)
 		return (elf_32_obj_handler(nm_otool));
 	return (elf_64_obj_handler(nm_otool));

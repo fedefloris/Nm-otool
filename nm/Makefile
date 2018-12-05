@@ -33,7 +33,7 @@ ELF_FILES = elf_obj_handler \
 	elf_32_obj_handler \
 	elf_64_obj_handler \
 	elf_64_parse_section_headers elf_64_parse_section_header \
-	elf_64_add_symbols
+	elf_64_get_symbols elf_get_symbol_type
 
 SHARED_FILES = error_log warning_log config_nm_otool \
 	list_objs_symbols list_obj_symbols \
