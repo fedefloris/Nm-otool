@@ -43,8 +43,8 @@
 # define ELF_32 6
 # define ELF_64 7
 
-# define IS_ELF_32(x) x & ELF_32
-# define IS_ELF_64(x) x & ELF_64
+# define IS_ELF_32(x) x == ELF_32
+# define IS_ELF_64(x) x == ELF_64
 # define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
 
 # define LITTLE_ENDIAN_TYPE 1
