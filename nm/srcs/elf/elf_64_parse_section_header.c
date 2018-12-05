@@ -6,6 +6,6 @@ bool		elf_64_parse_section_header(t_nm_otool *nm_otool,
 {
 	if ((section_header->sh_type == SHT_SYMTAB)
 		|| (section_header->sh_type == SHT_DYNSYM)) // DYNSYM only if -D
-		return (elf_64_add_symbols(nm_otool, section_header, str_section));
+		return (elf_64_get_symbols(nm_otool, section_header, str_section));
 	return (true);
 }
