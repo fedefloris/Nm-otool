@@ -1,4 +1,4 @@
-#include <mach-o/fat.h>
+#include "nm_otool.h"
 
 void	 swap_64(unsigned char word)
 {
