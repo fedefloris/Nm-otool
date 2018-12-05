@@ -3,7 +3,12 @@ FUNCTION=nm
 
 
 # test files in
-DIR=$1
+if [ "$1" = "" ]
+then
+	DIR=../examples
+else
+	DIR=$1
+fi
 
 
 # variables
@@ -23,7 +28,8 @@ rm -rf $DIFF
 
 
 # print intro:
-echo diff check on all files in $DIR/
+echo diff check $FUNCTION v ft_$FUNCTION on all files in $DIR/
+
 
 # Iterate files
 for f in $DIR/*;
@@ -39,6 +45,7 @@ do
 
 		# create failure to report
 		echo $f >> $REPORT;
+
 
 		# add failure to diff
 		echo ********************START $f >> $DIFF;
@@ -56,8 +63,9 @@ done
 # tests success
 if [ $STATUS -eq 0 ]
 then
-	echo diff OK
+	echo "\x1b[32mdiff OK"
 else
-	echo diff FAILED
+	echo "\x1b[31mdiff FAILED"
+	cat $REPORT
 	exit 1
 fi
