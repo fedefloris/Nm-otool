@@ -29,7 +29,9 @@ SYMBOLS_FILES = display_symbols \
 	sort_symbols merge_sort_symbols \
 	free_symbols
 MACH_O_FILES =
-ELF_FILES = elf_obj_handler elf_32_obj_handler elf_64_obj_handler
+ELF_FILES = elf_obj_handler \
+	elf_32_obj_handler \
+	elf_64_obj_handler elf_64_parse_section_headers
 
 SHARED_FILES = error_log warning_log config_nm_otool \
 	list_objs_symbols list_obj_symbols \

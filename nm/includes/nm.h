@@ -16,8 +16,11 @@ bool			obj_handler(t_nm_otool *nm_otool);
 bool			elf_obj_handler(t_nm_otool *nm_otool);
 bool			elf_32_obj_handler(t_nm_otool *nm_otool);
 bool			elf_64_obj_handler(t_nm_otool *nm_otool);
+bool			elf_64_parse_section_headers(t_nm_otool *nm_otool,
+	Elf64_Ehdr *header);
 
-bool			add_symbol(t_symbol **symbols, uint64_t n_value, char type, char *name);
+bool			add_symbol(t_symbol **symbols, uint64_t n_value,
+	char type, char *name);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 bool			free_symbols(t_symbol *symbols);
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
@@ -38,17 +41,27 @@ typedef struct			s_section
 }						t_section;
 
 bool			free_sections(t_section *sections);
-char			get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect, t_section *sections);
+char			get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect,
+	t_section *sections);
+
 bool			mach_o_archive(t_nm_otool *nm_otool);
 bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool);
 bool			mach_fat_64_obj_handler(t_nm_otool *nm_otool);
-bool			mach_o_create_section(t_section **sections, char *sectname, unsigned char sec_number);
+
+bool			mach_o_create_section(t_section **sections,
+	char *sectname, unsigned char sec_number);
+
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
-bool			mach_o_32_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command *segment, bool reset);
+
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
-bool			mach_o_64_get_sections(t_nm_otool *nm_otool, t_section **sections, struct segment_command_64 *segment, bool reset);
+bool			mach_o_32_get_sections(t_nm_otool *nm_otool,
+	t_section **sections, struct segment_command *segment, bool reset);
+
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
-t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool, t_lc *lc, t_section **sections, int number_of_commands);
+bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
+	t_section **sections, struct segment_command_64 *segment, bool reset);
+t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool,
+	t_lc *lc, t_section **sections, int number_of_commands);
 
 # else
 
