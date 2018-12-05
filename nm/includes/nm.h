@@ -22,6 +22,8 @@ bool			elf_64_parse_section_headers(t_nm_otool *nm_otool,
 	Elf64_Ehdr *header);
 bool	   	elf_64_parse_section_header(t_nm_otool *nm_otool,
 	Elf64_Shdr	*section_header, char *str_section);
+bool			elf_64_add_symbols(t_nm_otool *nm_otool,
+	Elf64_Shdr	*section_header, char *str_section);
 
 bool			add_symbol(t_symbol **symbols, uint64_t n_value,
 	char type, char *name);

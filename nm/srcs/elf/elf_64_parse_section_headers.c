@@ -22,7 +22,8 @@ bool		elf_64_parse_section_headers(t_nm_otool *nm_otool,
 		sh_offset = section_headers[section_headers[i].sh_link].sh_offset;
 		if (!SET(str_section, (char*)header + sh_offset))
 			return (ERROR_LOG("Not enough space for the string table"));
-		elf_64_parse_section_header(nm_otool, &section_headers[i], str_section);
+		if (!elf_64_parse_section_header(nm_otool, &section_headers[i], str_section))
+			return (false); // free symbols
 		i++;
 	}
 	return (true);
