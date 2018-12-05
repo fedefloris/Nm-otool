@@ -12,24 +12,22 @@ static t_symbol	*create_symbol(uint64_t n_value, char type,
 	new->type = type;
 	new->name = name;
 	new->next = NULL;
-	new->prev = NULL;
+	new->last = NULL;
 	return (new);
 }
 
 static void 		append_to_symbols(t_symbol **symbols,
 	t_symbol *new)
 {
-	t_symbol		*head;
-
 	if (!*symbols)
+	{
 		*symbols = new;
+		(*symbols)->last = new;
+	}
 	else
 	{
-		head = *symbols;
-		while (*symbols && (*symbols)->next)
-			*symbols = (*symbols)->next;
-		(*symbols)->next = new;
-		*symbols = head;
+		(*symbols)->last->next = new;
+		(*symbols)->last = new;
 	}
 }
 

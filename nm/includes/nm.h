@@ -10,7 +10,7 @@ typedef struct			s_symbol
 	char				type;
 	uint64_t			value;
 	struct s_symbol		*next;
-	struct s_symbol		*prev;
+	struct s_symbol		*last;
 }						t_symbol;
 
 bool			obj_handler(t_nm_otool *nm_otool);
