@@ -1,39 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool		parse_section_header(t_nm_otool *nm_otool,
-	Elf64_Shdr	*section_header, char *str_section)
-{
-	Elf64_Sym			*sym;
-	uint64_t			symbols_count;
-	unsigned char	bind;
-	unsigned char	type;
-
-	if ((section_header->sh_type == SHT_SYMTAB)
-		|| (section_header->sh_type == SHT_DYNSYM)) // DYNSYM only if -D
-	{
-		sym = (Elf64_Sym*)(nm_otool->file.memory + section_header->sh_offset);
-		symbols_count = section_header->sh_size / sizeof(Elf64_Sym);
-		while (symbols_count--)
-		{
-			bind = ELF32_ST_BIND(sym->st_info);
-			type = ELF32_ST_TYPE(sym->st_info);
-			ft_printf("%016x ", sym->st_value);
-			(void)bind;
-			if (bind == STB_LOCAL && type == STT_FUNC)
-				ft_putstr("t ");
-			else if (bind == STB_GLOBAL && type == STT_FUNC)
-				ft_putstr("T ");
-			else if (type == STT_NOTYPE)
-				ft_putstr("U ");
-			ft_printf("%s\n", str_section + sym->st_name);
-			sym++;
-		}
-	}
-	return (true);
-}
-
-bool					elf_64_parse_section_headers(t_nm_otool *nm_otool,
+bool		elf_64_parse_section_headers(t_nm_otool *nm_otool,
 	Elf64_Ehdr *header)
 {
 	Elf64_Shdr	*section_headers;
@@ -54,7 +22,7 @@ bool					elf_64_parse_section_headers(t_nm_otool *nm_otool,
 		sh_offset = section_headers[section_headers[i].sh_link].sh_offset;
 		if (!SET(str_section, (char*)header + sh_offset))
 			return (ERROR_LOG("Not enough space for the string table"));
-		parse_section_header(nm_otool, &section_headers[i], str_section);
+		elf_64_parse_section_header(nm_otool, &section_headers[i], str_section);
 		i++;
 	}
 	return (true);
