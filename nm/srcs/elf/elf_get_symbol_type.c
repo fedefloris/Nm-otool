@@ -18,8 +18,9 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
     type = 'B';
 	else if (info->st_shndx == SHN_COMMON)
     type = 'C';
-	// else if (section[sym->st_shndx].sh_type == SHT_PROGBITS)
-  //   type = 'D';
+	else if (info->sh_type == SHT_PROGBITS
+		&& info->sh_flags == (SHF_ALLOC | SHF_WRITE))
+    type = 'D';
 	// else if ()
     // type = 'G';
 	// else if ()
