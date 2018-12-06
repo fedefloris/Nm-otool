@@ -1,10 +1,10 @@
 #include <mach-o/fat.h>
 #include <stdio.h>
 
-#define SWAP_ENDIAN(x) (typeof(x))do_endian_swap((uint64_t)x, sizeof(x));
-#define MAX_ENDIAN_SWAP_SIZE 8
+#define SWAP_ENDIAN(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x))
+#define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
 
-static uint64_t		do_endian_swap(uint64_t value, int size)
+static uint64_t		endian_swap(uint64_t value, int size)
 {
 	int				i;
 	uint64_t		new_value;
@@ -14,7 +14,7 @@ static uint64_t		do_endian_swap(uint64_t value, int size)
 	new_value = 0;
 	new_tmp = (unsigned char *)&new_value;
 	tmp = (unsigned char *)&value;
-	if (size > MAX_ENDIAN_SWAP_SIZE)
+	if (size > MAX_ENDIAN_SWAP_SIZE || size == 1)
 		return value;
 	i = 0;
 	while (--size)
@@ -33,10 +33,6 @@ int					main(void)
 	uint64_t		x64 = 0xffaa997755331100;
 
 	printf("%2x   %4x   %8x   %16llx\n", x8, x16, x32, x64);
-	x8 =  SWAP_ENDIAN(x8)
-	x16 = SWAP_ENDIAN(x16)
-	x32 = SWAP_ENDIAN(x32)
-	x64 = SWAP_ENDIAN(x64)
-	printf("%2x   %4x   %8x   %16llx\n", x8, x16, x32, x64);
+	printf("%2x   %4x   %8x   %16llx\n", SWAP_ENDIAN(x8), SWAP_ENDIAN(x16), SWAP_ENDIAN(x32), SWAP_ENDIAN(x64));
 	return (0);
 }
