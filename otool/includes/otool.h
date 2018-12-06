@@ -4,7 +4,7 @@
 # include <mach-o/fat.h>
 # include "libft.h"
 
-# define OTOOL_OPTIONS "p"
+# define OTOOL_OPTIONS "t"
 
 # define SUCCESS 1
 # define FAILURE 0
