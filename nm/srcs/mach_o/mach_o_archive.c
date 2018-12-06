@@ -43,21 +43,21 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 	while (true)
 	{
 		if (!SET(filename, ar_ptr + sizeof(*ar_ptr)))
-			return (false);
+			return (ERROR_LOG("archive: filename beyond binary"));
 		if (!string_is_safe(nm_otool, filename))
-			return (false);
+			return (ERROR_LOG("archive: filename beyond binary"));
         ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
 
 		if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
-			return (false);
+			return (ERROR_LOG("archive: ar_size bad format"));
 		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
-			return (false);
+			return (ERROR_LOG("archive: ar_name_len bad format"));
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = (off_t)ar_size;//Check is safe.
 		nm_otool->file.memory = (char *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
-		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)
-			return (false);
+		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Inspect for godd logic.
+			return (ERROR_LOG(""));
 		nm_otool->file.endianness = file_data.endianness;
 		if (!set_file_info_on_macos(nm_otool) || !mach_o_obj_handler(nm_otool))
 			status = false;
@@ -75,12 +75,12 @@ bool				mach_o_archive(t_nm_otool *nm_otool)
 	int             ar_size;
 
 	if(!SET(header, nm_otool->file.memory + SARMAG))
-		return (false);
+		return (ERROR_LOG(""));
 	if (!STRUCT_IS_SAFE(header))
-		return (false);
+		return (ERROR_LOG(""));
 	if ((ar_size = safe_atoi(nm_otool, header->ar_size)) < 0)
-		return (false);
+		return (ERROR_LOG(""));
 	if (!SET(ar_ptr, nm_otool->file.memory + SARMAG + ar_size + sizeof(struct ar_hdr)))
-		return (false);
+		return (ERROR_LOG(""));
 	return (handle_archive_objects(nm_otool, ar_ptr));
 }
