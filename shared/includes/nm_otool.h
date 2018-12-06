@@ -51,6 +51,7 @@
 # define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
 
 # define SWAP_ENDIAN(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x), nm_otool->file.endian_is_reversed)
+# define SWAP_ENDIAN_FORCE(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x), true)
 # define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
 
 # ifdef __APPLE__
