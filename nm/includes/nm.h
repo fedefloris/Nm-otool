@@ -9,16 +9,22 @@ typedef struct		s_symbol
 	char						*name;
 	char						type;
 	uint64_t				value;
+
 	struct s_symbol	*next;
 	struct s_symbol	*last;
 }									t_symbol;
 
-typedef struct		s_elf_symbol_info
+typedef struct		s_elf_symbols_info
 {
-	uint16_t				section_index;
-	uint32_t				section_type;
-	unsigned char		symbol_info;
-}									t_elf_symbol_info;
+	char						*str_section;
+
+	t_symbol 				*symbols;
+	uint16_t				index;
+
+	uint16_t				st_shndx;
+	uint32_t				st_type;
+	unsigned char		st_info;
+}									t_elf_symbols_info;
 
 bool			obj_handler(t_nm_otool *nm_otool);
 
@@ -29,16 +35,16 @@ bool			elf_32_obj_handler(t_nm_otool *nm_otool);
 bool			elf_64_obj_handler(t_nm_otool *nm_otool);
 bool			elf_64_parse_section_headers(t_nm_otool *nm_otool,
 	Elf64_Ehdr *header);
-bool	   	elf_64_parse_section_header(t_nm_otool *nm_otool,
-	Elf64_Shdr	*section_header, char *str_section);
+bool			elf_64_parse_section_header(t_nm_otool *nm_otool,
+	Elf64_Shdr	*section_header, t_elf_symbols_info *info);
 
-bool			elf_64_set_symbols(t_nm_otool *nm_otool,Elf64_Shdr	*section_header,
-	char *str_section, t_symbol **symbols);
-char			elf_get_symbol_type(t_elf_symbol_info	*info);
+bool			elf_64_set_symbols(t_nm_otool *nm_otool,
+	Elf64_Shdr	*section_header, t_elf_symbols_info *info);
+char			elf_get_symbol_type(t_elf_symbols_info	*info);
 
 bool			add_symbol(t_symbol **symbols, uint64_t n_value,
 	char type, char *name);
-void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
+void			display_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
 bool			free_symbols(t_symbol *symbols);
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
 t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
@@ -54,6 +60,7 @@ typedef struct			s_section
 {
 	char							*name;
 	uint8_t						sec_number;
+
 	struct s_section	*next;
 }										t_section;
 

@@ -43,7 +43,7 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	if (!(mach_o_64_read_symbols(nm_otool, array,
 			sections, &symbols, symtab)))
 		return (free_symbols(symbols));
-	display_symbols(nm_otool, symbols);
+	display_symbols(nm_otool, &symbols);
 	free_sections(sections);
 	free_symbols(symbols);
 	return (true);
