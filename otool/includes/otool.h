@@ -40,7 +40,7 @@ int             macho_64(t_file *file);
 /*
 **  otool_obj_handler.c
 */
-int				otool_obj_handler(t_file *file);
+bool			otool_obj_handler(t_nm_otool *nm_otool);
 
 /*
 ** print.c

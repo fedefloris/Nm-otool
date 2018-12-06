@@ -8,5 +8,5 @@ int					main(int argc, char **argv, char **env)
 	(void)argc;
 	if (!config_nm_otool(&nm_otool, argv, env, OTOOL_OPTIONS))
 		return (EXIT_FAILURE);
-	return (list_objs_symbols(&nm_otool, &obj_handler));
+	return (list_objs_symbols(&nm_otool, &otool_obj_handler));
 }
