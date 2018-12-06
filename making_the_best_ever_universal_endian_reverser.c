@@ -23,16 +23,3 @@ static uint64_t		endian_swap(uint64_t value, int size)
 	}
 	return (new_value);
 }
-
-
-int					main(void)
-{
-	uint8_t			x8 = 0xff;
-	uint16_t		x16 = 0xff00;
-	uint32_t		x32 = 0xff884400;
-	uint64_t		x64 = 0xffaa997755331100;
-
-	printf("%2x   %4x   %8x   %16llx\n", x8, x16, x32, x64);
-	printf("%2x   %4x   %8x   %16llx\n", SWAP_ENDIAN(x8), SWAP_ENDIAN(x16), SWAP_ENDIAN(x32), SWAP_ENDIAN(x64));
-	return (0);
-}
