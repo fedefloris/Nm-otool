@@ -4,7 +4,7 @@
 #define SWAP_ENDIAN(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x))
 #define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
 
-static uint64_t		endian_swap(uint64_t value, int size)
+uint64_t			endian_swap(uint64_t value, size_t size)
 {
 	int				i;
 	uint64_t		new_value;

@@ -111,6 +111,9 @@ bool				options(char ***argv, char *valid_options, unsigned long *options);
 bool				option_check(unsigned long options, char c);
 bool				op(t_nm_otool *nm_otool , char c);
 
+uint64_t			endian_swap(uint64_t value, size_t size);
+
+
 # ifdef __APPLE__
 
 bool				set_file_info_on_macos(t_nm_otool *nm_otool);
