@@ -15,7 +15,7 @@ static bool			mach_o_32_read_symbols(t_nm_otool *nm_otool,
 	while (i < symtab->nsyms)
 	{
 		if (!STRUCT_IS_SAFE(&array[i]))
-			return (ERROR_LOG("struct nlist_64 is not a good size"));
+			return (ERROR_LOG("struct nlist is not a good size"));
 		if (!SET(str, stringtable + array[i].n_un.n_strx))
 			return (ERROR_LOG("symbol name goes beyond the binary limit"));
 		if (!string_is_safe(nm_otool, str))
