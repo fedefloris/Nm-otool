@@ -21,7 +21,7 @@ static char			get_type_section(char type,
 	return (type);
 }
 
-char				get_type(uint8_t n_type, uint64_t n_value,
+char				mach_o_get_type(uint8_t n_type, uint64_t n_value,
 		uint8_t n_sect, t_section *sections)
 {
 	char			type;

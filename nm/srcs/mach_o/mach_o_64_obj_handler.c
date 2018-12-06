@@ -22,7 +22,8 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 			return (false);
 		if ((array[i].n_type & N_STAB) == 0)
 			if (!(add_symbol(symbols, array[i].n_value,
-					get_type(array[i].n_type, array[i].n_value,
+					mach_o_get_type(array[i].n_type,
+					array[i].n_value,
 					array[i].n_sect, sections), str)))
 				return (false);
 		i++;

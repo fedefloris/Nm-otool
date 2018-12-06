@@ -51,7 +51,7 @@ typedef struct			s_section
 }						t_section;
 
 bool			free_sections(t_section *sections);
-char			get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect,
+char			mach_o_get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect,
 	t_section *sections);
 
 bool			mach_o_archive(t_nm_otool *nm_otool);
