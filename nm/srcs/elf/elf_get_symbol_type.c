@@ -9,13 +9,11 @@ char		elf_get_symbol_type(unsigned char st_info)
 
 	st_bind = ELF32_ST_BIND(st_info);
 	st_type = ELF32_ST_TYPE(st_info);
-	(void)st_bind;
-	(void)st_type;
 	type = 'U';
 	// if (st_type == STT_NOTYPE)
 	// 	type = 'U';
-	// else if (sym->st_shndx == SHN_ABS)
-    // type = 'A';
+	// if (sym->st_shndx == SHN_ABS)
+  //   type = 'A';
 	// else if (section[sym->st_shndx].sh_type == SHT_NOBITS)
     // type = 'B';
 	// else if (sym->st_shndx == SHN_COMMON)

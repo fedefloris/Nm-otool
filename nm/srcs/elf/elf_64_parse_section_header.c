@@ -8,7 +8,8 @@ bool		elf_64_parse_section_header(t_nm_otool *nm_otool,
 
 	symbols = NULL;
 	if ((section_header->sh_type == SHT_SYMTAB)
-		|| (section_header->sh_type == SHT_DYNSYM)) // DYNSYM only if -D
+		|| (op(nm_otool, 'D')
+				&& section_header->sh_type == SHT_DYNSYM))
 	{
 		if (!elf_64_set_symbols(nm_otool, section_header,
 				str_section, &symbols))
