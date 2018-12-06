@@ -8,7 +8,8 @@ void				display_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
 	sort_symbols(nm_otool, &symbols);
 	while (symbols)
 	{
-		if (nm_otool->file.format == MACH_O_32)
+		if (nm_otool->file.format == MACH_O_32
+			|| nm_otool->file.format == ELF_32)
 		{
 			(symbols->value || symbols->type == 'T')
 				? ft_printf("%-9.8jx", symbols->value)
