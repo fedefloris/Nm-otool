@@ -3,10 +3,12 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
-int					otool_obj_handler(t_file *file)
+bool            otool_obj_handler(t_nm_otool *nm_otool)
 {
+    t_file      *file;
     uint32_t    magic;
 
+    file = &nm_otool->file;
     magic = *(uint32_t *)file->memory;
     if (magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
         macho_64(file);
@@ -20,5 +22,5 @@ int					otool_obj_handler(t_file *file)
         file->format = ARCHIVE;
         archive(file);
     }
-    return (SUCCESS);
+    return (false);
 }
