@@ -1,12 +1,20 @@
 # test function
 FUNCTION=nm
 
-
-# test files in
-if [ "$1" = "" ]
+# directory for function
+if [ -f ../ft_$FUNCTION ]
 then
+	FUNCTIONPATH=../ft_$FUNCTION
 	DIR=../examples
 else
+	FUNCTIONPATH=./ft_$FUNCTION
+	DIR=./examples
+fi
+
+
+# test files in
+if ! [ "$1" = "" ]
+then
 	DIR=$1
 fi
 
@@ -35,8 +43,8 @@ echo diff check $FUNCTION v ft_$FUNCTION on all files in $DIR/
 for f in $DIR/*;
 do
 	# do ft_ and system function.
-	$FUNCTION $f 2>&- >> $FT;
-	../ft_$FUNCTION $f 2>&- >> $SY;
+	$FUNCTION $f 2>&- >> $SY;
+	$FUNCTIONPATH $f 2>&- >> $FT;
 
 
 	# check diff
