@@ -4,6 +4,8 @@
 # include <mach-o/fat.h>
 # include "libft.h"
 
+# define OTOOL_OPTIONS "p"
+
 # define SUCCESS 1
 # define FAILURE 0
 # define WORD_NUM 16
