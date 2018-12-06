@@ -20,7 +20,10 @@ INCLUDES_FILES = otool
 HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
-MAIN_FILES = otool load_file macho_64 macho_32 archive swap fat print otool_obj_handler
+MAIN_FILES = otool \
+	macho_64 macho_32 \
+	archive swap fat print \
+	otool_obj_handler
 SHARED_FILES = error_log warning_log config_nm_otool \
 	list_objs_symbols list_obj_symbols \
 	set_file set_file_info \
