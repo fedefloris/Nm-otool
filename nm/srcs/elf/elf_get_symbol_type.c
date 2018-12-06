@@ -14,8 +14,8 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
 	// 	type = 'U';
 	if (info->st_shndx == SHN_ABS)
     type = 'A';
-	// else if (section[sym->st_shndx].sh_type == SHT_NOBITS)
-    // type = 'B';
+	else if (info->sh_type == SHT_NOBITS)
+    type = 'B';
 	// else if (sym->st_shndx == SHN_COMMON)
     // type = 'C';
 	// else if (section[sym->st_shndx].sh_type == SHT_PROGBITS)
