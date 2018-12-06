@@ -21,6 +21,9 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
 	else if (info->sh_type == SHT_PROGBITS
 		&& info->sh_flags == (SHF_ALLOC | SHF_WRITE))
     type = 'D';
+	// -g -i
+ 	else if (info->sh_type == SHT_PROGBITS)
+    type = 'N';
 	// else if ()
     // type = 'G';
 	// else if ()
