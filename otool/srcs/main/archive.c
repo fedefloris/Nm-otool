@@ -16,7 +16,7 @@ int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
     int             ar_size;
     int             ar_name_len;
     char            *filename;
-    t_file          ar;
+    t_nm_otool      nm_otool;
 
     while (ar_ptr)
     {
@@ -24,11 +24,11 @@ int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
         filename = (char *)ar_ptr + sizeof(struct ar_hdr);
         print_filename(file, filename);
         ar_name_len = get_ar_name_length(ar_ptr->ar_name);
-        ft_bzero(&ar, sizeof(t_file));
-        ar.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
+        ft_bzero(&nm_otool.file, sizeof(t_file));
+        nm_otool.file.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
                  + ar_name_len;
-        ar.format = ARCHIVE;
-        otool(&ar);
+        nm_otool.file.format = ARCHIVE;
+        otool_obj_handler(&nm_otool);
         if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file->memory + file->size)
             ar_ptr = NULL;
     }
