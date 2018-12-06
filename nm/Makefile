@@ -40,7 +40,7 @@ SHARED_FILES = error_log warning_log config_nm_otool \
 	set_file set_file_info \
 	set_file_info_on_linux has_good_ELF_magic_number \
 	unset_file find_binary get_safe_address string_is_safe \
-	options option_check op
+	options option_check op endian_swap
 
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES +=	free_sections \
