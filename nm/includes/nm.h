@@ -4,14 +4,21 @@
 # define DEFAULT_ARGUMENT	"a.out"
 # define NM_OPTIONS "pD"
 
-typedef struct			s_symbol
+typedef struct		s_symbol
 {
-	char				*name;
-	char				type;
-	uint64_t			value;
-	struct s_symbol		*next;
-	struct s_symbol		*last;
-}						t_symbol;
+	char						*name;
+	char						type;
+	uint64_t				value;
+	struct s_symbol	*next;
+	struct s_symbol	*last;
+}									t_symbol;
+
+typedef struct		s_elf_symbol_info
+{
+	uint16_t				section_index;
+	uint32_t				section_type;
+	unsigned char		symbol_info;
+}									t_elf_symbol_info;
 
 bool			obj_handler(t_nm_otool *nm_otool);
 
@@ -27,7 +34,7 @@ bool	   	elf_64_parse_section_header(t_nm_otool *nm_otool,
 
 bool			elf_64_set_symbols(t_nm_otool *nm_otool,Elf64_Shdr	*section_header,
 	char *str_section, t_symbol **symbols);
-char			elf_get_symbol_type(unsigned char st_info);
+char			elf_get_symbol_type(t_elf_symbol_info	*info);
 
 bool			add_symbol(t_symbol **symbols, uint64_t n_value,
 	char type, char *name);
@@ -45,10 +52,10 @@ typedef struct symtab_command	t_sym;
 
 typedef struct			s_section
 {
-	char				*name;
-	uint8_t				sec_number;
+	char							*name;
+	uint8_t						sec_number;
 	struct s_section	*next;
-}						t_section;
+}										t_section;
 
 bool			free_sections(t_section *sections);
 char			mach_o_get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect,
