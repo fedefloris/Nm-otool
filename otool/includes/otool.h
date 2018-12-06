@@ -38,9 +38,9 @@ int             macho_32(t_file *file);
 int             macho_64(t_file *file);
 
 /*
-**  otool.c
+**  otool_obj_handler.c
 */
-int             otool(t_file *file);
+int				otool_obj_handler(t_file *file);
 
 /*
 ** print.c
