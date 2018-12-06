@@ -57,7 +57,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 		nm_otool->file.size = (off_t)ar_size;//Check is safe.
 		nm_otool->file.memory = (char *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Inspect for godd logic.
-			return (ERROR_LOG(""));
+			return (ERROR_LOG("archive: ar_size bad size."));
 		nm_otool->file.endianness = file_data.endianness;
 		if (!set_file_info_on_macos(nm_otool) || !mach_o_obj_handler(nm_otool))
 			status = false;
