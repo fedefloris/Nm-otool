@@ -10,8 +10,9 @@ bool		elf_64_parse_section_header(t_nm_otool *nm_otool,
 	{
 		if (!elf_64_set_symbols(nm_otool, section_headers, info))
 			return (free_symbols(info->symbols));
+		display_symbols(nm_otool, &info->symbols);
+		ft_printf("%p %p\n", info, info->symbols);
+		free_symbols(info->symbols);
 	}
-	display_symbols(nm_otool, &info->symbols);
-	free_symbols(info->symbols);
 	return (true);
 }
