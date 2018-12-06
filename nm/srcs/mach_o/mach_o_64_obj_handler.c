@@ -11,21 +11,21 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 
 	i = 0;
 	if (!SET(stringtable, nm_otool->file.memory + symtab->stroff))
-		return (false);
+		return (ERROR_LOG("no stringtable found"));
 	while (i < symtab->nsyms)
 	{
 		if (!STRUCT_IS_SAFE(&array[i]))
-			return (false);
+			return (ERROR_LOG("struct nlist_64 is not a good size"));
 		if (!SET(str, stringtable + array[i].n_un.n_strx))
-			return (false);
+			return (ERROR_LOG("symbol name goes beyond the binary limit"));
 		if (!string_is_safe(nm_otool, str))
-			return (false);
+			return (ERROR_LOG("symbol name goes beyond the binary limit"));
 		if ((array[i].n_type & N_STAB) == 0)
 			if (!(add_symbol(symbols, array[i].n_value,
 					mach_o_get_type(array[i].n_type,
 					array[i].n_value,
 					array[i].n_sect, sections), str)))
-				return (false);
+				return (ERROR_LOG("malloc failed: t_symbol symbol"));
 		i++;
 	}
 	return (true);
@@ -43,7 +43,7 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	if (!(mach_o_64_read_symbols(nm_otool, array,
 			sections, &symbols, symtab)))
 		return (free_symbols(symbols));
-	display_symbols(nm_otool, symbols);
+	display_symbols(nm_otool, &symbols);
 	free_sections(sections);
 	free_symbols(symbols);
 	return (true);

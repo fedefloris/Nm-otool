@@ -45,13 +45,13 @@
 # define IS_ELF_64(x) x == ELF_64
 # define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
 
-# define LITTLE_ENDIAN_TYPE 1
-# define BIG_ENDIAN_TYPE 2
-
 # define SET(x,y) (x = (typeof(x))get_safe_address(nm_otool, (char *)y))
 # define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
 # define STRING_IS_SAFE(x) string_is_safe(nm_otool, x)
 # define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
+
+# define SWAP_ENDIAN(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x), nm_otool->file.endian_is_reversed)
+# define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
 
 # ifdef __APPLE__
 
@@ -71,7 +71,7 @@ typedef struct		s_file
 	char			*memory;
 	char			*end_of_file;
 	int				format;
-	int				endianness;
+	bool			endian_is_reversed;
 }					t_file;
 
 typedef struct		s_nm_otool
@@ -110,6 +110,9 @@ bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 bool				options(char ***argv, char *valid_options, unsigned long *options);
 bool				option_check(unsigned long options, char c);
 bool				op(t_nm_otool *nm_otool , char c);
+
+uint64_t			endian_swap(uint64_t value, size_t size, bool needs_reverse);
+
 
 # ifdef __APPLE__
 

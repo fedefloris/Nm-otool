@@ -20,3 +20,9 @@ ft_otool
 # VIM
 *.swp
 *.swo
+
+# scripts
+*mine
+*sys
+*diff
+*report

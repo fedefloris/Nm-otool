@@ -10,9 +10,9 @@ static bool	set_mach_o_format(t_nm_otool *nm_otool, uint32_t magic_number)
 		nm_otool->file.format = MACH_O_64;
 	else
 		return (false);
-	nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
+	nm_otool->file.endian_is_reversed = false;
 	if (magic_number == MH_CIGAM || magic_number == MH_CIGAM_64)
-		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
+		nm_otool->file.endian_is_reversed = true;
 	return (true);
 }
 
@@ -24,9 +24,9 @@ static bool	set_fat_format(t_nm_otool *nm_otool, uint32_t magic_number)
 		nm_otool->file.format = MACH_O_FAT_64;
 	else
 		return (false);
-	nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
+	nm_otool->file.endian_is_reversed = false;
 	if (magic_number == FAT_CIGAM || magic_number == FAT_CIGAM_64)
-		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
+		nm_otool->file.endian_is_reversed = true;
 	return (true);
 }
 
