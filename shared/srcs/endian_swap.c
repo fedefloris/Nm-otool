@@ -1,21 +1,17 @@
-#include <mach-o/fat.h>
-#include <stdio.h>
+#include "nm_otool.h"
 
-#define SWAP_ENDIAN(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x))
-#define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
-
-uint64_t			endian_swap(uint64_t value, size_t size)
+uint64_t			endian_swap(uint64_t value, size_t size, bool needs_reverse)
 {
 	int				i;
 	uint64_t		new_value;
 	unsigned char	*new_tmp;
 	unsigned char	*tmp;
 
+	if (!needs_reverse || size == 1 || size > MAX_ENDIAN_SWAP_SIZE)
+		return (value);
 	new_value = 0;
 	new_tmp = (unsigned char *)&new_value;
 	tmp = (unsigned char *)&value;
-	if (size > MAX_ENDIAN_SWAP_SIZE || size == 1)
-		return value;
 	i = 0;
 	while (--size)
 	{
