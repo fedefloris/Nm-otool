@@ -23,6 +23,7 @@ typedef struct		s_elf_symbols_info
 
 	uint16_t				st_shndx;
 	uint32_t				sh_type;
+	uint32_t				sh_flags;
 	unsigned char		st_info;
 }									t_elf_symbols_info;
 
