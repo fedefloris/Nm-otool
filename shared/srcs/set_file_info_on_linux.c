@@ -3,9 +3,9 @@
 static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {
 	if (header->e_ident[EI_DATA] == ELFDATA2LSB)
-		nm_otool->file.endianness = LITTLE_ENDIAN_TYPE;
+		nm_otool->file.endian_is_reversed = false;
 	else if (header->e_ident[EI_DATA] == ELFDATA2MSB)
-		nm_otool->file.endianness = BIG_ENDIAN_TYPE;
+		nm_otool->file.endian_is_reversed = true;
 	else
 		return (false);
 	return (true);

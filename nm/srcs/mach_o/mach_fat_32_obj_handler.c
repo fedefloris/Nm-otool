@@ -52,7 +52,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 		nm_otool->file.memory = file_data.memory + swap_endian(arch->offset);
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Check if safe
 			return (ERROR_LOG("fat: arch->size bad size."));
-		nm_otool->file.endianness = file_data.endianness;
+		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
 		if (mach_o_function(nm_otool))
 			status = true;
 		if (!(NEXT_STRUCT(arch)))
