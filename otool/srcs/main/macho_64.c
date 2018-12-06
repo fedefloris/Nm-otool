@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-int		parse_text_64(struct section_64 *section, t_file *file)
+bool		parse_text_64(struct section_64 *section, t_file *file)
 {
 	struct section_64	*sect_ptr;
 	struct section_64	*sect_addr;
@@ -27,10 +27,10 @@ int		parse_text_64(struct section_64 *section, t_file *file)
 		ft_printf("\n");
 		i += WORD_NUM;
 	}
-	return (SUCCESS);
+	return (true);
 }
 
-int     text_segment_64(struct load_command *lcmd, t_file *file)
+bool     text_segment_64(struct load_command *lcmd, t_file *file)
 {
     struct segment_command_64   *segment;
 	struct section_64			*section;
@@ -51,25 +51,26 @@ int     text_segment_64(struct load_command *lcmd, t_file *file)
 		sect_ptr += sizeof(struct section_64);
         i++;
     }
-    return (SUCCESS);
+    return (true);
 }
 
-int		filetype_64(struct mach_header_64 *header)
+bool		filetype_64(struct mach_header_64 *header)
 {
 	if (header->filetype == MH_OBJECT)
 		ft_printf("filetype: object\n");
 	else if (header->filetype == MH_EXECUTE)
 		ft_printf("filetype: executable\n");
-	return (SUCCESS);
+	return (true);
 }
 
-int     macho_64(t_file *file)
+bool   macho_64(t_file *file)
 {
     struct mach_header_64       *header;
     struct load_command         *lcmd;
     uint32_t                    i;
 
-    if (file->format != ARCHIVE && file->format != FAT)
+    if (file->format != MACH_O_ARCHIVE
+			&& file->format != FAT)
         ft_printf("%s:\n", file->name);
     header = (struct mach_header_64 *)file->memory;
     lcmd = (void *)file->memory + sizeof(*header);
@@ -77,11 +78,9 @@ int     macho_64(t_file *file)
     while (i < header->ncmds)
     {
         if (lcmd->cmd == LC_SEGMENT_64)
-        {
-            text_segment_64(lcmd, file);
-        }
+        	text_segment_64(lcmd, file);
         lcmd = (void *)lcmd + lcmd->cmdsize;
         i++;
     }
-    return (SUCCESS);
+    return (true);
 }

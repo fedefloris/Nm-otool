@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-int		parse_text(struct section *section, t_file *file)
+bool		parse_text(struct section *section, t_file *file)
 {
 	struct section	    *sect_ptr;
 	struct section	    *sect_addr;
@@ -27,49 +27,50 @@ int		parse_text(struct section *section, t_file *file)
 		ft_printf("\n");
 		i += WORD_NUM;
 	}
-	return (SUCCESS);
+	return (true);
 }
 
-int     text_segment(struct load_command *lcmd, t_file *file)
+bool     text_segment(struct load_command *lcmd, t_file *file)
 {
     struct segment_command      *segment;
-	struct section  			*section;
-	void						*sect_ptr;
+		struct section  			*section;
+		void						*sect_ptr;
     uint32_t                    i;
 
     segment = (struct segment_command *)lcmd;
-	sect_ptr = (void *)(segment + 1);
+		sect_ptr = (void *)(segment + 1);
     i = 0;
     while (i < segment->nsects)
     {
-		section = (struct section *)sect_ptr;
-		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
-		{
-			ft_printf("Contents of (__TEXT,__text) section\n");
-			parse_text(section, file);
-		}
-		sect_ptr += sizeof(struct section);
-        i++;
+			section = (struct section *)sect_ptr;
+			if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
+			{
+				ft_printf("Contents of (__TEXT,__text) section\n");
+				parse_text(section, file);
+			}
+			sect_ptr += sizeof(struct section);
+	        i++;
     }
-    return (SUCCESS);
+    return (true);
 }
 
-int		filetype(struct mach_header *header)
+bool		filetype(struct mach_header *header)
 {
 	if (header->filetype == MH_OBJECT)
 		ft_printf("filetype: object\n");
 	else if (header->filetype == MH_EXECUTE)
 		ft_printf("filetype: executable\n");
-	return (SUCCESS);
+	return (true);
 }
 
-int     macho_32(t_file *file)
+bool     macho_32(t_file *file)
 {
     struct mach_header          *header;
     struct load_command         *lcmd;
     uint32_t                    i;
 
-    if (file->format != ARCHIVE && file->format != FAT)
+    if (file->format != MACH_O_ARCHIVE
+			&& file->format != FAT)
         ft_printf("%s:\n", file->name);
     header = (struct mach_header *)file->memory;
     lcmd = (void *)file->memory + sizeof(*header);
@@ -77,11 +78,9 @@ int     macho_32(t_file *file)
     while (i < header->ncmds)
     {
         if (lcmd->cmd == LC_SEGMENT)
-        {
-            text_segment(lcmd, file);
-        }
+        	text_segment(lcmd, file);
         lcmd = (void *)lcmd + lcmd->cmdsize;
         i++;
     }
-    return (SUCCESS);
+    return (true);
 }

@@ -1,7 +1,5 @@
 #include "nm_otool.h"
 #include "otool.h"
-#include <sys/stat.h>
-#include <sys/mman.h>
 
 bool            otool_obj_handler(t_nm_otool *nm_otool)
 {
@@ -19,8 +17,8 @@ bool            otool_obj_handler(t_nm_otool *nm_otool)
     else if (ft_strncmp((char *)file->memory, ARMAG, SARMAG) == 0)
     {
         ft_printf("Archive : %s\n", file->name);
-        file->format = ARCHIVE;
+        file->format = MACH_O_ARCHIVE;
         archive(file);
     }
-    return (false);
+    return (true);
 }

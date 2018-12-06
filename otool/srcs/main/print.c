@@ -3,7 +3,7 @@
 
 void    print_filename(t_file *file, char *current_file)
 {
-    if (file->format == ARCHIVE)
+    if (file->format == MACH_O_ARCHIVE)
     {
         if (!current_file)
             return ;

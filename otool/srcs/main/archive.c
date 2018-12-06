@@ -11,7 +11,7 @@ int     get_ar_name_length(char  *ar_name)
     return (-1);
 }
 
-int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
+bool     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
 {
     int             ar_size;
     int             ar_name_len;
@@ -27,15 +27,15 @@ int     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
         ft_bzero(&nm_otool.file, sizeof(t_file));
         nm_otool.file.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
                  + ar_name_len;
-        nm_otool.file.format = ARCHIVE;
+        nm_otool.file.format = MACH_O_ARCHIVE;
         otool_obj_handler(&nm_otool);
         if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file->memory + file->size)
             ar_ptr = NULL;
     }
-    return (SUCCESS);
+    return (true);
 }
 
-int     archive(t_file *file)
+bool      archive(t_file *file)
 {
     struct ar_hdr   *header;
     struct ar_hdr   *ar_ptr;
