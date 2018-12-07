@@ -9,7 +9,7 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
 
 	st_bind = ELF32_ST_BIND(info->st_info);
 	st_type = ELF32_ST_TYPE(info->st_info);
-	type = 'U';
+	type = '?';
 	if (info->st_shndx == SHN_ABS)
     type = 'A';
 	else if (info->sh_type == SHT_NOBITS)
@@ -33,8 +33,8 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
     // type = 'R';
 	// else if ()
 		// type = 'R';
-	// if (st_type == STT_NOTYPE)
-	// 	type = 'U';
+	else if (info->st_shndx == SHN_UNDEF)
+		type = 'U';
 	if (st_bind == STB_LOCAL)
 		type += 32;
 	return (type);
