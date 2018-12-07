@@ -44,18 +44,18 @@ SHARED_FILES = error_log warning_log config_nm_otool \
 	options option_check op endian_swap
 
 ifeq ($(OS_TYPE), Darwin)
-	MACH_O_FILES +=	free_sections \
-					mach_o_get_type \
-					mach_o_archive \
-					mach_o_obj_handler \
-					mach_fat_32_obj_handler \
-					mach_fat_64_obj_handler \
-					mach_o_create_section \
-					mach_o_32_get_sections \
-					mach_o_32_obj_handler \
-					mach_o_64_get_sections \
-					mach_o_64_obj_handler \
-					mach_o_read_load_commands
+	MACH_O_FILES +=	mach_o_free_sections \
+		mach_o_get_type \
+		mach_o_archive \
+		mach_o_obj_handler \
+		mach_fat_32_obj_handler \
+		mach_fat_64_obj_handler \
+		mach_o_create_section \
+		mach_o_32_get_sections \
+		mach_o_32_obj_handler \
+		mach_o_64_get_sections \
+		mach_o_64_obj_handler \
+		mach_o_read_load_commands
 	SHARED_FILES += set_file_info_on_macos
 endif
 
