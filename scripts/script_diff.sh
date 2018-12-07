@@ -1,5 +1,8 @@
-# test function
-FUNCTION=nm
+# default test function
+if [ -z "$FUNCTION" ]
+then
+	FUNCTION=nm
+fi
 
 # directory for function
 if [ -f ../ft_$FUNCTION ]
@@ -32,14 +35,14 @@ rm -rf $REPORT
 rm -rf $DIFF
 
 # print intro:
-echo diff check $FUNCTION v ft_$FUNCTION on all files in $DIR/
+echo diff check $FUNCTION $OPTIONS vs ft_$FUNCTION $OPTIONS on all files in $DIR/
 
 # Iterate files
 for f in $DIR/*;
 do
 	# do ft_ and system function.
-	$FUNCTION $f 2>&- >> $SY;
-	$FUNCTIONPATH $f 2>&- >> $FT;
+	$FUNCTION $OPTIONS $f 2>&- >> $SY;
+	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
 
 	# check diff
 	if ! diff $FT $SY > $TMP
@@ -64,9 +67,9 @@ done
 # tests success
 if [ $STATUS -eq 0 ]
 then
-	echo "diff \033[1;32mOK"
+	echo "diff \033[0;32mOK"
 else
-	echo "\033[1;31mdiff FAILED"
+	echo "\033[0;31mdiff FAILED"
 	cat $REPORT
 	exit 1
 fi
