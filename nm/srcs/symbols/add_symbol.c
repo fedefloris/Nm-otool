@@ -6,7 +6,7 @@ static t_symbol	*create_symbol(uint64_t n_value, char type,
 {
 	t_symbol		*new;
 
-	if (!(new = (t_symbol *)malloc(sizeof(t_symbol))))
+	if (!(new = (t_symbol *)ft_memalloc(sizeof(t_symbol))))
 		return (NULL);
 	new->value = n_value;
 	new->type = type;
