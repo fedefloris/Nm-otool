@@ -10,7 +10,5 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 			return (ERROR_LOG("Not enough space for the ELF header"));
 	if (header->e_shoff == 0)
 		return (true);
-	if (!elf_64_parse_section_headers(nm_otool, header))
-		return (false);
-	return (true);
+	return (elf_64_parse_section_headers(nm_otool, header));
 }
