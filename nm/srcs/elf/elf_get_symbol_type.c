@@ -35,7 +35,7 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
 		// type = 'R';
 	else if (info->st_shndx == SHN_UNDEF)
 		type = 'U';
-	if (st_bind == STB_LOCAL)
+	if (st_bind == STB_LOCAL && type != '?')
 		type += 32;
 	return (type);
 }
