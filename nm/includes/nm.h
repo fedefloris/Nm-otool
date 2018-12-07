@@ -2,7 +2,7 @@
 # define NM_H
 
 # define DEFAULT_ARGUMENT	"a.out"
-# define NM_OPTIONS "pD"
+# define NM_OPTIONS "hpD"
 
 typedef struct		s_symbol
 {
@@ -26,6 +26,8 @@ typedef struct		s_elf_symbols_info
 	uint32_t				sh_flags;
 	unsigned char		st_info;
 }									t_elf_symbols_info;
+
+int				display_usage(void);
 
 bool			obj_handler(t_nm_otool *nm_otool);
 

@@ -23,7 +23,8 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 	$(SHARED_INCLUDES_DIR)/elf.h
 
-MAIN_FILES = nm obj_handler
+MAIN_FILES = nm \
+	display_usage obj_handler
 SYMBOLS_FILES = display_symbols display_symbol \
 	add_symbol get_middle_symbol \
 	merge_sort_symbols sort_symbols \
