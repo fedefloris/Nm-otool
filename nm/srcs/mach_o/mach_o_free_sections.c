@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-bool				free_sections(t_section *sections)
+bool				mach_o_free_sections(t_section *sections)
 {
 	t_section		*tmp;
 

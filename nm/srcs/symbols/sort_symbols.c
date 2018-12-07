@@ -1,9 +1,24 @@
 #include "nm_otool.h"
 #include "nm.h"
 
+static int	cmp_name_ascendent(t_symbol *sym1, t_symbol *sym2)
+{
+	return (ft_strcmp(sym1->name, sym2->name));
+}
+
+static int	cmp_name_descendent(t_symbol *sym1, t_symbol *sym2)
+{
+	return (-cmp_name_ascendent(sym1, sym2));
+}
+
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols)
 {
+	int (*cmp)();
+
 	if (!*symbols || !(*symbols)->next || op(nm_otool, 'p'))
 		return ;
-	*symbols = merge_sort_symbols(*symbols, &ft_strcmp);
+	cmp = &cmp_name_ascendent;
+	if (op(nm_otool, 'r'))
+		cmp = &cmp_name_descendent;
+	*symbols = merge_sort_symbols(*symbols, cmp);
 }

@@ -1,7 +1,17 @@
-# test function
-FUNCTION=nm
+# default test function
+if [ -z "$FUNCTION" ]
+then
+	FUNCTION=nm
+fi
 
-# directory for function
+# Checking if $FUNCTION exists
+if ! [ -x "$(command -v $FUNCTION)" ]
+then
+	echo "\033[0;31m{$FUNCTION} not found"
+	exit 1
+fi
+
+# Checking good directory
 if [ -f ../ft_$FUNCTION ]
 then
 	FUNCTIONPATH=../ft_$FUNCTION
@@ -11,13 +21,18 @@ else
 	DIR=./examples
 fi
 
+# Checking if $FUNCTIONPATH exists
+if ! [ -f $FUNCTIONPATH ]
+then
+	echo "\033[0;31m{$FUNCTIONPATH} not found"
+	exit 1
+fi
 
 # test files in
 if ! [ "$1" = "" ]
 then
 	DIR=$1
 fi
-
 
 # variables
 REPORT=report
@@ -29,23 +44,19 @@ STATUS=0
 FT=sys
 SY=mine
 
-
 # Clean report and diff
 rm -rf $REPORT
 rm -rf $DIFF
 
-
 # print intro:
-echo diff check $FUNCTION v ft_$FUNCTION on all files in $DIR/
-
+echo diff check $FUNCTION $OPTIONS vs ft_$FUNCTION $OPTIONS on all files in $DIR/
 
 # Iterate files
 for f in $DIR/*;
 do
 	# do ft_ and system function.
-	$FUNCTION $f 2>&- >> $SY;
-	$FUNCTIONPATH $f 2>&- >> $FT;
-
+	$FUNCTION $OPTIONS $f 2>&- >> $SY;
+	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
 
 	# check diff
 	if ! diff $FT $SY > $TMP
@@ -53,7 +64,6 @@ do
 
 		# create failure to report
 		echo $f >> $REPORT;
-
 
 		# add failure to diff
 		echo ********************START $f >> $DIFF;
@@ -71,9 +81,9 @@ done
 # tests success
 if [ $STATUS -eq 0 ]
 then
-	echo "\x1b[32mdiff OK"
+	echo "diff \033[0;32mOK"
 else
-	echo "\x1b[31mdiff FAILED"
+	echo "\033[0;31mdiff FAILED"
 	cat $REPORT
 	exit 1
 fi

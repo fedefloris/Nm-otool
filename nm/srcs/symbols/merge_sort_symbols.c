@@ -9,7 +9,7 @@ static t_symbol	*merge(t_symbol *left, t_symbol *right, int (*cmp)())
 	curr = &head;
 	while (left && right)
 	{
-		if (cmp(left->name, right->name) <= 0)
+		if (cmp(left, right) < 0)
 		{
 			curr->next = left;
 			left = left->next;
@@ -23,23 +23,6 @@ static t_symbol	*merge(t_symbol *left, t_symbol *right, int (*cmp)())
 	}
 	curr->next = (!left) ? right : left;
 	return (head.next);
-}
-
-static t_symbol	*get_middle_symbol(t_symbol *symbols)
-{
-	t_symbol *fast;
-	t_symbol *slow;
-
-	if (!symbols)
-		return (NULL);
-	slow = symbols;
-	fast = symbols;
-	while (fast->next && fast->next->next)
-	{
-		slow = slow->next;
-		fast = fast->next->next;
-	}
-	return (slow);
 }
 
 static t_symbol	*merge_sort(t_symbol *head, int (*cmp)())

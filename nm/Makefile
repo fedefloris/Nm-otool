@@ -23,10 +23,11 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 	$(SHARED_INCLUDES_DIR)/elf.h
 
-MAIN_FILES = nm obj_handler
-SYMBOLS_FILES = display_symbols \
-	add_symbol \
-	sort_symbols merge_sort_symbols \
+MAIN_FILES = nm \
+	display_usage obj_handler
+SYMBOLS_FILES = display_symbols display_symbol \
+	add_symbol get_middle_symbol \
+	merge_sort_symbols sort_symbols \
 	free_symbols
 MACH_O_FILES =
 ELF_FILES = elf_obj_handler \
@@ -40,21 +41,21 @@ SHARED_FILES = error_log warning_log config_nm_otool \
 	set_file set_file_info \
 	set_file_info_on_linux has_good_ELF_magic_number \
 	unset_file find_binary get_safe_address string_is_safe \
-	options option_check op
+	options option_check op endian_swap
 
 ifeq ($(OS_TYPE), Darwin)
-	MACH_O_FILES +=	free_sections \
-					mach_o_get_type \
-					mach_o_archive \
-					mach_o_obj_handler \
-					mach_fat_32_obj_handler \
-					mach_fat_64_obj_handler \
-					mach_o_create_section \
-					mach_o_32_get_sections \
-					mach_o_32_obj_handler \
-					mach_o_64_get_sections \
-					mach_o_64_obj_handler \
-					mach_o_read_load_commands
+	MACH_O_FILES +=	mach_o_free_sections \
+		mach_o_get_type \
+		mach_o_archive \
+		mach_o_obj_handler \
+		mach_fat_32_obj_handler \
+		mach_fat_64_obj_handler \
+		mach_o_create_section \
+		mach_o_32_get_sections \
+		mach_o_32_obj_handler \
+		mach_o_64_get_sections \
+		mach_o_64_obj_handler \
+		mach_o_read_load_commands
 	SHARED_FILES += set_file_info_on_macos
 endif
 

@@ -43,8 +43,9 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 	if (!(mach_o_64_read_symbols(nm_otool, array,
 			sections, &symbols, symtab)))
 		return (free_symbols(symbols));
-	display_symbols(nm_otool, &symbols);
-	free_sections(sections);
+	sort_symbols(nm_otool, &symbols);
+	display_symbols(nm_otool, symbols);
+	mach_o_free_sections(sections);
 	free_symbols(symbols);
 	return (true);
 }
@@ -71,7 +72,7 @@ bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
 	sections = NULL;
 	if ((number_of_commands =
 			mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
-		return (free_sections(sections));
+		return (mach_o_free_sections(sections));
 	if ((symtab = mach_o_read_load_commands(nm_otool, lc,
 			&sections, number_of_commands)))
 		return (mach_o_64_get_symbols(nm_otool, symtab, sections));

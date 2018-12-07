@@ -2,7 +2,7 @@
 # define NM_H
 
 # define DEFAULT_ARGUMENT	"a.out"
-# define NM_OPTIONS "pD"
+# define NM_OPTIONS "hrjpD"
 
 typedef struct		s_symbol
 {
@@ -27,6 +27,8 @@ typedef struct		s_elf_symbols_info
 	unsigned char		st_info;
 }									t_elf_symbols_info;
 
+int				display_usage(void);
+
 bool			obj_handler(t_nm_otool *nm_otool);
 
 bool			elf_obj_handler(t_nm_otool *nm_otool);
@@ -45,9 +47,11 @@ char			elf_get_symbol_type(t_elf_symbols_info	*info);
 
 bool			add_symbol(t_symbol **symbols, uint64_t n_value,
 	char type, char *name);
-void			display_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
-bool			free_symbols(t_symbol *symbols);
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
+void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
+void			display_symbol(t_nm_otool *nm_otool, t_symbol *sym);
+bool			free_symbols(t_symbol *symbols);
+t_symbol	*get_middle_symbol(t_symbol *symbols);
 t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
 
 # ifdef __APPLE__
@@ -65,7 +69,7 @@ typedef struct			s_section
 	struct s_section	*next;
 }										t_section;
 
-bool			free_sections(t_section *sections);
+bool			mach_o_free_sections(t_section *sections);
 char			mach_o_get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect,
 	t_section *sections);
 

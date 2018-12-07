@@ -50,7 +50,9 @@
 # define STRING_IS_SAFE(x) string_is_safe(nm_otool, x)
 # define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
 
-# define SWAP_ENDIAN(x) (typeof(x))endian_swap((uint64_t)x, sizeof(x), nm_otool->file.endian_is_reversed)
+# define SWAP(x,y)(typeof(x))endian_swap((uint64_t)x, sizeof(x), y) 
+# define SWAP_ENDIAN(x) SWAP(x, nm_otool->file.endian_is_reversed)
+# define SWAP_ENDIAN_FORCE(x) SWAP(x, true)
 # define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
 
 # ifdef __APPLE__
