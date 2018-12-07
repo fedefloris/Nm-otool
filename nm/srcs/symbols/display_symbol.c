@@ -21,6 +21,11 @@ void		      display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 {
 	if (!sym->name || !*sym->name)
 		return ;
+	if (op(nm_otool, 'j'))
+	{
+		ft_printf("%s\n", sym->name);
+		return ;
+	}
 	if (nm_otool->file.format == MACH_O_32
 			|| nm_otool->file.format == ELF_32)
 		display_32_symbol_value(sym);
