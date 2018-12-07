@@ -4,7 +4,14 @@ then
 	FUNCTION=nm
 fi
 
-# directory for function
+# Checking if $FUNCTION exists
+if ! [ -x "$(command -v $FUNCTION)" ]
+then
+	echo "\033[0;31m{$FUNCTION} not found"
+	exit 1
+fi
+
+# Checking good directory
 if [ -f ../ft_$FUNCTION ]
 then
 	FUNCTIONPATH=../ft_$FUNCTION
@@ -12,6 +19,13 @@ then
 else
 	FUNCTIONPATH=./ft_$FUNCTION
 	DIR=./examples
+fi
+
+# Checking if $FUNCTIONPATH exists
+if ! [ -f $FUNCTIONPATH ]
+then
+	echo "\033[0;31m{$FUNCTIONPATH} not found"
+	exit 1
 fi
 
 # test files in
