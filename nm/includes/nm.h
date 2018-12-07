@@ -46,6 +46,7 @@ char			elf_get_symbol_type(t_elf_symbols_info	*info);
 bool			add_symbol(t_symbol **symbols, uint64_t n_value,
 	char type, char *name);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
+void			display_symbol(t_nm_otool *nm_otool, t_symbol *sym);
 bool			free_symbols(t_symbol *symbols);
 void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
 t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());

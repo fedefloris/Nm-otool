@@ -24,7 +24,7 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 	$(SHARED_INCLUDES_DIR)/elf.h
 
 MAIN_FILES = nm obj_handler
-SYMBOLS_FILES = display_symbols \
+SYMBOLS_FILES = display_symbols display_symbol \
 	add_symbol \
 	sort_symbols merge_sort_symbols \
 	free_symbols
