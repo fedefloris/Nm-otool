@@ -25,16 +25,25 @@ char		elf_get_symbol_type(t_elf_symbols_info	*info)
     // type = 'i';
 	// else if ()
     // type = 'I';
-	else if (info->sh_type == SHT_PROGBITS)
-		type = 'N';
 	// else if ()
     // type = 'P';
 	// else if ()
     // type = 'R';
 	// else if ()
-		// type = 'R';
+		// type = 'S';
+	else if (info->sh_type == SHT_PROGBITS
+		&& info->sh_flags == (SHF_ALLOC | SHF_EXECINSTR))
+		type = 'T';
+	else if (info->sh_type == SHT_PROGBITS)
+		type = 'N';
 	else if (info->st_shndx == SHN_UNDEF)
 		type = 'U';
+	// else if ()
+		// type = 'V';
+	// else if ()
+		// type = 'W';
+	// else if ()
+		// type = '-';
 	if (st_bind == STB_LOCAL && type != '?')
 		type += 32;
 	return (type);
