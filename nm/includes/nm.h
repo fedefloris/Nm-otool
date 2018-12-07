@@ -49,6 +49,7 @@ void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 void			display_symbol(t_nm_otool *nm_otool, t_symbol *sym);
 bool			free_symbols(t_symbol *symbols);
+t_symbol	*get_middle_symbol(t_symbol *symbols);
 t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
 
 # ifdef __APPLE__
