@@ -2,7 +2,7 @@
 # define NM_H
 
 # define DEFAULT_ARGUMENT	"a.out"
-# define NM_OPTIONS "hjpD"
+# define NM_OPTIONS "hrjpD"
 
 typedef struct		s_symbol
 {

@@ -9,7 +9,7 @@ static t_symbol	*merge(t_symbol *left, t_symbol *right, int (*cmp)())
 	curr = &head;
 	while (left && right)
 	{
-		if (cmp(left->name, right->name) <= 0)
+		if (cmp(left, right) < 0)
 		{
 			curr->next = left;
 			left = left->next;
