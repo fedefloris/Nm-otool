@@ -1,4 +1,4 @@
-# default test function
+report# default test function
 if [ -z "$FUNCTION" ]
 then
 	FUNCTION=nm
@@ -6,9 +6,9 @@ fi
 
 # Checking if $FUNCTION exists
 if ! [ -x "$(command -v $FUNCTION)" ]
-then
-	echo "\033[0;31m${FUNCTION} not found"
-	exit 1
+report
+	echo "\033[0;31m${reportCTION} not found"
+	exit report
 fi
 
 # Checking good directory
@@ -42,8 +42,9 @@ then
 fi
 
 # variables
-DIFF=diff
+REPORT=report
 TMP=tmp
+VAL_LOG=valgrind_log
 
 # colors
 RED="\033[0;31m"
@@ -56,7 +57,7 @@ FT=sys
 SY=mine
 
 # Clean diff
-rm -rf $DIFF
+rm -rf $REPORT
 
 # print intro:
 echo diff check $FUNCTION $OPTIONS vs ft_$FUNCTION $OPTIONS on all files in $DIR/
@@ -76,27 +77,21 @@ do
 		echo "${RED}KO"
 
 		# add failure to diff
-		echo ********************START $f >> $DIFF;
-		cat $TMP >> $DIFF
-		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $DIFF;
+		echo ********************START $f >> $REPORT;
+		cat $TMP >> $REPORT
+		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $REPORT;
 		STATUS=1
 	else
 		echo "${GREEN}OK"
 	fi
 
-	#remove shite
-	rm -rf $FT
-	rm -rf $SY
-	rm -rf $TMP
-
 	# Check errors with valgrind
 	valgrind -v --leak-check=full  \
      --track-origins=yes \
      --error-exitcode=2 \
-		 --log-file=valgrind_log \
+		 --log-file=$VAL_LOG \
      $FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
 
-	rm -rf valgrind_log
 
 	EXIT_STATUS=$?
 	if [ $EXIT_STATUS -eq 2 ]
@@ -105,6 +100,12 @@ do
 		exit 1
 	fi
 
+	#remove shite
+	rm -rf $FT
+	rm -rf $SY
+	rm -rf $TMP
+	rm -rf $VAL_LOG
+
 done
 
 # tests success
@@ -112,6 +113,6 @@ if [ $STATUS -eq 0 ]
 then
 	echo "${GREEN}Tests passed!"
 else
-	echo "${RED}Tests failed! For more details look at ./${DIFF}"
+	echo "${RED}Tests failed! For more details look at ./${REPORT}"
 	exit 1
 fi
