@@ -7,7 +7,7 @@ fi
 # Checking if $FUNCTION exists
 if ! [ -x "$(command -v $FUNCTION)" ]
 then
-	echo "\033[0;31m{$FUNCTION} not found"
+	echo "\033[0;31m${FUNCTION} not found"
 	exit 1
 fi
 
@@ -24,7 +24,14 @@ fi
 # Checking if $FUNCTIONPATH exists
 if ! [ -f $FUNCTIONPATH ]
 then
-	echo "\033[0;31m{$FUNCTIONPATH} not found"
+	echo "\033[0;31m${FUNCTIONPATH} not found"
+	exit 1
+fi
+
+# Checking if valgrind is installed
+if ! [ -x "$(command -v valgrind)" ]
+then
+	echo "\033[0;31mvalgrind is not installed"
 	exit 1
 fi
 
@@ -38,6 +45,11 @@ fi
 REPORT=report
 DIFF=diff
 TMP=tmp
+
+# colors
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+WHITE="\033[0;37m"
 
 STATUS=0
 
@@ -54,6 +66,8 @@ echo diff check $FUNCTION $OPTIONS vs ft_$FUNCTION $OPTIONS on all files in $DIR
 # Iterate files
 for f in $DIR/*;
 do
+	echo "${GREEN}Testing${WHITE}: $FUNCTIONPATH $OPTIONS $f"
+
 	# do ft_ and system function.
 	$FUNCTION $OPTIONS $f 2>&- >> $SY;
 	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
@@ -61,7 +75,6 @@ do
 	# check diff
 	if ! diff $FT $SY > $TMP
 	then
-
 		# create failure to report
 		echo $f >> $REPORT;
 
@@ -76,14 +89,30 @@ do
 	rm -rf $FT
 	rm -rf $SY
 	rm -rf $TMP
+
+	# Check errors with valgrind
+	valgrind -v --leak-check=full  \
+     --track-origins=yes \
+     --error-exitcode=2 \
+		 --log-file=valgrind_log \
+     $FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
+
+	rm -rf valgrind_log
+	EXIT_STATUS=$?
+	if [ $EXIT_STATUS -eq 2 ]
+	then
+		echo "error"
+		exit 1
+	fi
+
 done
 
 # tests success
 if [ $STATUS -eq 0 ]
 then
-	echo "diff \033[0;32mOK"
+	echo "diff ${GREEN}OK"
 else
-	echo "\033[0;31mdiff FAILED"
+	echo "${RED}diff FAILED"
 	cat $REPORT
 	exit 1
 fi
