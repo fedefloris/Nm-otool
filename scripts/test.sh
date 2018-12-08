@@ -42,22 +42,20 @@ then
 fi
 
 # variables
-REPORT=report
 DIFF=diff
 TMP=tmp
 
 # colors
 RED="\033[0;31m"
-GREEN="\033[0;32m"
 WHITE="\033[0;37m"
+GREEN="\033[0;32m"
 
 STATUS=0
 
 FT=sys
 SY=mine
 
-# Clean report and diff
-rm -rf $REPORT
+# Clean diff
 rm -rf $DIFF
 
 # print intro:
@@ -66,23 +64,24 @@ echo diff check $FUNCTION $OPTIONS vs ft_$FUNCTION $OPTIONS on all files in $DIR
 # Iterate files
 for f in $DIR/*;
 do
-	echo "${GREEN}Testing${WHITE}: $FUNCTIONPATH $OPTIONS $f"
-
 	# do ft_ and system function.
 	$FUNCTION $OPTIONS $f 2>&- >> $SY;
 	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
 
+	echo -n "${WHITE}Testing: $FUNCTIONPATH $OPTIONS $f "
+
 	# check diff
 	if ! diff $FT $SY > $TMP
 	then
-		# create failure to report
-		echo $f >> $REPORT;
+		echo "${RED}KO"
 
 		# add failure to diff
 		echo ********************START $f >> $DIFF;
 		cat $TMP >> $DIFF
 		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $DIFF;
 		STATUS=1
+	else
+		echo "${GREEN}OK"
 	fi
 
 	#remove shite
@@ -98,6 +97,7 @@ do
      $FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
 
 	rm -rf valgrind_log
+
 	EXIT_STATUS=$?
 	if [ $EXIT_STATUS -eq 2 ]
 	then
@@ -110,9 +110,8 @@ done
 # tests success
 if [ $STATUS -eq 0 ]
 then
-	echo "diff ${GREEN}OK"
+	echo "${GREEN}Tests passed!"
 else
-	echo "${RED}diff FAILED"
-	cat $REPORT
+	echo "${RED}Tests failed! For more details look at ./${DIFF}"
 	exit 1
 fi
