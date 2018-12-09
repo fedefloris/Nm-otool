@@ -7,7 +7,7 @@ ft_nm
 ft_otool
 
 *.a
-*a.out
+*.out
 
 *obj
 *.o
@@ -22,7 +22,9 @@ ft_otool
 *.swo
 
 # scripts
-*mine
-*sys
-*diff
-*report
+mine
+sys
+diff_log
+valgrind_log
+diff_report
+valgrind_report
