@@ -4,11 +4,11 @@
 char		elf_get_symbol_type(t_elf_symbols_info	*info)
 {
 	unsigned char	st_bind;
-	unsigned char	st_type;
+	// unsigned char	st_type;
 	char					type;
 
 	st_bind = ELF32_ST_BIND(info->st_info);
-	st_type = ELF32_ST_TYPE(info->st_info);
+	// st_type = ELF32_ST_TYPE(info->st_info);
 	type = '?';
 	if (info->st_shndx == SHN_ABS)
     type = 'A';
