@@ -9,7 +9,6 @@ bool		elf_64_parse_section_headers(t_nm_otool *nm_otool,
 	Elf64_Off						sh_offset;
 	t_elf_symbols_info	info;
 
-	// Check if e_shnum is larger than or equal to SHN_LORESERVE (man elf)
 	if (!SET(section_headers, (char*)header + header->e_shoff))
 		return (ERROR_LOG("Not enough space for the first section header"));
 	ft_bzero(&info, sizeof(info));
