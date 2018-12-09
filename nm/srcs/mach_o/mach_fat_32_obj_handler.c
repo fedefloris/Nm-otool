@@ -66,7 +66,7 @@ static bool			mach_fat_32_handle_format(t_nm_otool *nm_otool, struct fat_arch *a
 {
 	if (!STRUCT_IS_SAFE(arch))
 		return (ERROR_LOG("fat: arch beyond binary"));
-	if (swap_endian(arch->cputype) == CPU_TYPE_X86_64)
+	if (SWAP_ENDIAN((arch->cputype)) == CPU_TYPE_X86_64)
 		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler));
 	else if (swap_endian(arch->cputype) == CPU_TYPE_I386)
 		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler));
