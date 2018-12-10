@@ -3,6 +3,7 @@ REPORT=diff_report
 VAL_REPORT=valgrind_report
 DIFF_LOG=diff_log
 VAL_LOG=valgrind_log
+NUM_OF_FAILED_TESTS=0
 
 # colors
 RED="\033[0;31m"
@@ -68,6 +69,7 @@ do
 	if ! diff $FT $SY > $DIFF_LOG
 	then
 		echo "${RED}KO: ${WHITE}$f"
+		((NUM_OF_FAILED_TESTS++))
 
 		# Adds failure to diff_report
 		echo ********************START $f >> $REPORT;
@@ -88,6 +90,6 @@ if [ $STATUS -eq 0 ]
 then
 	echo "${GREEN}Tests passed!"
 else
-	echo "${RED}Tests failed! For more details look at ./${REPORT}"
+	echo "${RED}$NUM_OF_FAILED_TESTS Tests failed! For more details look at ./${REPORT}"
 	exit 1
 fi
