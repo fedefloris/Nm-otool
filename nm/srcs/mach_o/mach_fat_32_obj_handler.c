@@ -14,7 +14,7 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 			return (ERROR_LOG("fat: arch beyond binary"));
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
-		nm_otool->file.size = arch->size;
+		nm_otool->file.size = SWAP_ENDIAN_FORCE(arch->size);
 		nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Check if safe
 			return (ERROR_LOG("fat: arch->size bad size."));
@@ -32,7 +32,7 @@ static bool			mach_fat_32_handle_format(t_nm_otool *nm_otool, struct fat_arch *a
 {
 	if (!STRUCT_IS_SAFE(arch))
 		return (ERROR_LOG("fat: arch beyond binary"));
-	if (SWAP_ENDIAN_FORCE((arch->cputype)) == CPU_TYPE_X86_64)
+	if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
 		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler));
 	else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
 		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler));
