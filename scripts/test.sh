@@ -57,7 +57,7 @@ then
 fi
 
 # Check if valgrind is installed
-if [ ${USE_VALGRIND} -eq 1 ] && ! [ -x "$(command -v valgrind)" ]
+if [ $USE_VALGRIND -eq 1 ] && ! [ -x "$(command -v valgrind)" ]
 then
 	echo "${RED}valgrind is not installed"
 	exit 1
@@ -79,6 +79,9 @@ do
 	$FUNCTION $OPTIONS $f 2>&- >> $SY;
 	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
 
+	# Reset diff status
+	DIFF_STATUS=0
+
 	# Check diff
 	if ! diff $FT $SY > $DIFF_LOG
 	then
@@ -90,20 +93,24 @@ do
 		cat $DIFF_LOG >> $REPORT
 		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $REPORT;
 		STATUS=1
+		DIFF_STATUS=1
 	fi
 
-	if [ ${USE_VALGRIND} -eq 1 ]
+	if [ $DIFF_STATUS -eq 0 ] && [ $USE_VALGRIND -eq 1 ]
 	then
 		# Check errors with valgrind
 		valgrind -v --leak-check=full  \
-	     --track-origins=yes \
-	     --error-exitcode=2 \
-			 --log-file=$VAL_LOG \
-	     $FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
+			--track-origins=yes \
+			--error-exitcode=2 \
+			--log-file=$VAL_LOG \
+			$FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
 
 		# Check exit status of valgrind
 		if [ $? -eq 2 ]
 		then
+			echo "${RED}KO: ${WHITE}$f"
+			FAILED_TESTS=$((FAILED_TESTS + 1))
+
 			# Add failure to valgrind_report
 			echo ********************START $f >> $VAL_REPORT;
 			cat $VAL_LOG >> $VAL_REPORT
