@@ -47,7 +47,7 @@ bool					elf_64_set_symbols(t_nm_otool *nm_otool,
 			return (ERROR_LOG("symbol name outside string table"));
 		if (!set_symbol(nm_otool, sym,
 				&section_headers[sym->st_shndx], info))
-			return (ERROR_LOG("failed when adding a symbol"));
+			return (ERROR_LOG("failed while adding a symbol"));
 		sym++;
 	}
 	return (true);
