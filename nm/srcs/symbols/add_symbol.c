@@ -11,8 +11,6 @@ static t_symbol	*create_symbol(uint64_t n_value, char type,
 	new->value = n_value;
 	new->type = type;
 	new->name = name;
-	new->next = NULL;
-	new->last = NULL;
 	return (new);
 }
 
