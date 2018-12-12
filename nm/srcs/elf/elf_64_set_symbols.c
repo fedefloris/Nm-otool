@@ -38,16 +38,16 @@ bool					elf_64_set_symbols(t_nm_otool *nm_otool,
 	symbols_count = section_headers[info->index].sh_size / sizeof(Elf64_Sym);
 	if (!(SET(sym, nm_otool->file.memory
 			+ section_headers[info->index].sh_offset)))
-		return (ERROR_LOG("Not enough space for a symbol"));
+		return (ERROR_LOG("not enough space for a symbol"));
 	while (symbols_count--)
 	{
 		if (!STRUCT_IS_SAFE(sym))
-			return (ERROR_LOG("Not enough space for a symbol"));
+			return (ERROR_LOG("not enough space for a symbol"));
 		if (!STRING_IS_SAFE(info->str_section + sym->st_name))
-			return (ERROR_LOG("Symbol name outside string table"));
+			return (ERROR_LOG("symbol name outside string table"));
 		if (!set_symbol(nm_otool, sym,
 				&section_headers[sym->st_shndx], info))
-			return (ERROR_LOG("Failed when adding a symbol"));
+			return (ERROR_LOG("failed when adding a symbol"));
 		sym++;
 	}
 	return (true);

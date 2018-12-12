@@ -16,7 +16,7 @@ bool				elf_64_obj_handler(t_nm_otool *nm_otool)
 
 	if (!SET(header, nm_otool->file.memory)
 		|| !STRUCT_IS_SAFE(header))
-			return (ERROR_LOG("Not enough space for the ELF header"));
+			return (ERROR_LOG("not enough space for the ELF header"));
 	if (header->e_shoff == 0)
 		return (true);
 	return (elf_64_parse_section_headers(nm_otool, header));
