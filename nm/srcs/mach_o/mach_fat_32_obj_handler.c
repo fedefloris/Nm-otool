@@ -3,10 +3,8 @@
 
 static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*mach_o_function)(t_nm_otool *))
 {
-	bool			status;
 	t_file			file_data;
 
-	status = false;
 	file_data = nm_otool->file;
 	while (nfat_arch--)
 	{
@@ -20,12 +18,12 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 			return (ERROR_LOG("fat: arch->size bad size."));
 		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
 		if (mach_o_function(nm_otool))
-			status = true;
+			return (true);
 		nm_otool->file = file_data;
 		if (!(NEXT_STRUCT(arch)))
 			return (ERROR_LOG("fat: next arch beyond binary"));
 	}
-	return (status);
+	return (false);
 }
 
 static bool			mach_fat_32_handle_format(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
