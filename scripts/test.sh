@@ -1,37 +1,45 @@
-# variables
+# Report files
 REPORT=diff_report
 VAL_REPORT=valgrind_report
-DIFF_LOG=diff_log
-VAL_LOG=valgrind_log
 
-# colors
+# Colors
 RED="\033[0;31m"
 WHITE="\033[0;37m"
 GREEN="\033[0;32m"
 
 STATUS=0
+FAILED_TESTS=0
 
+# Tmp variables
 FT=sys
 SY=mine
+DIFF_LOG=diff_log
+VAL_LOG=valgrind_log
 
-# Clean reports
+# Clean report files
 rm -rf $REPORT
 rm -rf $VAL_REPORT
 
-# Default test function
+# Set default valgrind use
+if [ -z "$USE_VALGRIND" ]
+then
+	USE_VALGRIND=0
+fi
+
+# Set default test function
 if [ -z "$FUNCTION" ]
 then
 	FUNCTION=nm
 fi
 
-# Checks if $FUNCTION exists
+# Check if $FUNCTION exists
 if ! [ -x "$(command -v $FUNCTION)" ]
 then
 	echo "${RED}${FUNCTION} not found"
 	exit 1
 fi
 
-# Checks good directory
+# Check good directory
 if [ -f ../ft_$FUNCTION ]
 then
 	FUNCTIONPATH=../ft_$FUNCTION
@@ -41,81 +49,89 @@ else
 	DIR=./examples
 fi
 
-# Checks if $FUNCTIONPATH exists
+# Check if $FUNCTIONPATH exists
 if ! [ -f $FUNCTIONPATH ]
 then
 	echo "${RED}${FUNCTIONPATH} not found"
 	exit 1
 fi
 
-# Checks if valgrind is installed
-if ! [ -x "$(command -v valgrind)" ]
+# Check if valgrind is installed
+if [ $USE_VALGRIND -eq 1 ] && ! [ -x "$(command -v valgrind)" ]
 then
 	echo "${RED}valgrind is not installed"
 	exit 1
 fi
 
-# TestS files in
+# Test files in
 if ! [ "$1" = "" ]
 then
 	DIR=$1
 fi
 
-# Prints initial info
+# Print initial info
 echo "Testing all files in ${DIR}/\n"
 
-# Iterates files
+# Iterate files
 for f in $DIR/*;
 do
 	# Do ft_ and system function.
 	$FUNCTION $OPTIONS $f 2>&- >> $SY;
 	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
 
-	echo -n "${WHITE}$FUNCTIONPATH $OPTIONS $f "
+	# Reset diff status
+	DIFF_STATUS=0
 
-	# Checks diff
+	# Check diff
 	if ! diff $FT $SY > $DIFF_LOG
 	then
-		echo "${RED}KO"
+		echo "${RED}KO: ${WHITE}$f"
+		FAILED_TESTS=$((FAILED_TESTS + 1))
 
-		# Adds failure to diff_report
+		# Add failure to diff_report
 		echo ********************START $f >> $REPORT;
 		cat $DIFF_LOG >> $REPORT
 		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $REPORT;
 		STATUS=1
-	else
-		echo "${GREEN}OK"
+		DIFF_STATUS=1
 	fi
 
-	# Checks errors with valgrind
-	valgrind -v --leak-check=full  \
-     --track-origins=yes \
-     --error-exitcode=2 \
-		 --log-file=$VAL_LOG \
-     $FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
-
-	EXIT_STATUS=$?
-	if [ $EXIT_STATUS -eq 2 ]
+	if [ $DIFF_STATUS -eq 0 ] && [ $USE_VALGRIND -eq 1 ]
 	then
-		# Adds failure to valgrind_report
-		echo ********************START $f >> $VAL_REPORT;
-		cat $VAL_LOG >> $VAL_REPORT
-		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $VAL_REPORT;
-		STATUS=1
+		# Check errors with valgrind
+		valgrind -v --leak-check=full  \
+			--track-origins=yes \
+			--error-exitcode=2 \
+			--log-file=$VAL_LOG \
+			$FUNCTIONPATH $OPTIONS $f > /dev/null 2>&1
+
+		# Check exit status of valgrind
+		if [ $? -eq 2 ]
+		then
+			echo "${RED}KO: ${WHITE}$f"
+			FAILED_TESTS=$((FAILED_TESTS + 1))
+
+			# Add failure to valgrind_report
+			echo ********************START $f >> $VAL_REPORT;
+			cat $VAL_LOG >> $VAL_REPORT
+			echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $VAL_REPORT;
+			STATUS=1
+		fi
 	fi
 
-	#remove shite
+	# Remove garbage
 	rm -rf $FT
 	rm -rf $SY
 	rm -rf $DIFF_LOG
 	rm -rf $VAL_LOG
 done
 
-# Check final test state
+# Check final test status
 if [ $STATUS -eq 0 ]
 then
 	echo "${GREEN}Tests passed!"
 else
-	echo "${RED}Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
+	echo "${RED}$FAILED_TESTS Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
+	echo "${WHITE}---\\nKey for diff:\\n< ft_nm\\n> nm"
 	exit 1
 fi
