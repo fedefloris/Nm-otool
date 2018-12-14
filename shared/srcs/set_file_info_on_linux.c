@@ -28,13 +28,13 @@ static bool	has_good_version(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 		&& SWAP_ENDIAN(header->e_version) == EV_CURRENT);
 }
 
-bool				set_file_info_on_linux(t_nm_otool *nm_otool)
+bool		set_file_info_on_linux(t_nm_otool *nm_otool)
 {
 	Elf32_Ehdr	*header;
 
 	if (!SET(header, nm_otool->file.memory) || !STRUCT_IS_SAFE(header))
 		return (ERROR_LOG("Bad size"));
-	else if (!has_good_ELF_magic_number(header))
+	else if (!has_good_elf_magic_number(header))
 		return (ERROR_LOG("Bad magic number"));
 	else if (!set_format(nm_otool, header))
 		return (ERROR_LOG("Architecture not supported"));

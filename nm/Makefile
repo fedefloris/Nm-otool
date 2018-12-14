@@ -52,7 +52,7 @@ SHARED_FILES = config_nm_otool \
 	list_obj_symbols \
 	list_objs_symbols \
 	get_safe_address \
-	has_good_ELF_magic_number \
+	has_good_elf_magic_number \
 	op \
 	option_check \
 	options \

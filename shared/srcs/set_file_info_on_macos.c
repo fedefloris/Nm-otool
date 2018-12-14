@@ -54,18 +54,18 @@ static bool			set_format(t_nm_otool *nm_otool)
 	return (true);
 }
 
-static bool	is_ELF_file(t_nm_otool *nm_otool)
+static bool	is_elf_file(t_nm_otool *nm_otool)
 {
 	Elf32_Ehdr	*header;
 
 	header = (Elf32_Ehdr*)nm_otool->file.memory;
 	return (nm_otool->file.size >= (long)sizeof(*header)
-		&& has_good_ELF_magic_number(header));
+		&& has_good_elf_magic_number(header));
 }
 
 bool		set_file_info_on_macos(t_nm_otool *nm_otool)
 {
-	if (is_ELF_file(nm_otool))
+	if (is_elf_file(nm_otool))
 		return (set_file_info_on_linux(nm_otool));
 	if (nm_otool->file.size < (long)sizeof(struct mach_header))
 		return (ERROR_LOG("Bad size"));

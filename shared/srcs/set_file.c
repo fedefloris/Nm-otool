@@ -22,7 +22,8 @@ static bool	map_file_to_memory(t_nm_otool *nm_otool, int fd)
 		WARNING_LOG("close call failed");
 	if (nm_otool->file.memory == MAP_FAILED)
 		return (false);
-	nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1;
+	nm_otool->file.end_of_file = nm_otool->file.memory
+		+ nm_otool->file.size - 1;
 	return (true);
 }
 

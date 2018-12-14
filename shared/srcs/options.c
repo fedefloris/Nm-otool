@@ -34,7 +34,7 @@
 ** return (false) if bad option is detected.
 */
 
-static bool			option_is_valid(char *valid_options, char c)
+static bool	option_is_valid(char *valid_options, char c)
 {
 	while (*valid_options)
 	{
@@ -48,7 +48,8 @@ static bool			option_is_valid(char *valid_options, char c)
 	return (false);
 }
 
-static bool			treat_option(char c, char *valid_options, unsigned long *options)
+static bool	treat_option(char c, char *valid_options,
+	unsigned long *options)
 {
 	unsigned long	one;
 
@@ -66,7 +67,8 @@ static bool			treat_option(char c, char *valid_options, unsigned long *options)
 	return (true);
 }
 
-bool				options(char ***argv, char *valid_options, unsigned long *options)
+bool		options(char ***argv, char *valid_options,
+	unsigned long *options)
 {
 	char			*str;
 

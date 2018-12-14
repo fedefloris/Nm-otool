@@ -6,8 +6,8 @@ static void	config_file(t_nm_otool *nm_otool, char *file_name)
 	nm_otool->file.name = file_name;
 }
 
-int					list_obj_symbols(t_nm_otool *nm_otool, char *file_name,
-	t_obj_handler obj_handler)
+int			list_obj_symbols(t_nm_otool *nm_otool,
+	char *file_name, t_obj_handler obj_handler)
 {
 	config_file(nm_otool, file_name);
 	if (!set_file(nm_otool))

@@ -1,6 +1,6 @@
 #include "nm_otool.h"
 
-bool				option_check(unsigned long options, char c)
+bool		option_check(unsigned long options, char c)
 {
 	unsigned long	mask;
 
@@ -13,10 +13,8 @@ bool				option_check(unsigned long options, char c)
 		c += 4;
 	else
 		return (false);
-
 	mask <<= c;
 	if ((options & mask) == mask)
 		return (true);
-	else
-		return (false);
+	return (false);
 }

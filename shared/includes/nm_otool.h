@@ -45,8 +45,8 @@
 # define IS_ELF_64(x) x == ELF_64
 # define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
 
-# define SET(x,y) (x = (typeof(x))get_safe_address(nm_otool, (char *)y))
-# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char *)x + sizeof(*x) - 1)
+# define SET(x,y) (x = (typeof(x))get_safe_address(nm_otool, (char*)y))
+# define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char*)x + sizeof(*x) - 1)
 # define STRING_IS_SAFE(x) string_is_safe(nm_otool, x)
 # define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
 
@@ -57,11 +57,11 @@
 
 # ifdef __APPLE__
 
-# define SET_FILE_INFO(x) set_file_info_on_macos(x)
+#  define SET_FILE_INFO(x) set_file_info_on_macos(x)
 
 # else
 
-# define SET_FILE_INFO(x) set_file_info_on_linux(x)
+#  define SET_FILE_INFO(x) set_file_info_on_linux(x)
 
 # endif
 
@@ -104,7 +104,7 @@ bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
 bool				set_file_info_on_linux(t_nm_otool *nm_otool);
-bool				has_good_ELF_magic_number(Elf32_Ehdr *header);
+bool				has_good_elf_magic_number(Elf32_Ehdr *header);
 
 char				*get_safe_address(t_nm_otool *nm_otool, char *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
@@ -112,11 +112,10 @@ bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 bool				options(char ***argv, char *valid_options,
 	unsigned long *options);
 bool				option_check(unsigned long options, char c);
-bool				op(t_nm_otool *nm_otool , char c);
+bool				op(t_nm_otool *nm_otool, char c);
 
 uint64_t			endian_swap(uint64_t value, size_t size,
 	bool needs_reverse);
-
 
 # ifdef __APPLE__
 
