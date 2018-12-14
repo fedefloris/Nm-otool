@@ -7,8 +7,12 @@ char	elf_get_symbol_type(t_elf_symbols_info *info)
 	char			type;
 
 	st_bind = ELF32_ST_BIND(info->st_info);
+	if (st_bind == STB_WEAK)
+		return ('w');
 	if (info->st_shndx == SHN_ABS)
 		return (st_bind == STB_LOCAL ? 'a' : 'A');
+	if (info->st_shndx == SHN_COMMON)
+		return ('C');
 	if (info->st_shndx == SHN_UNDEF)
 		return ('U');
 	type = "NDTSFBD         "[ELF32_ST_TYPE(info->st_info)];

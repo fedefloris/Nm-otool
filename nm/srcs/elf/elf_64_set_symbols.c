@@ -29,7 +29,7 @@ static bool		set_symbol(t_nm_otool *nm_otool,
 	return (true);
 }
 
-bool					elf_64_set_symbols(t_nm_otool *nm_otool,
+bool			elf_64_set_symbols(t_nm_otool *nm_otool,
 	Elf64_Shdr *section_headers, t_elf_symbols_info *info)
 {
 	uint64_t		symbols_count;

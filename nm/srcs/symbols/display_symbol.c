@@ -19,7 +19,8 @@ static void			display_32_symbol_value(t_symbol *sym, bool print_value)
 
 static bool			should_the_value_be_printed(t_symbol *sym)
 {
-	if (sym->type != 'U'
+	if (sym->type != 'w'
+			&& sym->type != 'U'
 			&& sym->type != 'u'
 			&& sym->type != 'I'
 			&& sym->type != 'i')
