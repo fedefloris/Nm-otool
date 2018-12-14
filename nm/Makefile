@@ -43,7 +43,7 @@ ELF_FILES = elf_32_obj_handler \
 	elf_64_parse_section_headers \
 	elf_64_set_symbols \
 	elf_get_symbol_type \
-	elf_obj_handler \
+	elf_obj_handler
 
 SHARED_FILES = config_nm_otool \
 	endian_swap \
@@ -61,7 +61,7 @@ SHARED_FILES = config_nm_otool \
 	set_file_info_on_linux \
 	string_is_safe \
 	unset_file \
-	warning_log \
+	warning_log
 
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES +=	mach_o_free_sections \

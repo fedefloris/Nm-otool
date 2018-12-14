@@ -1,5 +1,7 @@
 NAME = ft_otool
 
+OS_TYPE = $(shell uname)
+
 CC_FLAGS = -Werror -Wextra -Wall -g
 
 OBJS_DIR = objs
@@ -27,7 +29,7 @@ MAIN_FILES = archive \
 	print \
 	otool \
 	otool_obj_handler \
-	swap \
+	swap
 
 SHARED_FILES = config_nm_otool \
 	endian_swap \
@@ -45,7 +47,11 @@ SHARED_FILES = config_nm_otool \
 	set_file_info_on_linux \
 	string_is_safe \
 	unset_file \
-	warning_log \
+	warning_log
+
+ifeq ($(OS_TYPE), Darwin)
+	SHARED_FILES += set_file_info_on_macos
+endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))
