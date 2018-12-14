@@ -94,9 +94,9 @@ bool				config_nm_otool(t_nm_otool *nm_otool, char **argv,
 	char **env, char *valid_options);
 
 int					list_objs_symbols(t_nm_otool *nm_otool,
-		t_obj_handler obj_handler);
+	t_obj_handler obj_handler);
 int					list_obj_symbols(t_nm_otool *nm_otool, char *file_name,
-		t_obj_handler obj_handler);
+	t_obj_handler obj_handler);
 
 char				*find_binary(t_nm_otool *nm_otool);
 
@@ -109,11 +109,13 @@ bool				has_good_ELF_magic_number(Elf32_Ehdr *header);
 char				*get_safe_address(t_nm_otool *nm_otool, char *address);
 bool				string_is_safe(t_nm_otool *nm_otool, char *str);
 
-bool				options(char ***argv, char *valid_options, unsigned long *options);
+bool				options(char ***argv, char *valid_options,
+	unsigned long *options);
 bool				option_check(unsigned long options, char c);
 bool				op(t_nm_otool *nm_otool , char c);
 
-uint64_t			endian_swap(uint64_t value, size_t size, bool needs_reverse);
+uint64_t			endian_swap(uint64_t value, size_t size,
+	bool needs_reverse);
 
 
 # ifdef __APPLE__
