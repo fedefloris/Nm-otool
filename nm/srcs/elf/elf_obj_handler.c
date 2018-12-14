@@ -5,7 +5,7 @@ static bool	has_good_type(t_nm_otool *nm_otool)
 {
 	uint16_t	type;
 
-	type = ((Elf32_Ehdr*)nm_otool->file.memory)->e_type;
+	type = SWAP_ENDIAN(((Elf32_Ehdr*)nm_otool->file.memory)->e_type);
 	return (type == ET_REL || type == ET_EXEC || type == ET_DYN);
 }
 
