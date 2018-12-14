@@ -16,7 +16,7 @@ static int			safe_atoi(t_nm_otool *nm_otool, char *str)
 	return (-1);
 }
 
-static int			get_ar_name_length(t_nm_otool *nm_otool, char  *ar_name)//Super unsafe function.
+static int			get_ar_name_length(t_nm_otool *nm_otool, char *ar_name)//Super unsafe function.
 {
 	char			*ptr;
 

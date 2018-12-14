@@ -10,7 +10,7 @@
 // initial entry is set to zero.  An object file does  not  have  sections  for
 // these special indices
 
-bool				elf_64_obj_handler(t_nm_otool *nm_otool)
+bool		elf_64_obj_handler(t_nm_otool *nm_otool)
 {
 	Elf64_Ehdr	*header;
 

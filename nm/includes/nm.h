@@ -6,26 +6,26 @@
 
 typedef struct		s_symbol
 {
-	char						*name;
-	char						type;
-	uint64_t				value;
+	char			*name;
+	char			type;
+	uint64_t		value;
 
 	struct s_symbol	*next;
 	struct s_symbol	*last;
-}									t_symbol;
+}					t_symbol;
 
 typedef struct		s_elf_symbols_info
 {
-	char						*str_section;
+	char			*str_section;
 
-	t_symbol 				*symbols;
-	uint16_t				index;
+	t_symbol		*symbols;
+	uint16_t		index;
 
-	uint16_t				st_shndx;
-	uint32_t				sh_type;
-	uint32_t				sh_flags;
-	unsigned char		st_info;
-}									t_elf_symbols_info;
+	uint16_t		st_shndx;
+	uint32_t		sh_type;
+	uint32_t		sh_flags;
+	unsigned char	st_info;
+}					t_elf_symbols_info;
 
 int				display_usage(void);
 
@@ -51,27 +51,27 @@ void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols);
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols);
 void			display_symbol(t_nm_otool *nm_otool, t_symbol *sym);
 bool			free_symbols(t_symbol *symbols);
-t_symbol	*get_middle_symbol(t_symbol *symbols);
-t_symbol	*merge_sort_symbols(t_symbol *head, int (*cmp)());
+t_symbol		*get_middle_symbol(t_symbol *symbols);
+t_symbol		*merge_sort_symbols(t_symbol *head, int (*cmp)());
 
 # ifdef __APPLE__
 
-# define MAC_OBJ_HANDLER(x) mach_o_obj_handler(x)
+#  define MAC_OBJ_HANDLER(x) mach_o_obj_handler(x)
 
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_sym;
 
 typedef struct			s_section
 {
-	char							*name;
-	uint8_t						sec_number;
+	char				*name;
+	uint8_t				sec_number;
 
 	struct s_section	*next;
-}										t_section;
+}						t_section;
 
 bool			mach_o_free_sections(t_section *sections);
-char			mach_o_get_type(uint8_t n_type, uint64_t n_value, uint8_t n_sect,
-	t_section *sections);
+char			mach_o_get_type(uint8_t n_type,
+	uint64_t n_value, uint8_t n_sect, t_section *sections);
 
 bool			mach_o_archive(t_nm_otool *nm_otool);
 bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool);
@@ -94,7 +94,7 @@ t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool,
 
 # else
 
-# define MAC_OBJ_HANDLER(x) ERROR_LOG("Unrecognized format")
+#  define MAC_OBJ_HANDLER(x) ERROR_LOG("Unrecognized format")
 
 # endif
 

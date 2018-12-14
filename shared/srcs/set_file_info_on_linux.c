@@ -22,10 +22,10 @@ static bool	set_format(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 	return (true);
 }
 
-static bool	has_good_version(Elf32_Ehdr *header)
+static bool	has_good_version(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {
 	return (header->e_ident[EI_VERSION] == EV_CURRENT
-		&& header->e_version == EV_CURRENT);
+		&& SWAP_ENDIAN(header->e_version) == EV_CURRENT);
 }
 
 bool				set_file_info_on_linux(t_nm_otool *nm_otool)
@@ -36,8 +36,6 @@ bool				set_file_info_on_linux(t_nm_otool *nm_otool)
 		return (ERROR_LOG("Bad size"));
 	else if (!has_good_ELF_magic_number(header))
 		return (ERROR_LOG("Bad magic number"));
-	else if (!has_good_version(header))
-		return (ERROR_LOG("Wrong version"));
 	else if (!set_format(nm_otool, header))
 		return (ERROR_LOG("Architecture not supported"));
 	else if (IS_ELF_64(nm_otool->file.format)
@@ -45,5 +43,7 @@ bool				set_file_info_on_linux(t_nm_otool *nm_otool)
 		return (ERROR_LOG("Bad size"));
 	else if (!set_endianness(nm_otool, header))
 		return (ERROR_LOG("Bad endianness"));
+	else if (!has_good_version(nm_otool, header))
+		return (ERROR_LOG("Wrong version"));
 	return (true);
 }

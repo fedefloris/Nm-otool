@@ -1,6 +1,8 @@
 NAME = ft_otool
 
-GCC_FLAGS = -Werror -Wextra -Wall -g
+OS_TYPE = $(shell uname)
+
+CC_FLAGS = -Werror -Wextra -Wall -g
 
 OBJS_DIR = objs
 SRCS_DIR = srcs
@@ -20,16 +22,36 @@ INCLUDES_FILES = otool
 HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
-MAIN_FILES = otool \
-	macho_64 macho_32 \
-	archive swap fat print \
-	otool_obj_handler
-SHARED_FILES = error_log warning_log config_nm_otool \
-	list_objs_symbols list_obj_symbols \
-	set_file set_file_info \
-	set_file_info_on_linux has_good_ELF_magic_number \
-	unset_file find_binary get_safe_address string_is_safe \
-	options option_check op set_file_info_on_macos endian_swap
+MAIN_FILES = archive \
+	fat \
+	macho_32 \
+	macho_64 \
+	print \
+	otool \
+	otool_obj_handler \
+	swap
+
+SHARED_FILES = config_nm_otool \
+	endian_swap \
+	error_log \
+	find_binary \
+	list_obj_symbols \
+	list_objs_symbols \
+	get_safe_address \
+	has_good_ELF_magic_number \
+	op \
+	option_check \
+	options \
+	set_file \
+	set_file_info \
+	set_file_info_on_linux \
+	string_is_safe \
+	unset_file \
+	warning_log
+
+ifeq ($(OS_TYPE), Darwin)
+	SHARED_FILES += set_file_info_on_macos
+endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))
@@ -51,14 +73,14 @@ comp_libft:
 
 $(NAME): $(LIBFT_FILE) $(OBJS_DIRS) $(OBJS)
 	@echo "Otool:" $(GREEN_COLOR) $(NAME) $(DEFAULT_COLOR)
-	@cc $(GCC_FLAGS) $(OBJS) -o $(NAME) $(LIBFT_FILE) $(INCLUDE_DIRS)
+	@$(CC) $(CC_FLAGS) $(OBJS) -o $(NAME) $(LIBFT_FILE) $(INCLUDE_DIRS)
 
 $(OBJS_DIRS):
 	@mkdir -p $(OBJS_DIRS)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c  $(HEADERS)
 	@echo "Otool:" $(GREEN_COLOR) $< $(DEFAULT_COLOR)
-	@cc $(GCC_FLAGS) -c $< -o $@ $(INCLUDE_DIRS)
+	@$(CC) $(CC_FLAGS) -c $< -o $@ $(INCLUDE_DIRS)
 
 clean:
 	@make -C $(LIBFT_DIR)/ clean

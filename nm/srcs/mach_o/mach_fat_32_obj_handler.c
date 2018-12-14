@@ -1,45 +1,93 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*mach_o_function)(t_nm_otool *))
+static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
+	t_file file_data, struct fat_arch *arch,
+	t_obj_handler mach_o_function)
 {
-	bool			status;
-	t_file			file_data;
+	if (!STRUCT_IS_SAFE(arch))
+		return (ERROR_LOG("fat: arch beyond binary"));
+	ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
+	nm_otool->file.name = file_data.name;
+	nm_otool->file.size = SWAP_ENDIAN_FORCE(arch->size);
+	nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
+	if ((nm_otool->file.end_of_file = file_data.memory
+		+ file_data.size - 1) > file_data.end_of_file) //Check if safe
+		return (ERROR_LOG("fat: arch->size bad size."));
+	nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
+	return (mach_o_function(nm_otool));
+}
 
-	status = false;
-	file_data = nm_otool->file;
+///// V1
+///// Gets first match and returns it.
+//static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
+//	struct fat_arch *arch, uint32_t nfat_arch)
+//{
+//	t_file			file_data;
+//
+//	file_data = nm_otool->file;//
+//	while (nfat_arch--)
+//	{
+//		if (!STRUCT_IS_SAFE(arch))
+//			return (ERROR_LOG("fat: arch beyond binary"));
+//		if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
+//		{
+//			if (mach_fat_32_launch_mach_o(nm_otool, file_data, arch, &mach_o_64_obj_handler))
+//				return (true);
+//		}
+//		else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
+//		{
+//			if (mach_fat_32_launch_mach_o(nm_otool, file_data, arch, &mach_o_32_obj_handler))
+//				return (true);
+//		}
+//		return (ERROR_LOG("fat: bad arch->cputype"));
+//		nm_otool->file = file_data;
+//		if (!(NEXT_STRUCT(arch)))
+//			return (ERROR_LOG("fat: next arch beyond binary"));
+//	}
+//	return (false);
+//}
+/////
+
+/// V2 Gets last match and returns it.
+static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
+	struct fat_arch *arch, uint32_t nfat_arch)
+{
+	t_file			file_data;
+	struct fat_arch	*this_one;
+
+	file_data = nm_otool->file;//
+	this_one = NULL;
 	while (nfat_arch--)
 	{
 		if (!STRUCT_IS_SAFE(arch))
 			return (ERROR_LOG("fat: arch beyond binary"));
-		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
-		nm_otool->file.name = file_data.name;
-		nm_otool->file.size = SWAP_ENDIAN_FORCE(arch->size);
-		nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
-		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Check if safe
-			return (ERROR_LOG("fat: arch->size bad size."));
-		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
-		if (mach_o_function(nm_otool))
-			status = true;
+		if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
+			this_one = arch;
+		else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
+			this_one = arch;
+		//return (ERROR_LOG("fat: bad arch->cputype"));
 		nm_otool->file = file_data;
 		if (!(NEXT_STRUCT(arch)))
 			return (ERROR_LOG("fat: next arch beyond binary"));
 	}
-	return (status);
+	if (!this_one)
+		return (false);//Do some error message.
+		else if (SWAP_ENDIAN_FORCE(this_one->cputype) == CPU_TYPE_I386)
+		{
+			if (mach_fat_32_launch_mach_o(nm_otool, file_data, this_one, &mach_o_32_obj_handler))
+				return (true);
+		}
+		if (SWAP_ENDIAN_FORCE(this_one->cputype) == CPU_TYPE_X86_64)
+		{
+			if (mach_fat_32_launch_mach_o(nm_otool, file_data, this_one, &mach_o_64_obj_handler))
+				return (true);
+		}
+	return (false);
 }
+///
 
-static bool			mach_fat_32_handle_format(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
-{
-	if (!STRUCT_IS_SAFE(arch))
-		return (ERROR_LOG("fat: arch beyond binary"));
-	if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
-		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler));
-	else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
-		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler));
-	return (ERROR_LOG("fat: bad arch->cputype"));
-}
-
-bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
+bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;

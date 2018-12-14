@@ -3,23 +3,19 @@
 
 static bool	has_good_type(t_nm_otool *nm_otool)
 {
-	Elf32_Ehdr	*header;
+	uint16_t	type;
 
-	header = (Elf32_Ehdr*)nm_otool->file.memory;
-	if (header->e_type != ET_REL
-		&& header->e_type != ET_EXEC
-		&& header->e_type != ET_DYN)
-		return (false);
-	return (true);
+	type = SWAP_ENDIAN(((Elf32_Ehdr*)nm_otool->file.memory)->e_type);
+	return (type == ET_REL || type == ET_EXEC || type == ET_DYN);
 }
 
 bool		elf_obj_handler(t_nm_otool *nm_otool)
 {
 	if (!has_good_type(nm_otool))
 		return (ERROR_LOG("type not supported"));
-	if (nm_otool->file.format == ELF_32)
+	if (IS_ELF_32(nm_otool->file.format))
 		return (elf_32_obj_handler(nm_otool));
-	else if (nm_otool->file.format == ELF_64)
+	else if (IS_ELF_64(nm_otool->file.format))
 		return (elf_64_obj_handler(nm_otool));
 	return (ERROR_LOG("unrecognized format"));
 }
