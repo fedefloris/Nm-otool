@@ -99,7 +99,7 @@ do
 	if [ $DIFF_STATUS -eq 0 ] && [ $USE_VALGRIND -eq 1 ]
 	then
 		# Check errors with valgrind
-		valgrind -v --leak-check=full  \
+		valgrind -v --show-leak-kinds=definite,indirect \
 			--track-origins=yes \
 			--error-exitcode=2 \
 			--log-file=$VAL_LOG \
