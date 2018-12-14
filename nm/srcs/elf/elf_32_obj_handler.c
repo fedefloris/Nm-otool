@@ -4,14 +4,5 @@
 bool		elf_32_obj_handler(t_nm_otool *nm_otool)
 {
 	(void)nm_otool;
-	// Elf32_Ehdr	*header;
-	//
-	// if (!SET(header, nm_otool->file.memory)
-	// 	|| !STRUCT_IS_SAFE(header))
-	// 		return (ERROR_LOG("Not enough space for the ELF header"));
-	// if (header->e_shoff == 0)
-	// 	return (true);
-	// if (!elf_32_parse_section_headers(nm_otool, header))
-	// 	return (false);
 	return (true);
 }
