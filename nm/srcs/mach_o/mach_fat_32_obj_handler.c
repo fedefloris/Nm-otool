@@ -1,13 +1,11 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch, bool (*mach_o_function)(t_nm_otool *))
+static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *arch, bool (*mach_o_function)(t_nm_otool *))
 {
 	t_file			file_data;
 
-	file_data = nm_otool->file;
-	while (nfat_arch--)
-	{
+	file_data = nm_otool->file;//
 		if (!STRUCT_IS_SAFE(arch))
 			return (ERROR_LOG("fat: arch beyond binary"));
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
@@ -19,22 +17,34 @@ static bool			mach_fat_32_launch_mach_o(t_nm_otool *nm_otool, struct fat_arch *a
 		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
 		if (mach_o_function(nm_otool))
 			return (true);
-		nm_otool->file = file_data;
-		if (!(NEXT_STRUCT(arch)))
-			return (ERROR_LOG("fat: next arch beyond binary"));
-	}
 	return (false);
 }
 
 static bool			mach_fat_32_handle_format(t_nm_otool *nm_otool, struct fat_arch *arch, uint32_t nfat_arch)
 {
-	if (!STRUCT_IS_SAFE(arch))
-		return (ERROR_LOG("fat: arch beyond binary"));
-	if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
-		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_64_obj_handler));
-	else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
-		return (mach_fat_32_launch_mach_o(nm_otool, arch, nfat_arch, &mach_o_32_obj_handler));
-	return (ERROR_LOG("fat: bad arch->cputype"));
+	t_file			file_data;
+
+	file_data = nm_otool->file;//
+	while (nfat_arch--)
+	{
+		if (!STRUCT_IS_SAFE(arch))
+			return (ERROR_LOG("fat: arch beyond binary"));
+		if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
+		{
+			if (mach_fat_32_launch_mach_o(nm_otool, arch, &mach_o_64_obj_handler))
+				return (true);
+		}
+		else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
+		{
+			if (mach_fat_32_launch_mach_o(nm_otool, arch, &mach_o_32_obj_handler))
+				return (true);
+		}
+		return (ERROR_LOG("fat: bad arch->cputype"));
+		nm_otool->file = file_data;
+		if (!(NEXT_STRUCT(arch)))
+			return (ERROR_LOG("fat: next arch beyond binary"));
+	}
+	return (false);
 }
 
 bool				mach_fat_32_obj_handler(t_nm_otool *nm_otool)
