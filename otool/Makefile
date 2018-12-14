@@ -26,7 +26,7 @@ MAIN_FILES = archive \
 	macho_64 \
 	print \
 	otool \
-	otool_obj_handler
+	otool_obj_handler \
 	swap \
 
 SHARED_FILES = config_nm_otool \
