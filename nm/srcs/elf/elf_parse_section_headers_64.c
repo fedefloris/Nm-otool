@@ -32,10 +32,12 @@ static bool	set_header_str_section(t_nm_otool *nm_otool,
 	t_elf_symbols_info *info)
 {
 	Elf64_Off			sh_offset;
+	uint16_t			e_shstrndx;
 
-	if (!STRUCT_IS_SAFE(&section_headers[header->e_shstrndx]))
+	e_shstrndx = SWAP_ENDIAN(header->e_shstrndx);
+	if (!STRUCT_IS_SAFE(&section_headers[e_shstrndx]))
 		return (ERROR_LOG("e_shstrndx outside the section headers array"));
-	sh_offset = SWAP_ENDIAN(section_headers[header->e_shstrndx].sh_offset);
+	sh_offset = SWAP_ENDIAN(section_headers[e_shstrndx].sh_offset);
 	if (!SET(info->header_str_section, (char*)header + sh_offset))
 		return (ERROR_LOG("not enough space for the string table"));
 	return (true);
