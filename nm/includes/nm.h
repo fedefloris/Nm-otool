@@ -74,8 +74,8 @@ char			mach_o_get_type(uint8_t n_type,
 	uint64_t n_value, uint8_t n_sect, t_section *sections);
 
 bool			mach_o_archive(t_nm_otool *nm_otool);
-bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool);
-bool			mach_fat_64_obj_handler(t_nm_otool *nm_otool);
+bool			mach_o_fat_32(t_nm_otool *nm_otool);
+bool			mach_o_fat_64(t_nm_otool *nm_otool);
 
 bool			mach_o_create_section(t_section **sections,
 	char *sectname, unsigned char sec_number);

@@ -68,8 +68,8 @@ ifeq ($(OS_TYPE), Darwin)
 		mach_o_get_type \
 		mach_o_archive \
 		mach_o_obj_handler \
-		mach_fat_32_obj_handler \
-		mach_fat_64_obj_handler \
+		mach_o_fat_32 \
+		mach_o_fat_64 \
 		mach_o_create_section \
 		mach_o_get_sections_32 \
 		mach_o_32_obj_handler \

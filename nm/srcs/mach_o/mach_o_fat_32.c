@@ -46,7 +46,7 @@ static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 	return (false);
 }
 
-bool			mach_fat_32_obj_handler(t_nm_otool *nm_otool)
+bool			mach_o_fat_32(t_nm_otool *nm_otool)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;
