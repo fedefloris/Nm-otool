@@ -72,9 +72,9 @@ ifeq ($(OS_TYPE), Darwin)
 		mach_o_fat_64 \
 		mach_o_create_section \
 		mach_o_get_sections_32 \
-		mach_o_32_obj_handler \
+		mach_o_obj_handler_32 \
 		mach_o_get_sections_64 \
-		mach_o_64_obj_handler \
+		mach_o_obj_handler_64 \
 		mach_o_read_load_commands
 	SHARED_FILES += set_file_info_on_macos
 endif

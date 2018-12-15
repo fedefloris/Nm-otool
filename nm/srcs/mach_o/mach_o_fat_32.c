@@ -40,9 +40,9 @@ static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 			return (ERROR_LOG("fat: next arch beyond binary"));
 	}
 	if (type_64)
-		return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_64, &mach_o_64_obj_handler));
+		return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_64, &mach_o_obj_handler_64));
 	if (type_32)
-		return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_32, &mach_o_32_obj_handler));
+		return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_32, &mach_o_obj_handler_32));
 	return (false);
 }
 

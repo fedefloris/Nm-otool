@@ -62,7 +62,7 @@ static int			mach_o_64_get_first_load_command(t_nm_otool *nm_otool,
 	return ((STRUCT_IS_SAFE(header)) ? (int)header->ncmds : -1);
 }
 
-bool				mach_o_64_obj_handler(t_nm_otool *nm_otool)
+bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 {
 	int						number_of_commands;
 	t_lc					*lc;
