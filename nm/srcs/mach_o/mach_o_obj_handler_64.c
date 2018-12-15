@@ -15,7 +15,7 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 	while (i < symtab->nsyms)
 	{
 		if (!STRUCT_IS_SAFE(&array[i]))
-			return (ERROR_LOG("struct nlist_64 is not a good size"));
+			return (ERROR_LOG("struct nlist is not a good size"));
 		if (!SET(str, stringtable + array[i].n_un.n_strx))
 			return (ERROR_LOG("symbol name goes beyond the binary limit"));
 		if (!string_is_safe(nm_otool, str))
@@ -23,7 +23,7 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 		if ((array[i].n_type & N_STAB) == 0)
 			if (!(add_symbol(symbols, array[i].n_value,
 					mach_o_get_type(array[i].n_type,
-					array[i].n_value,
+					(uint64_t)array[i].n_value,
 					array[i].n_sect, sections), str)))
 				return (ERROR_LOG("malloc failed: t_symbol symbol"));
 		i++;
