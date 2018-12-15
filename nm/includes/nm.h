@@ -36,15 +36,21 @@ bool			obj_handler(t_nm_otool *nm_otool);
 bool			elf_obj_handler(t_nm_otool *nm_otool);
 
 bool			elf_obj_handler_32(t_nm_otool *nm_otool);
+bool			elf_parse_section_headers_32(t_nm_otool *nm_otool,
+	Elf32_Ehdr *header);
+bool			elf_parse_section_header_32(t_nm_otool *nm_otool,
+	Elf32_Shdr	*section_header, t_elf_symbols_info *info);
+bool			elf_set_symbols_32(t_nm_otool *nm_otool,
+	Elf32_Shdr	*section_header, t_elf_symbols_info *info);
 
 bool			elf_obj_handler_64(t_nm_otool *nm_otool);
 bool			elf_parse_section_headers_64(t_nm_otool *nm_otool,
 	Elf64_Ehdr *header);
 bool			elf_parse_section_header_64(t_nm_otool *nm_otool,
 	Elf64_Shdr	*section_header, t_elf_symbols_info *info);
-
 bool			elf_set_symbols_64(t_nm_otool *nm_otool,
 	Elf64_Shdr	*section_header, t_elf_symbols_info *info);
+
 char			elf_get_type(t_elf_symbols_info	*info);
 char			elf_get_type_from_section(t_elf_symbols_info *info);
 char			elf_get_type_from_flags(t_elf_symbols_info *info);
