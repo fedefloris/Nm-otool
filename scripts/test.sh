@@ -70,6 +70,7 @@ then
 fi
 
 # Print initial info
+echo "${WHITE}"
 echo "Testing all files in ${DIR}/\n"
 
 # Iterate files
