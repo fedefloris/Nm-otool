@@ -87,7 +87,7 @@ bool			mach_o_get_sections_32(t_nm_otool *nm_otool,
 	t_section **sections, struct segment_command *segment, bool reset);
 
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);
-bool			mach_o_64_get_sections(t_nm_otool *nm_otool,
+bool			mach_o_get_sections_64(t_nm_otool *nm_otool,
 	t_section **sections, struct segment_command_64 *segment, bool reset);
 t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool,
 	t_lc *lc, t_section **sections, int number_of_commands);
