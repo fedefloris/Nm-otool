@@ -83,7 +83,7 @@ bool			mach_o_create_section(t_section **sections,
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
 
 bool			mach_o_32_obj_handler(t_nm_otool *nm_otool);
-bool			mach_o_32_get_sections(t_nm_otool *nm_otool,
+bool			mach_o_get_sections_32(t_nm_otool *nm_otool,
 	t_section **sections, struct segment_command *segment, bool reset);
 
 bool			mach_o_64_obj_handler(t_nm_otool *nm_otool);

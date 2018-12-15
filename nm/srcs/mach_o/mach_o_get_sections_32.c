@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-bool				mach_o_32_get_sections(t_nm_otool *nm_otool,
+bool				mach_o_get_sections_32(t_nm_otool *nm_otool,
 		t_section **sections, struct segment_command *segment, bool reset)
 {
 	uint32_t				i;
