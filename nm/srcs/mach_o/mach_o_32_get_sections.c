@@ -16,7 +16,7 @@ bool				mach_o_32_get_sections(t_nm_otool *nm_otool,
 	i = 0;
 	if(!SET(sec, segment + sizeof(*segment)))
 		return (ERROR_LOG("section beyond binary"));
-	while (i++ < segment->nsects)
+	while (i++ < SWAP_ENDIAN(segment->nsects))
 	{
 		if (!STRUCT_IS_SAFE(sec))
 			return (ERROR_LOG("section beyond binary"));
