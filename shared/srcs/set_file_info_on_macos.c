@@ -25,8 +25,6 @@ static bool	set_fat_format(t_nm_otool *nm_otool, uint32_t magic_number)
 	else
 		return (false);
 	nm_otool->file.endian_is_reversed = false;
-	if (magic_number == FAT_CIGAM || magic_number == FAT_CIGAM_64)
-		nm_otool->file.endian_is_reversed = true;
 	return (true);
 }
 
