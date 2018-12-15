@@ -11,8 +11,7 @@ static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	nm_otool->file.name = file_data.name;
 	nm_otool->file.size = SWAP_ENDIAN_FORCE(arch->size);
 	nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
-	if ((nm_otool->file.end_of_file = file_data.memory
-		+ file_data.size - 1) > file_data.end_of_file) //Check if safe
+	if ((nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1) > file_data.end_of_file)
 		return (ERROR_LOG("fat: arch->size bad size."));
 	nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
 	return (mach_o_function(nm_otool));
