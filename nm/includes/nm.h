@@ -8,15 +8,17 @@ typedef struct		s_symbol
 {
 	char			*name;
 	char			type;
-	uint64_t		value;
 
 	struct s_symbol	*next;
 	struct s_symbol	*last;
+	uint64_t		value;
 }					t_symbol;
 
 typedef struct		s_elf_symbols_info
 {
+	char			*header_str_section;
 	char			*str_section;
+	char			*sh_name;
 
 	t_symbol		*symbols;
 	uint16_t		index;
@@ -43,7 +45,9 @@ bool			elf_64_parse_section_header(t_nm_otool *nm_otool,
 
 bool			elf_64_set_symbols(t_nm_otool *nm_otool,
 	Elf64_Shdr	*section_header, t_elf_symbols_info *info);
-char			elf_get_symbol_type(t_elf_symbols_info	*info);
+char			elf_get_type(t_elf_symbols_info	*info);
+char			elf_get_type_from_section(t_elf_symbols_info *info);
+char			elf_get_type_from_flags(t_elf_symbols_info *info);
 
 bool			add_symbol(t_symbol **symbols, uint64_t n_value,
 	char type, char *name);

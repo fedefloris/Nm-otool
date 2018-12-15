@@ -20,6 +20,11 @@ static bool	parse_section_headers(t_nm_otool *nm_otool,
 		sh_offset = SWAP_ENDIAN(section_headers[link_index].sh_offset);
 		if (!SET(info->str_section, (char*)header + sh_offset))
 			return (ERROR_LOG("not enough space for the string table"));
+		if (!STRUCT_IS_SAFE(&section_headers[header->e_shstrndx]))
+			return (ERROR_LOG("e_shstrndx outside the section headers array"));
+		sh_offset = SWAP_ENDIAN(section_headers[header->e_shstrndx].sh_offset);
+		if (!SET(info->header_str_section, (char*)header + sh_offset))
+			return (ERROR_LOG("not enough space for the string table"));
 		if (!elf_64_parse_section_header(nm_otool, section_headers, info))
 			return (false);
 		info->index++;

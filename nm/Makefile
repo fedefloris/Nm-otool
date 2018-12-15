@@ -42,7 +42,9 @@ ELF_FILES = elf_32_obj_handler \
 	elf_64_parse_section_header \
 	elf_64_parse_section_headers \
 	elf_64_set_symbols \
-	elf_get_symbol_type \
+	elf_get_type \
+	elf_get_type_from_section \
+	elf_get_type_from_flags \
 	elf_obj_handler
 
 SHARED_FILES = config_nm_otool \
