@@ -26,6 +26,7 @@ char		elf_get_type(t_elf_symbols_info *info)
 	st_bind = ELF32_ST_BIND(info->st_info);
 	if ((type = get_type(info, st_bind)) != '?')
 		return (type);
-	type = elf_get_type_from_section(info);
+	if ((type = elf_get_type_from_section(info)) == '?')
+		type = elf_get_type_from_flags(info);
 	return (st_bind == STB_LOCAL ? type : ft_toupper(type));
 }

@@ -17,7 +17,7 @@ static bool	is_text_section(char *sh_name)
 		|| !ft_strcmp(sh_name, ".init_array"));
 }
 
-char	elf_get_type_from_section(t_elf_symbols_info *info)
+char		elf_get_type_from_section(t_elf_symbols_info *info)
 {
 	if (!ft_strcmp(info->sh_name, ".bss"))
 		return ('b');
