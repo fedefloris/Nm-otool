@@ -87,12 +87,12 @@ static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 //}
 /////
 
-/// V1
+/// V3
 /// Gets first match and returns it.
 static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 	struct fat_arch *arch, uint32_t nfat_arch)
 {
-	t_file			file_data;
+	t_file				file_data;
 	struct fat_arch		*type_64;
 	struct fat_arch		*type_32;
 
@@ -103,19 +103,10 @@ static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 	{
 		if (!STRUCT_IS_SAFE(arch))
 			return (ERROR_LOG("fat: arch beyond binary"));
-		if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
-		{
+		if (!type_64 && SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_X86_64)
 			type_64 = arch;
-			//if (mach_fat_32_launch_mach_o(nm_otool, file_data, arch, &mach_o_64_obj_handler))
-			//	return (true);
-		}
-		else if (SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
-		{
+		else if (!type_32 && SWAP_ENDIAN_FORCE(arch->cputype) == CPU_TYPE_I386)
 			type_32 = arch;
-			//if (mach_fat_32_launch_mach_o(nm_otool, file_data, arch, &mach_o_32_obj_handler))
-			//	return (true);
-		}
-		//return (ERROR_LOG("fat: bad arch->cputype"));
 		nm_otool->file = file_data;
 		if (!(NEXT_STRUCT(arch)))
 			return (ERROR_LOG("fat: next arch beyond binary"));
