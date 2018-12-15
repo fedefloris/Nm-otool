@@ -15,11 +15,11 @@ bool				mach_o_64_get_sections(t_nm_otool *nm_otool,
 	}
 	i = 0;
 	if(!SET(sec, segment + sizeof(*segment)))
-		return (ERROR_LOG("section_64 beyond binary"));
+		return (ERROR_LOG("section beyond binary"));
 	while (i++ < segment->nsects)
 	{
 		if (!STRUCT_IS_SAFE(sec))
-			return (ERROR_LOG("section_64 beyond binary"));
+			return (ERROR_LOG("section beyond binary"));
 		if (!string_is_safe(nm_otool, (char *)sec->sectname))
 			return (ERROR_LOG("sec->sect_name is beyond binary"));
 		if (!ft_strcmp(sec->sectname, SECT_DATA)
@@ -28,7 +28,7 @@ bool				mach_o_64_get_sections(t_nm_otool *nm_otool,
 			if (!(mach_o_create_section(sections, sec->sectname, sec_number)))
 				return (ERROR_LOG("malloc failed: create section"));
 		if (!(NEXT_STRUCT(sec)))
-			return (ERROR_LOG("section_64 beyond binary"));
+			return (ERROR_LOG("section beyond binary"));
 		sec_number++;
 	}
 	return (true);
