@@ -25,14 +25,14 @@ static bool	parse_section_headers(t_nm_otool *nm_otool,
 		sh_offset = SWAP_ENDIAN(section_headers[header->e_shstrndx].sh_offset);
 		if (!SET(info->header_str_section, (char*)header + sh_offset))
 			return (ERROR_LOG("not enough space for the string table"));
-		if (!elf_64_parse_section_header(nm_otool, section_headers, info))
+		if (!elf_parse_section_header_64(nm_otool, section_headers, info))
 			return (false);
 		info->index++;
 	}
 	return (true);
 }
 
-bool		elf_64_parse_section_headers(t_nm_otool *nm_otool,
+bool		elf_parse_section_headers_64(t_nm_otool *nm_otool,
 	Elf64_Ehdr *header)
 {
 	Elf64_Shdr			*section_headers;

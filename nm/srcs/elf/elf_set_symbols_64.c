@@ -36,7 +36,7 @@ static bool		set_symbol(t_nm_otool *nm_otool,
 		info->str_section + SWAP_ENDIAN(sym->st_name)));
 }
 
-bool			elf_64_set_symbols(t_nm_otool *nm_otool,
+bool			elf_set_symbols_64(t_nm_otool *nm_otool,
 	Elf64_Shdr *section_headers, t_elf_symbols_info *info)
 {
 	uint64_t		symbols_count;

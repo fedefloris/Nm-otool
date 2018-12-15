@@ -37,11 +37,11 @@ SYMBOLS_FILES = add_symbol \
 
 MACH_O_FILES =
 
-ELF_FILES = elf_32_obj_handler \
-	elf_64_obj_handler \
-	elf_64_parse_section_header \
-	elf_64_parse_section_headers \
-	elf_64_set_symbols \
+ELF_FILES = elf_obj_handler_32 \
+	elf_obj_handler_64 \
+	elf_parse_section_header_64 \
+	elf_parse_section_headers_64 \
+	elf_set_symbols_64 \
 	elf_get_type \
 	elf_get_type_from_section \
 	elf_get_type_from_flags \

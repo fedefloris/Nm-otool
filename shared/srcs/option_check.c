@@ -14,7 +14,5 @@ bool		option_check(unsigned long options, char c)
 	else
 		return (false);
 	mask <<= c;
-	if ((options & mask) == mask)
-		return (true);
-	return (false);
+	return ((options & mask) == mask);
 }
