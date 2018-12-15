@@ -11,7 +11,7 @@ static void		set_symbol_info(t_nm_otool *nm_otool,
 	info->st_info = SWAP_ENDIAN(sym->st_info);
 	info->sh_flags = 0;
 	info->sh_type = 0;
-	info->sh_name = NULL;
+	info->sh_name = "";
 	section_header = &section_headers[info->st_shndx];
 	if (info->st_shndx != SHN_UNDEF
 		&& STRUCT_IS_SAFE(section_header))
@@ -21,7 +21,7 @@ static void		set_symbol_info(t_nm_otool *nm_otool,
 		info->sh_name = info->header_str_section
 			+ SWAP_ENDIAN(section_header->sh_name);
 		if (!STRING_IS_SAFE(info->sh_name))
-			info->sh_name = NULL;
+			info->sh_name = "";
 	}
 }
 
