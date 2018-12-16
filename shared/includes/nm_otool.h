@@ -33,14 +33,15 @@
 # define ERROR_LOG(x) error_log(nm_otool->file.name, x)
 # define WARNING_LOG(x) warning_log(nm_otool->file.name, x)
 
-# define MACH_O_FAT_32 1
-# define MACH_O_FAT_64 2
-# define MACH_O_ARCHIVE 3
+# define ARCHIVE 1
+# define MACH_O_FAT_32 2
+# define MACH_O_FAT_64 3
 # define MACH_O_32 4
 # define MACH_O_64 5
 # define ELF_32 6
 # define ELF_64 7
 
+# define IS_ARCHIVE(x) x == ARCHIVE
 # define IS_ELF_32(x) x == ELF_32
 # define IS_ELF_64(x) x == ELF_64
 # define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
@@ -103,6 +104,7 @@ char				*find_binary(t_nm_otool *nm_otool);
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
 
+bool				set_archive_format(t_nm_otool *nm_otool);
 bool				set_file_info_on_linux(t_nm_otool *nm_otool);
 bool				has_good_elf_magic_number(Elf32_Ehdr *header);
 

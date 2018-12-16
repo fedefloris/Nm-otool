@@ -43,6 +43,7 @@ SHARED_FILES = config_nm_otool \
 	option_check \
 	options \
 	set_file \
+	set_archive_format \
 	set_file_info \
 	set_file_info_on_linux \
 	string_is_safe \

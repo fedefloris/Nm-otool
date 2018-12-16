@@ -25,6 +25,7 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 
 MAIN_FILES = display_usage \
 	nm \
+	archive_handler \
 	obj_handler
 
 SYMBOLS_FILES = add_symbol \
@@ -62,6 +63,7 @@ SHARED_FILES = config_nm_otool \
 	option_check \
 	options \
 	set_file \
+	set_archive_format \
 	set_file_info \
 	set_file_info_on_linux \
 	string_is_safe \
@@ -71,7 +73,6 @@ SHARED_FILES = config_nm_otool \
 ifeq ($(OS_TYPE), Darwin)
 	MACH_O_FILES +=	mach_o_free_sections \
 		mach_o_get_type \
-		mach_o_archive \
 		mach_o_obj_handler \
 		mach_o_fat_32 \
 		mach_o_fat_64 \

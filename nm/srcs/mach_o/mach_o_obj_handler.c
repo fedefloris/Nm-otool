@@ -13,7 +13,5 @@ bool		mach_o_obj_handler(t_nm_otool *nm_otool)
 		return (mach_o_fat_32(nm_otool));
 	if (nm_otool->file.format == MACH_O_FAT_64)
 		return (mach_o_fat_64(nm_otool));
-	if (nm_otool->file.format == MACH_O_ARCHIVE)
-		return (mach_o_archive(nm_otool));
 	return (ERROR_LOG("Unrecognized format"));
 }
