@@ -25,7 +25,7 @@ bool				mach_o_get_sections_32(t_nm_otool *nm_otool,
 		if (!ft_strcmp(sec->sectname, SECT_DATA)
 				|| !ft_strcmp(sec->sectname, SECT_BSS)
 				|| !ft_strcmp(sec->sectname, SECT_TEXT))
-			sections[i] = (uint8_t *)sec->sectname;
+			sections[sec_number] = (uint8_t *)sec->sectname;
 		if (!(NEXT_STRUCT(sec)))
 			return (ERROR_LOG("section beyond binary"));
 		sec_number++;
