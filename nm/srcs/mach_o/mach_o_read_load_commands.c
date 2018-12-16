@@ -2,7 +2,7 @@
 #include "nm.h"
 
 t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
-		t_lc *lc, t_section **sections, int number_of_commands)
+		t_lc *lc, uint8_t **sections, int number_of_commands)
 {
 	t_sym			*symtab;
 

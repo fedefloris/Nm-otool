@@ -2,7 +2,7 @@
 #include "nm.h"
 
 bool				mach_o_get_sections_32(t_nm_otool *nm_otool,
-		t_section **sections, struct segment_command *segment, bool reset)
+		uint8_t **sections, struct segment_command *segment, bool reset)
 {
 	uint32_t				i;
 	static unsigned char	sec_number = 1;
@@ -25,8 +25,7 @@ bool				mach_o_get_sections_32(t_nm_otool *nm_otool,
 		if (!ft_strcmp(sec->sectname, SECT_DATA)
 				|| !ft_strcmp(sec->sectname, SECT_BSS)
 				|| !ft_strcmp(sec->sectname, SECT_TEXT))
-			if (!(mach_o_create_section(sections, sec->sectname, sec_number)))
-				return (ERROR_LOG("malloc failed: create section"));
+			sections[i] = (uint8_t *)sec->sectname;
 		if (!(NEXT_STRUCT(sec)))
 			return (ERROR_LOG("section beyond binary"));
 		sec_number++;

@@ -71,36 +71,25 @@ t_symbol		*merge_sort_symbols(t_symbol *head, int (*cmp)());
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_sym;
 
-typedef struct			s_section
-{
-	char				*name;
-	uint8_t				sec_number;
-
-	struct s_section	*next;
-}						t_section;
-
-bool			mach_o_free_sections(t_section *sections);
+bool			mach_o_free_sections(uint8_t **sections);
 char			mach_o_get_type(uint8_t n_type,
-	uint64_t n_value, uint8_t n_sect, t_section *sections);
+	uint64_t n_value, uint8_t n_sect, uint8_t **sections);
 
 bool			mach_o_archive(t_nm_otool *nm_otool);
 bool			mach_o_fat_32(t_nm_otool *nm_otool);
 bool			mach_o_fat_64(t_nm_otool *nm_otool);
 
-bool			mach_o_create_section(t_section **sections,
-	char *sectname, unsigned char sec_number);
-
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
 
 bool			mach_o_obj_handler_32(t_nm_otool *nm_otool);
 bool			mach_o_get_sections_32(t_nm_otool *nm_otool,
-	t_section **sections, struct segment_command *segment, bool reset);
+	uint8_t **sections, struct segment_command *segment, bool reset);
 
 bool			mach_o_obj_handler_64(t_nm_otool *nm_otool);
 bool			mach_o_get_sections_64(t_nm_otool *nm_otool,
-	t_section **sections, struct segment_command_64 *segment, bool reset);
+	uint8_t **sections, struct segment_command_64 *segment, bool reset);
 t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool,
-	t_lc *lc, t_section **sections, int number_of_commands);
+	t_lc *lc, uint8_t **sections, int number_of_commands);
 
 # else
 

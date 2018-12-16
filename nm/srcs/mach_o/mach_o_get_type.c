@@ -2,27 +2,19 @@
 #include "nm.h"
 
 static char			get_type_section(char type,
-		uint8_t n_sect, t_section *sections)
+		uint8_t n_sect, uint8_t **sections)
 {
-	while (sections)
-	{
-		if (n_sect == sections->sec_number)
-			break ;
-		sections = sections->next;
-	}
-	if (!sections)
-		type = 'S';
-	else
-	{
-		type = (!ft_strcmp(sections->name, SECT_BSS)) ? 'B' : type;
-		type = (!ft_strcmp(sections->name, SECT_DATA)) ? 'D' : type;
-		type = (!ft_strcmp(sections->name, SECT_TEXT)) ? 'T' : type;
-	}
+	if (!ft_strcmp((char *)sections[n_sect], SECT_BSS))
+		return ('B');
+	if (!ft_strcmp((char *)sections[n_sect], SECT_DATA))
+		return ('D');
+	if (!ft_strcmp((char *)sections[n_sect], SECT_TEXT))
+		return ('T');
 	return (type);
 }
 
 char				mach_o_get_type(uint8_t n_type, uint64_t n_value,
-		uint8_t n_sect, t_section *sections)
+		uint8_t n_sect, uint8_t **sections)
 {
 	char			type;
 

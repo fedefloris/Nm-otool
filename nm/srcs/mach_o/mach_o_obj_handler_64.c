@@ -2,7 +2,7 @@
 #include "nm.h"
 
 static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
-		struct nlist_64 *array, t_section *sections,
+		struct nlist_64 *array, uint8_t **sections,
 		t_symbol **symbols, t_sym *symtab)
 {
 	uint32_t		i;
@@ -32,7 +32,7 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 }
 
 static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
-		t_sym *symtab, t_section *sections)
+		t_sym *symtab, uint8_t **sections)
 {
 	struct nlist_64	*array;
 	t_symbol		*symbols;
@@ -67,14 +67,15 @@ bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 	int						number_of_commands;
 	t_lc					*lc;
 	t_sym					*symtab;
-	t_section				*sections;
+	uint8_t					**sections;
 
-	sections = NULL;
+	if (!(sections = (uint8_t **)ft_memalloc(sizeof(uint8_t *) * 256)))
+		return (ERROR_LOG("malloc failed: sections"));
 	if ((number_of_commands =
 			mach_o_64_get_first_load_command(nm_otool, &lc)) < 0)
 		return (mach_o_free_sections(sections));
 	if ((symtab = mach_o_read_load_commands(nm_otool, lc,
-			&sections, number_of_commands)))
+			sections, number_of_commands)))
 		return (mach_o_64_get_symbols(nm_otool, symtab, sections));
 	return (true);//Is this good or bad? TRUE/FALSE?
 }
