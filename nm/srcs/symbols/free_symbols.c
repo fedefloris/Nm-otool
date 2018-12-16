@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-bool				free_symbols(t_symbol *symbols)
+bool			free_symbols(t_symbol *symbols)
 {
 	t_symbol		*tmp;
 

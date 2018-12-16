@@ -14,7 +14,7 @@ static t_symbol	*create_symbol(uint64_t n_value, char type,
 	return (new);
 }
 
-static void 		append_to_symbols(t_symbol **symbols,
+static void 	append_to_symbols(t_symbol **symbols,
 	t_symbol *new)
 {
 	if (!*symbols)
@@ -29,7 +29,7 @@ static void 		append_to_symbols(t_symbol **symbols,
 	}
 }
 
-bool						add_symbol(t_symbol **symbols,
+bool			add_symbol(t_symbol **symbols,
 	uint64_t n_value, char type, char *name)
 {
 	t_symbol		*new;
