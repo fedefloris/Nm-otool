@@ -4,11 +4,11 @@
 static char			get_type_section(char type,
 		uint8_t n_sect, uint8_t **sections)
 {
-	if (!ft_strcmp((char *)sections[n_sect], SECT_BSS))
+	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_BSS))
 		return ('B');
-	if (!ft_strcmp((char *)sections[n_sect], SECT_DATA))
+	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_DATA))
 		return ('D');
-	if (!ft_strcmp((char *)sections[n_sect], SECT_TEXT))
+	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_TEXT))
 		return ('T');
 	return (type);
 }
