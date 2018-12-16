@@ -29,10 +29,14 @@ static bool		set_symbol(t_nm_otool *nm_otool,
 	Elf32_Shdr *section_headers, Elf32_Sym *sym,
 	t_elf_symbols_info *info)
 {
+	char	type;
+
 	set_symbol_info(nm_otool, section_headers, sym, info);
+	type = elf_get_type(info);
+	if (ft_tolower(type) == 'a' && !sym->st_value)
+		return (true);
 	return (add_symbol(&info->symbols,
-		SWAP_ENDIAN(sym->st_value),
-		elf_get_type(info),
+		SWAP_ENDIAN(sym->st_value), type,
 		info->str_section + SWAP_ENDIAN(sym->st_name)));
 }
 
