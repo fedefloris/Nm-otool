@@ -10,7 +10,7 @@
 // initial entry is set to zero.  An object file does  not  have  sections  for
 // these special indices
 
-bool		elf_64_obj_handler(t_nm_otool *nm_otool)
+bool		elf_obj_handler_64(t_nm_otool *nm_otool)
 {
 	Elf64_Ehdr	*header;
 
@@ -19,5 +19,5 @@ bool		elf_64_obj_handler(t_nm_otool *nm_otool)
 			return (ERROR_LOG("not enough space for the ELF header"));
 	if (header->e_shoff == 0)
 		return (true);
-	return (elf_64_parse_section_headers(nm_otool, header));
+	return (elf_parse_section_headers_64(nm_otool, header));
 }

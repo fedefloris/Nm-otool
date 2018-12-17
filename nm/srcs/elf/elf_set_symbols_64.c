@@ -2,33 +2,45 @@
 #include "nm.h"
 
 static void		set_symbol_info(t_nm_otool *nm_otool,
-	Elf64_Sym *sym, Elf64_Shdr *section_header,
-	t_elf_symbols_info *info)
+	Elf64_Shdr *section_headers,
+	Elf64_Sym *sym, t_elf_symbols_info *info)
 {
+	Elf64_Shdr *section_header;
+
 	info->st_shndx = SWAP_ENDIAN(sym->st_shndx);
 	info->st_info = SWAP_ENDIAN(sym->st_info);
 	info->sh_flags = 0;
 	info->sh_type = 0;
+	info->sh_name = "";
+	section_header = &section_headers[info->st_shndx];
 	if (info->st_shndx != SHN_UNDEF
 		&& STRUCT_IS_SAFE(section_header))
 	{
 		info->sh_flags = SWAP_ENDIAN(section_header->sh_flags);
 		info->sh_type = SWAP_ENDIAN(section_header->sh_type);
+		info->sh_name = info->header_str_section
+			+ SWAP_ENDIAN(section_header->sh_name);
+		if (!STRING_IS_SAFE(info->sh_name))
+			info->sh_name = "";
 	}
 }
 
 static bool		set_symbol(t_nm_otool *nm_otool,
-	Elf64_Sym *sym, Elf64_Shdr *section_header,
+	Elf64_Shdr *section_headers, Elf64_Sym *sym,
 	t_elf_symbols_info *info)
 {
-	set_symbol_info(nm_otool, sym, section_header, info);
+	char	type;
+
+	set_symbol_info(nm_otool, section_headers, sym, info);
+	type = elf_get_type(info);
+	if (ft_tolower(type) == 'a' && !sym->st_value)
+		return (true);
 	return (add_symbol(&info->symbols,
-		SWAP_ENDIAN(sym->st_value),
-		elf_get_symbol_type(info),
+		SWAP_ENDIAN(sym->st_value), type,
 		info->str_section + SWAP_ENDIAN(sym->st_name)));
 }
 
-bool			elf_64_set_symbols(t_nm_otool *nm_otool,
+bool			elf_set_symbols_64(t_nm_otool *nm_otool,
 	Elf64_Shdr *section_headers, t_elf_symbols_info *info)
 {
 	uint64_t		symbols_count;
@@ -47,8 +59,7 @@ bool			elf_64_set_symbols(t_nm_otool *nm_otool,
 		if (!STRING_IS_SAFE(info->str_section
 			+ SWAP_ENDIAN(sym->st_name)))
 			return (ERROR_LOG("symbol name outside string table"));
-		if (!set_symbol(nm_otool, sym,
-			&section_headers[SWAP_ENDIAN(sym->st_shndx)], info))
+		if (!set_symbol(nm_otool, section_headers, sym, info))
 			return (ERROR_LOG("failed while adding a symbol"));
 		sym++;
 	}

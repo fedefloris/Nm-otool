@@ -70,6 +70,7 @@ then
 fi
 
 # Print initial info
+echo "${WHITE}"
 echo "Testing all files in ${DIR}/\n"
 
 # Iterate files
@@ -91,7 +92,7 @@ do
 		# Add failure to diff_report
 		echo ********************START $f >> $REPORT;
 		cat $DIFF_LOG >> $REPORT
-		echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $REPORT;
+		echo ********************END $f \\n\\n\\n\\n\\n\\n\\n\\n\\n >> $REPORT;
 		STATUS=1
 		DIFF_STATUS=1
 	fi
@@ -114,7 +115,7 @@ do
 			# Add failure to valgrind_report
 			echo ********************START $f >> $VAL_REPORT;
 			cat $VAL_LOG >> $VAL_REPORT
-			echo ********************END\\n\\n\\n\\n\\n\\n\\n\\n\\n $f >> $VAL_REPORT;
+			echo ******************** $f END\\n\\n\\n\\n\\n\\n\\n\\n\\n >> $VAL_REPORT;
 			STATUS=1
 		fi
 	fi

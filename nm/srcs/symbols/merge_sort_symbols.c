@@ -38,7 +38,7 @@ static t_symbol	*merge_sort(t_symbol *head, int (*cmp)())
 	return (merge(merge_sort(head, cmp), merge_sort(after_middle,cmp), cmp));
 }
 
-t_symbol				*merge_sort_symbols(t_symbol *head, int (*cmp)())
+t_symbol		*merge_sort_symbols(t_symbol *head, int (*cmp)())
 {
 	return (merge_sort(head, cmp));
 }

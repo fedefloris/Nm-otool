@@ -27,7 +27,7 @@ bool     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
         ft_bzero(&nm_otool.file, sizeof(t_file));
         nm_otool.file.memory = (void *)ar_ptr + sizeof(struct ar_hdr)\
                  + ar_name_len;
-        nm_otool.file.format = MACH_O_ARCHIVE;
+        nm_otool.file.format = ARCHIVE;
         otool_obj_handler(&nm_otool);
         if ((void *)(ar_ptr = (void *)ar_ptr + ar_size + sizeof(struct ar_hdr)) >= (void *)file->memory + file->size)
             ar_ptr = NULL;

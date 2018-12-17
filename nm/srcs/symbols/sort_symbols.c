@@ -11,7 +11,7 @@ static int	cmp_name_descendent(t_symbol *sym1, t_symbol *sym2)
 	return (-cmp_name_ascendent(sym1, sym2));
 }
 
-void			sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols)
+void		sort_symbols(t_nm_otool *nm_otool, t_symbol **symbols)
 {
 	int (*cmp)();
 
