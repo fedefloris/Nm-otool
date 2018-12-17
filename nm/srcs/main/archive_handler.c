@@ -49,24 +49,25 @@ static bool		handle_archive_objects(t_nm_otool *nm_otool,
 	file_data = nm_otool->file;
 	while (true)
 	{
-		if (!string_is_safe(nm_otool, ar_ptr->ar_name))
-			return (ERROR_LOG("archive: file_name beyond binary"));
-		ft_printf("\n%s(%s):\n", nm_otool->file.name, ar_ptr->ar_name);
 		if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
 			return (ERROR_LOG("archive: ar_size bad format"));
 		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
 			return (ERROR_LOG("archive: ar_name_len bad format"));
+		// if (!string_is_safe(nm_otool, ar_ptr->ar_name))
+		// 	return (ERROR_LOG("archive: file_name beyond binary"));
+		ft_printf("\n%s(%s):\n", nm_otool->file.name, ar_ptr->ar_name);
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = (off_t)ar_size;//Check is safe.
 		nm_otool->file.memory = (char *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
 		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Inspect for godd logic.
-			return (ERROR_LOG("archive: ar_size bad size."));
+			return (ERROR_LOG("archive: ar_size bad size"));
 		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
 		if (!SET_FILE_INFO(nm_otool) || !obj_handler(nm_otool))
 			status = false;
 		nm_otool->file = file_data;
-		if (!SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr)))
+		if (!SET(ar_ptr, (char*)(ar_ptr + 1) + ar_size)
+			|| !STRUCT_IS_SAFE(ar_ptr))
 			break ;
 	}
 	return (status);
@@ -79,10 +80,11 @@ bool			archive_handler(t_nm_otool *nm_otool)
 
 	if(!SET(ar_ptr, nm_otool->file.memory + SARMAG)
 		|| !STRUCT_IS_SAFE(ar_ptr))
-		return (ERROR_LOG(""));
+		return (ERROR_LOG("archive: not enough space for ar_hdr"));
 	if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
-		return (ERROR_LOG(""));
-	if (!SET(ar_ptr, (char*)(ar_ptr + 1) + ar_size))
-		return (ERROR_LOG(""));
+		return (ERROR_LOG("archive: ar_size bad format"));
+	if (!SET(ar_ptr, (char*)(ar_ptr + 1) + ar_size)
+		|| !STRUCT_IS_SAFE(ar_ptr))
+		return (ERROR_LOG("archive: not enough space for ar_hdr"));
 	return (handle_archive_objects(nm_otool, ar_ptr));
 }
