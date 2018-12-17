@@ -69,7 +69,7 @@ bool     macho_32(t_file *file)
     struct load_command         *lcmd;
     uint32_t                    i;
 
-    if (file->format != MACH_O_ARCHIVE
+    if (file->format != ARCHIVE
 			&& file->format != FAT)
         ft_printf("%s:\n", file->name);
     header = (struct mach_header *)file->memory;
