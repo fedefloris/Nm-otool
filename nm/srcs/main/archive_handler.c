@@ -25,7 +25,7 @@ static int		get_ar_name_length(t_nm_otool *nm_otool,
 	while (get_safe_address(nm_otool, ptr))
 	{
 		if (*ptr && *ptr == '/')
-			return (safe_atoi(nm_otool, ptr + 1));
+			return (ptr - ar_name);
 		ptr++;
 	}
 	return (-1);
@@ -43,6 +43,7 @@ static bool		handle_archive_objects(t_nm_otool *nm_otool,
 	int				ar_size;
 	int				ar_name_len;
 	bool			status;
+	char			file_name[16];
 	t_file			file_data;
 
 	status = true;
@@ -53,9 +54,11 @@ static bool		handle_archive_objects(t_nm_otool *nm_otool,
 			return (ERROR_LOG("archive: ar_size bad format"));
 		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
 			return (ERROR_LOG("archive: ar_name_len bad format"));
-		// if (!string_is_safe(nm_otool, ar_ptr->ar_name))
+		ft_bzero(file_name, 16);
+		ft_strncpy(file_name, ar_ptr->ar_name, ar_name_len);
+		ft_printf("\n%s(%s):\n", nm_otool->file.name, file_name);
+		// if (!string_is_safe(nm_otool, file_name))
 		// 	return (ERROR_LOG("archive: file_name beyond binary"));
-		ft_printf("\n%s(%s):\n", nm_otool->file.name, ar_ptr->ar_name);
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = (off_t)ar_size;//Check is safe.
