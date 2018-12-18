@@ -16,8 +16,9 @@ static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 	return (-1);
 }
 
-static int		get_ar_name_length(t_nm_otool *nm_otool,
-	char *ar_name)//Super unsafe function.
+
+static int			get_ar_name_length(t_nm_otool *nm_otool,
+	char *ar_name) // Super unsafe function.
 {
 	char			*ptr;
 
@@ -25,7 +26,7 @@ static int		get_ar_name_length(t_nm_otool *nm_otool,
 	while (get_safe_address(nm_otool, ptr))
 	{
 		if (*ptr && *ptr == '/')
-			return (ptr - ar_name);
+			return (safe_atoi(nm_otool, ptr + 1));
 		ptr++;
 	}
 	return (-1);
