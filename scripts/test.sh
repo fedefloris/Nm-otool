@@ -133,6 +133,6 @@ then
 	echo "${GREEN}Tests passed!"
 else
 	echo "${RED}$FAILED_TESTS Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
-	echo "${WHITE}---\\nKey for diff:\\n< ft_nm\\n> nm"
+	echo "${WHITE}---\\nKey for diff:\\n< ft_$FUNCTION\\n> $FUNCTION"
 	exit 1
 fi
