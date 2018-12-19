@@ -7,22 +7,17 @@
 /*
 ** archive.c
 */
-bool      archive(t_file *file);
+bool      archive(t_nm_otool *nm_otool);
 
 /*
-** fat_64.c
+** mach_o_obj_handler_32.c
 */
-bool      fat(t_file *file);
+bool      mach_o_obj_handler_32(t_nm_otool *nm_otool);
 
 /*
-** macho_32.c
+** mach_o_obj_handler_64.c
 */
-bool      macho_32(t_file *file);
-
-/*
-** macho_64.c
-*/
-bool      macho_64(t_file *file);
+bool      mach_o_obj_handler_64(t_nm_otool *nm_otool);
 
 /*
 **  otool_obj_handler.c

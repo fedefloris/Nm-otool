@@ -1,5 +1,5 @@
 #include "nm_otool.h"
-#include "nm.h"
+//#include "nm.h"
 
 bool		mach_o_fat_64(t_nm_otool *nm_otool)
 {

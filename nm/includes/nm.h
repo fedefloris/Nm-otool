@@ -77,16 +77,12 @@ char			mach_o_get_type(uint8_t n_type,
 	uint64_t n_value, uint8_t n_sect, uint8_t **sections);
 
 bool			mach_o_archive(t_nm_otool *nm_otool);
-bool			mach_o_fat_32(t_nm_otool *nm_otool);
-bool			mach_o_fat_64(t_nm_otool *nm_otool);
 
 bool			mach_o_obj_handler(t_nm_otool *nm_otool);
 
-bool			mach_o_obj_handler_32(t_nm_otool *nm_otool);
 bool			mach_o_get_sections_32(t_nm_otool *nm_otool,
 	uint8_t **sections, struct segment_command *segment, bool reset);
 
-bool			mach_o_obj_handler_64(t_nm_otool *nm_otool);
 bool			mach_o_get_sections_64(t_nm_otool *nm_otool,
 	uint8_t **sections, struct segment_command_64 *segment, bool reset);
 t_sym			*mach_o_read_load_commands(t_nm_otool *nm_otool,
