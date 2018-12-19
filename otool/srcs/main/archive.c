@@ -35,11 +35,14 @@ bool     handle_archive_objects(t_file *file, struct ar_hdr *ar_ptr)
     return (true);
 }
 
-bool      archive(t_file *file)
+bool      archive(t_nm_otool *nm_otool)
 {
     struct ar_hdr   *header;
     struct ar_hdr   *ar_ptr;
     int             ar_size;
+    t_file              *file;
+
+    file = &nm_otool->file;
 
     header = (struct ar_hdr *)((void *)file->memory + SARMAG);
     ar_size = ft_atoi(header->ar_size);

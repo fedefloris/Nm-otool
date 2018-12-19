@@ -63,12 +63,14 @@ bool		filetype(struct mach_header *header)
 	return (true);
 }
 
-bool     macho_32(t_file *file)
+bool     mach_o_obj_handler_32(t_nm_otool *nm_otool)
 {
     struct mach_header          *header;
     struct load_command         *lcmd;
+	t_file						*file;
     uint32_t                    i;
 
+	file = &nm_otool->file;
     if (file->format != ARCHIVE
 			&& file->format != FAT)
         ft_printf("%s:\n", file->name);

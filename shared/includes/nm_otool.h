@@ -90,6 +90,8 @@ typedef struct		s_nm_otool
 	unsigned long	options;
 	bool			print_file_name;
 	unsigned char	routine;
+	bool			(*mach_o_32)(struct s_nm_otool *);
+	bool			(*mach_o_64)(struct s_nm_otool *);
 	t_file			file;
 }					t_nm_otool;
 
@@ -129,6 +131,12 @@ uint64_t			endian_swap(uint64_t value, size_t size,
 # ifdef __APPLE__
 
 bool				set_file_info_on_macos(t_nm_otool *nm_otool);
+bool				mach_o_fat_32(t_nm_otool *nm_otool);
+bool				mach_o_fat_64(t_nm_otool *nm_otool);
+
+
+bool				mach_o_obj_handler_32(t_nm_otool *nm_otool);
+bool				mach_o_obj_handler_64(t_nm_otool *nm_otool);
 
 # endif
 
