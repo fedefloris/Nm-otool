@@ -1,8 +1,6 @@
 #ifndef OTOOL_H
 # define OTOOL_H
 
-# define OTOOL_OPTIONS "t"
-
 # define FAT 10
 # define WORD_NUM 16
 
