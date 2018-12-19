@@ -41,6 +41,9 @@
 # define ELF_32 6
 # define ELF_64 7
 
+# define FT_NM 1
+# define FT_OTOOL 2
+
 # define OTOOL_OPTIONS "t"
 # define NM_OPTIONS "hrjp"
 
@@ -86,6 +89,7 @@ typedef struct		s_nm_otool
 	char			**env;
 	unsigned long	options;
 	bool			print_file_name;
+	unsigned char	routine;
 	t_file			file;
 }					t_nm_otool;
 
@@ -95,7 +99,7 @@ bool				error_log(char *message, char *file_name);
 bool				warning_log(char *message, char *file_name);
 
 bool				config_nm_otool(t_nm_otool *nm_otool, char **argv,
-	char **env, char *valid_options);
+	char **env, unsigned char routine);
 
 int					list_objs_symbols(t_nm_otool *nm_otool,
 	t_obj_handler obj_handler);
