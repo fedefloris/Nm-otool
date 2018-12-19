@@ -41,6 +41,9 @@
 # define ELF_32 6
 # define ELF_64 7
 
+# define OTOOL_OPTIONS "t"
+# define NM_OPTIONS "hrjp"
+
 # define IS_ARCHIVE(x) x == ARCHIVE
 # define IS_ELF_32(x) x == ELF_32
 # define IS_ELF_64(x) x == ELF_64
