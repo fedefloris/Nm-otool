@@ -46,12 +46,12 @@
 # define IS_ELF_64(x) x == ELF_64
 # define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
 
-# define SET(x,y) (x = (typeof(x))get_safe_address(nm_otool, (char*)y))
+# define SET(x, y) (x = (typeof(x))get_safe_address(nm_otool, (char*)y))
 # define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char*)x + sizeof(*x) - 1)
 # define STRING_IS_SAFE(x) string_is_safe(nm_otool, x)
 # define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
 
-# define SWAP(x,y) (typeof(x))endian_swap((uint64_t)x, sizeof(x), y)
+# define SWAP(x, y) (typeof(x))endian_swap((uint64_t)x, sizeof(x), y)
 # define SWAP_ENDIAN(x) SWAP(x, nm_otool->file.endian_is_reversed)
 # define SWAP_ENDIAN_FORCE(x) SWAP(x, true)
 # define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
