@@ -38,7 +38,8 @@ static int			get_ar_name_length(t_nm_otool *nm_otool,
 //
 // }
 
-static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr)
+static bool			handle_archive_objects(t_nm_otool *nm_otool,
+	struct ar_hdr *ar_ptr)
 {
 	int				ar_size;
 	int				ar_name_len;
@@ -50,12 +51,10 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 	file_data = nm_otool->file;
 	while (true)
 	{
-		if (!SET(filename, ar_ptr + sizeof(*ar_ptr)))
-			return (ERROR_LOG("archive: filename beyond binary"));
-		if (!string_is_safe(nm_otool, filename))
+		if (!SET(filename, (char*)(ar_ptr + 1))
+			|| !STRING_IS_SAFE(filename))
 			return (ERROR_LOG("archive: filename beyond binary"));
         ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
-
 		if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
 			return (ERROR_LOG("archive: ar_size bad format"));
 		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
@@ -63,8 +62,9 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool, struct ar_hdr *ar_ptr
 		ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 		nm_otool->file.name = file_data.name;
 		nm_otool->file.size = (off_t)ar_size;//Check is safe.
-		nm_otool->file.memory = (char *)ar_ptr + sizeof(struct ar_hdr) + ar_name_len;
-		if ((nm_otool->file.end_of_file = file_data.memory + file_data.size - 1) > file_data.end_of_file)//Inspect for godd logic.
+		nm_otool->file.memory = (char *)(ar_ptr + 1) + ar_name_len;
+		if ((nm_otool->file.end_of_file = file_data.memory
+			+ file_data.size - 1) > file_data.end_of_file) //Inspect for good logic.
 			return (ERROR_LOG("archive: ar_size bad size."));
 		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
 		if (!SET_FILE_INFO(nm_otool) || !obj_handler(nm_otool))
