@@ -8,8 +8,9 @@ bool		string_is_safe(t_nm_otool *nm_otool, char *str)
 	{
 		if (!*str)
 			return (true);
-		if (!ft_isprint(*str))
-			return (false);
+		// Does not support unicode
+		// if (!ft_isprint(*str))
+		// 	return (false);
 		str++;
 	}
 	return (false);
