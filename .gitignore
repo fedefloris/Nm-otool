@@ -21,6 +21,11 @@ ft_otool
 *.swp
 *.swo
 
+
+# vsc
+.vscode
+
+
 # scripts
 mine
 sys
