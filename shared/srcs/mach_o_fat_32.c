@@ -1,6 +1,6 @@
 #include "nm_otool.h"
-#include "../../nm/includes/nm.h"
-#include "../../otool/includes/otool.h"
+// #include "../../nm/includes/nm.h" Useless?
+// #include "../../otool/includes/otool.h" Useless?
 
 static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	t_file file_data, struct fat_arch *arch,
@@ -14,9 +14,7 @@ static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
 	if ((nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1) > file_data.end_of_file)
 		return (ERROR_LOG("fat: arch->size bad size."));
-	if (set_file_info_on_macos(nm_otool) && mach_o_function(nm_otool))
-		return (true);
-	return (false);
+	return (set_file_info_on_macos(nm_otool) && mach_o_function(nm_otool));
 }
 
 static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
@@ -56,9 +54,8 @@ bool			mach_o_fat_32(t_nm_otool *nm_otool)
 	struct fat_arch		*arch;
 	uint32_t			nfat_arch;
 
-	if (!SET(header, nm_otool->file.memory))
-		return (ERROR_LOG("fat: header beyond binary"));
-	if (!STRUCT_IS_SAFE(header))
+	if (!SET(header, nm_otool->file.memory)
+		|| !STRUCT_IS_SAFE(header))
 		return (ERROR_LOG("fat: header beyond binary"));
 	nfat_arch = SWAP_ENDIAN_FORCE(header->nfat_arch);
 	if (!SET(arch, header + sizeof(*header)))
