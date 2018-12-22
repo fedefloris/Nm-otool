@@ -4,11 +4,6 @@
 # define WORD_NUM 16
 
 /*
-** archive.c
-*/
-bool      archive(t_nm_otool *nm_otool);
-
-/*
 ** mach_o_obj_handler_32.c
 */
 bool      mach_o_obj_handler_32(t_nm_otool *nm_otool);

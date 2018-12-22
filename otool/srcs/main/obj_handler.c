@@ -16,7 +16,8 @@ bool            obj_handler(t_nm_otool *nm_otool)
     {
         ft_printf("Archive : %s\n", nm_otool->file.name);
         nm_otool->file.format = ARCHIVE;
-        archive(nm_otool);
+        archive_handler(nm_otool);
+        
     }
     return (true);
 }
