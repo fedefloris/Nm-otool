@@ -71,7 +71,7 @@ fi
 
 # Print initial info
 echo "${WHITE}"
-echo "Testing all files in ${DIR}/\n"
+echo "[$FUNCTION] Testing all files in ${DIR}/\n"
 
 # Iterate files
 for f in $DIR/*;
