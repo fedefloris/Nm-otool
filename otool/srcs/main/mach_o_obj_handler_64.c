@@ -84,19 +84,18 @@ void		print_row(unsigned char *word)
 
 	i = 0;
 	j = 0;
+	number = NULL;
 	while (j < WORD_NUM)
 	{
 		number = ft_itoa_base_tmp(*word, 16, 'a');//protect malloc
 		if (ft_strlen(number) == 1)
 			row[i++] = '0';
-		//ft_printf("%s|", number);
-		ft_strcpy((char *)(row + i), number);//number);
+		ft_strcpy((char *)(row + i), number);
 		i += ft_strlen(number);
 		row[i++] = ' ';
 		j++;
 		word++;
-		//word = (unsigned char *)word + 1;
-		////word++;
+		ft_strdel(&number);
 	}
 	row[i - 1] = '\0';
 	ft_printf("%s", row);
