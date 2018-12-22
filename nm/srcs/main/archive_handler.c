@@ -39,7 +39,7 @@ static int			get_ar_name_length(t_nm_otool *nm_otool,
 // }
 
 static bool			handle_archive_objects(t_nm_otool *nm_otool,
-	struct ar_hdr *ar_ptr)
+	struct ar_hdr *ar_ptr, bool print_file_name)
 {
 	int				ar_size;
 	int				ar_name_len;
@@ -49,6 +49,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool,
 
 	status = true;
 	file_data = nm_otool->file;
+	nm_otool->print_file_name = false;
 	while (true)
 	{
 		if (!SET(filename, (char*)(ar_ptr + 1))
@@ -73,6 +74,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool,
 		if (!SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr)))
 			break ;
 	}
+	nm_otool->print_file_name = print_file_name;
 	return (status);
 }
 
@@ -89,5 +91,5 @@ bool			archive_handler(t_nm_otool *nm_otool)
 	if (!SET(ar_ptr, (char*)(ar_ptr + 1) + ar_size)
 		|| !STRUCT_IS_SAFE(ar_ptr))
 		return (ERROR_LOG("archive: not enough space for ar_hdr"));
-	return (handle_archive_objects(nm_otool, ar_ptr));
+	return (handle_archive_objects(nm_otool, ar_ptr, nm_otool->print_file_name));
 }
