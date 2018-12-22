@@ -89,6 +89,7 @@ char			mach_o_get_type(uint8_t n_type,
 					uint64_t n_value, uint8_t n_sect,
 					uint8_t **sections);
 bool			mach_o_free_sections(uint8_t **sections);
+
 # else
 
 #  define MAC_OBJ_HANDLER(x) ERROR_LOG("Unrecognized format")

@@ -23,9 +23,7 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = otool \
-	mach_o_obj_handler_32 \
-	mach_o_obj_handler_64 \
-	print \
+	print_file_name \
 	obj_handler
 
 SHARED_FILES = config_nm_otool \
@@ -49,6 +47,9 @@ SHARED_FILES = config_nm_otool \
 	warning_log
 
 ifeq ($(OS_TYPE), Darwin)
+	MACH_O_FILES += mach_o_obj_handler \
+		mach_o_obj_handler_32 \
+		mach_o_obj_handler_64
 	SHARED_FILES += set_file_info_on_macos \
 		mach_o_fat_32 \
 		mach_o_fat_64
