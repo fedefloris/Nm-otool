@@ -1,7 +1,6 @@
 #ifndef OTOOL_H
 # define OTOOL_H
 
-# define FAT 10
 # define WORD_NUM 16
 
 /*
@@ -20,9 +19,9 @@ bool      mach_o_obj_handler_32(t_nm_otool *nm_otool);
 bool      mach_o_obj_handler_64(t_nm_otool *nm_otool);
 
 /*
-**  otool_obj_handler.c
+**  obj_handler.c
 */
-bool			otool_obj_handler(t_nm_otool *nm_otool);
+bool			obj_handler(t_nm_otool *nm_otool);
 
 /*
 ** print.c

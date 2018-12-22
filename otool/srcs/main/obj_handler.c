@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-bool            otool_obj_handler(t_nm_otool *nm_otool)
+bool            obj_handler(t_nm_otool *nm_otool)
 {
     uint32_t    magic;
 

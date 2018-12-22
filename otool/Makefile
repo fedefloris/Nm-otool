@@ -27,7 +27,7 @@ MAIN_FILES = archive \
 	mach_o_obj_handler_64 \
 	print \
 	otool \
-	otool_obj_handler \
+	obj_handler \
 	swap
 
 SHARED_FILES = config_nm_otool \
