@@ -35,7 +35,13 @@ static bool		set_format(t_nm_otool *nm_otool)
 	magic_number = *(uint32_t *)nm_otool->file.memory;
 	if (!set_mach_o_format(nm_otool, magic_number)
 		&& !set_fat_format(nm_otool, magic_number))
-		return (ERROR_LOG("Bad magic number"));
+	{
+		if (nm_otool->routine == FT_OTOOL)
+			ft_printf("%s%s\n", nm_otool->file.name, ": is not an object file");
+		else
+			return (ERROR_LOG("Bad magic number"));
+		return (false);
+	}
 	if (nm_otool->file.format == MACH_O_64
 		&& nm_otool->file.size < (long)sizeof(struct mach_header_64))
 		return (ERROR_LOG("Bad size"));
