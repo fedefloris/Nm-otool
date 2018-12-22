@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-int					main(int argc, char **argv, char **env)
+int				main(int argc, char **argv, char **env)
 {
 	t_nm_otool	nm_otool;
 
