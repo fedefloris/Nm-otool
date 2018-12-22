@@ -23,9 +23,4 @@ bool			obj_handler(t_nm_otool *nm_otool);
 */
 void      print_filename(t_file *file, char *current_file);
 
-/*
-** swap.c
-*/
-uint32_t  swap_endian(uint32_t value);
-
 #endif
