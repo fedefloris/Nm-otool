@@ -31,6 +31,7 @@ MAIN_FILES = archive \
 	swap
 
 SHARED_FILES = config_nm_otool \
+	archive_handler \
 	endian_swap \
 	error_log \
 	find_binary \
