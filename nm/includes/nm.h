@@ -32,8 +32,6 @@ int				display_usage(void);
 
 bool			obj_handler(t_nm_otool *nm_otool);
 
-bool			archive_handler(t_nm_otool *nm_otool);
-
 bool			elf_obj_handler(t_nm_otool *nm_otool);
 
 bool			elf_obj_handler_32(t_nm_otool *nm_otool);
