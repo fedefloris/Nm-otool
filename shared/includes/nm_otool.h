@@ -58,7 +58,7 @@
 # define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
 
 # define SWAP(x, y) (typeof(x))endian_swap((uint64_t)x, sizeof(x), y)
-# define SWAP_ENDIAN(x) SWAP(x, nm_otool->file.endian_is_reversed)
+# define SWAP_ENDIAN(x) SWAP(x, nm_otool->file.reversed_endian)
 # define SWAP_ENDIAN_FORCE(x) SWAP(x, true)
 # define MAX_ENDIAN_SWAP_SIZE sizeof(uint64_t)
 
@@ -80,7 +80,7 @@ typedef struct		s_file
 	char			*memory;
 	char			*end_of_file;
 	int				format;
-	bool			endian_is_reversed;
+	bool			reversed_endian;
 }					t_file;
 
 typedef struct		s_nm_otool
