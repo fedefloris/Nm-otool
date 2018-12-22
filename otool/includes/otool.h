@@ -3,19 +3,19 @@
 
 # define WORD_NUM 16
 
-/*
-** mach_o_obj_handler_32.c
-*/
-bool      mach_o_obj_handler_32(t_nm_otool *nm_otool);
+# ifdef __APPLE__
 
-/*
-** mach_o_obj_handler_64.c
-*/
+#  define MAC_OBJ_HANDLER(x) mach_o_obj_handler(x)
+
+# else
+
+#  define MAC_OBJ_HANDLER(x) ERROR_LOG("Unrecognized format")
+
+# endif
+
+bool      mach_o_obj_handler_32(t_nm_otool *nm_otool);
 bool      mach_o_obj_handler_64(t_nm_otool *nm_otool);
 
-/*
-** print.c
-*/
-void      print_filename(t_file *file, char *current_file);
+void      print_file_name(t_file *file, char *current_file);
 
 #endif

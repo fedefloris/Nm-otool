@@ -1,9 +1,9 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-void		print_filename(t_file *file, char *current_file)
+void		print_file_name(t_file *file, char *current_file)
 {
-	if (file->format == ARCHIVE)
+	if (IS_ARCHIVE(file->format))
 	{
 		if (!current_file)
 			return ;
