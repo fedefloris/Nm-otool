@@ -56,7 +56,9 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool,
 		if (!SET(filename, (char*)(ar_ptr + 1))
 			|| !STRING_IS_SAFE(filename))
 			return (ERROR_LOG("archive: filename beyond binary"));
-        ft_printf("\n%s(%s):\n", nm_otool->file.name, filename);
+        ft_printf("%s%s(%s):\n",(
+			nm_otool->routine == FT_NM) ? "\n" : "",
+			nm_otool->file.name, filename);
 		if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
 			return (ERROR_LOG("archive: ar_size bad format"));
 		if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
