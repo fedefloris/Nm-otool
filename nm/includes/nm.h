@@ -30,8 +30,6 @@ typedef struct		s_elf_symbols_info
 
 int				display_usage(void);
 
-bool			obj_handler(t_nm_otool *nm_otool);
-
 bool			elf_obj_handler(t_nm_otool *nm_otool);
 
 bool			elf_obj_handler_32(t_nm_otool *nm_otool);

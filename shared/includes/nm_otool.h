@@ -104,6 +104,7 @@ typedef struct		s_nm_otool
 
 typedef bool		(*t_obj_handler)(t_nm_otool *);
 
+bool				obj_handler(t_nm_otool *nm_otool);
 bool				archive_handler(t_nm_otool *nm_otool);
 
 bool				error_log(char *message, char *file_name);

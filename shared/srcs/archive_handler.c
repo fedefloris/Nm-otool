@@ -1,6 +1,6 @@
 #include "nm_otool.h"
-#include "../../nm/includes/nm.h"
-#include "../../otool/includes/otool.h"
+// #include "../../nm/includes/nm.h" Useless?
+// #include "../../otool/includes/otool.h" Useless?
 
 static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 {
