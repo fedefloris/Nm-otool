@@ -8,5 +8,6 @@ int					main(int argc, char **argv, char **env)
 	(void)argc;
 	if (!config_nm_otool(&nm_otool, argv, env, FT_OTOOL))
 		return (EXIT_FAILURE);
+	nm_otool.print_file_name = true;
 	return (list_objs_symbols(&nm_otool, &otool_obj_handler));
 }

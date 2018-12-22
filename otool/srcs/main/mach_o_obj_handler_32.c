@@ -71,8 +71,7 @@ bool     mach_o_obj_handler_32(t_nm_otool *nm_otool)
     uint32_t                    i;
 
 	file = &nm_otool->file;
-    if (file->format != ARCHIVE
-			&& file->format != FAT)
+	if (nm_otool->print_file_name)
         ft_printf("%s:\n", file->name);
     header = (struct mach_header *)file->memory;
     lcmd = (void *)file->memory + sizeof(*header);
