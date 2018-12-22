@@ -30,18 +30,18 @@ bool		parse_text_64(struct section_64 *section, t_file *file)
 	return (true);
 }
 
-bool     text_segment_64(struct load_command *lcmd, t_file *file)
+bool		text_segment_64(struct load_command *lcmd, t_file *file)
 {
-    struct segment_command_64   *segment;
+	struct segment_command_64   *segment;
 	struct section_64			*section;
 	void						*sect_ptr;
-    uint32_t                    i;
+	uint32_t                    i;
 
-    segment = (struct segment_command_64 *)lcmd;
+	segment = (struct segment_command_64 *)lcmd;
 	sect_ptr = (void *)(segment + 1);
-    i = 0;
-    while (i < segment->nsects)
-    {
+	i = 0;
+	while (i < segment->nsects)
+	{
 		section = (struct section_64 *)sect_ptr;
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
@@ -49,9 +49,9 @@ bool     text_segment_64(struct load_command *lcmd, t_file *file)
 			parse_text_64(section, file);
 		}
 		sect_ptr += sizeof(struct section_64);
-        i++;
-    }
-    return (true);
+		i++;
+	}
+	return (true);
 }
 
 bool		filetype_64(struct mach_header_64 *header)
@@ -63,25 +63,25 @@ bool		filetype_64(struct mach_header_64 *header)
 	return (true);
 }
 
-bool     mach_o_obj_handler_64(t_nm_otool *nm_otool)
+bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 {
-    struct mach_header_64       *header;
-    struct load_command         *lcmd;
+	struct mach_header_64       *header;
+	struct load_command         *lcmd;
 	t_file						*file;
-    uint32_t                    i;
+	uint32_t                    i;
 
 	file = &nm_otool->file;
 	if (nm_otool->print_file_name)
-        ft_printf("%s:\n", file->name);
-    header = (struct mach_header_64 *)file->memory;
-    lcmd = (void *)file->memory + sizeof(*header);
-    i = 0;
-    while (i < header->ncmds)
-    {
-        if (lcmd->cmd == LC_SEGMENT_64)
-        	text_segment_64(lcmd, file);
-        lcmd = (void *)lcmd + lcmd->cmdsize;
-        i++;
-    }
-    return (true);
+		ft_printf("%s:\n", file->name);
+	header = (struct mach_header_64 *)file->memory;
+	lcmd = (void *)file->memory + sizeof(*header);
+	i = 0;
+	while (i < header->ncmds)
+	{
+		if (lcmd->cmd == LC_SEGMENT_64)
+			text_segment_64(lcmd, file);
+		lcmd = (void *)lcmd + lcmd->cmdsize;
+		i++;
+	}
+	return (true);
 }
