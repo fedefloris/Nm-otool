@@ -98,10 +98,8 @@ typedef struct		s_nm_otool
 	char			**env;
 	unsigned long	options;
 	unsigned char	routine;
-	bool			print_file_name;
-	bool			(*mach_o_32)(struct s_nm_otool *);
-	bool			(*mach_o_64)(struct s_nm_otool *);
 	t_file			file;
+	bool			print_file_name;
 }					t_nm_otool;
 
 typedef bool		(*t_obj_handler)(t_nm_otool *);
