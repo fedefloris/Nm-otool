@@ -25,7 +25,6 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 
 MAIN_FILES = display_usage \
 	nm \
-	archive_handler \
 	obj_handler
 
 SYMBOLS_FILES = add_symbol \
@@ -52,6 +51,7 @@ ELF_FILES = elf_obj_handler_32 \
 	elf_obj_handler
 
 SHARED_FILES = config_nm_otool \
+	archive_handler \
 	endian_swap \
 	error_log \
 	find_binary \
