@@ -1,14 +1,14 @@
 #include "nm_otool.h"
 
 uint64_t			endian_swap(uint64_t value,
-		size_t size, bool endian_is_reversed)
+		size_t size, bool reversed_endian)
 {
 	uint64_t		new_value;
 	unsigned char	*new_tmp;
 	unsigned char	*tmp;
 	int				i;
 
-	if (!endian_is_reversed || size > MAX_ENDIAN_SWAP_SIZE)
+	if (!reversed_endian || size > MAX_ENDIAN_SWAP_SIZE)
 		return (value);
 	new_value = 0;
 	new_tmp = (unsigned char *)&new_value;
