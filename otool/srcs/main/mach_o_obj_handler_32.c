@@ -3,8 +3,8 @@
 
 bool		parse_text(struct section *section, t_file *file)
 {
-	struct section	    *sect_ptr;
-	struct section	    *sect_addr;
+	struct section		*sect_ptr;
+	struct section		*sect_addr;
 	uint32_t			i;
 	uint32_t			j;
 	unsigned char		word;
@@ -30,28 +30,28 @@ bool		parse_text(struct section *section, t_file *file)
 	return (true);
 }
 
-bool     text_segment(struct load_command *lcmd, t_file *file)
+bool		text_segment(struct load_command *lcmd, t_file *file)
 {
-    struct segment_command      *segment;
-		struct section  			*section;
-		void						*sect_ptr;
-    uint32_t                    i;
+	struct segment_command		*segment;
+	struct section  			*section;
+	void						*sect_ptr;
+	uint32_t					i;
 
-    segment = (struct segment_command *)lcmd;
-		sect_ptr = (void *)(segment + 1);
-    i = 0;
-    while (i < segment->nsects)
-    {
-			section = (struct section *)sect_ptr;
-			if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
-			{
-				ft_printf("Contents of (__TEXT,__text) section\n");
-				parse_text(section, file);
-			}
-			sect_ptr += sizeof(struct section);
-	        i++;
-    }
-    return (true);
+	segment = (struct segment_command *)lcmd;
+	sect_ptr = (void *)(segment + 1);
+	i = 0;
+	while (i < segment->nsects)
+	{
+		section = (struct section *)sect_ptr;
+		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
+		{
+			ft_printf("Contents of (__TEXT,__text) section\n");
+			parse_text(section, file);
+		}
+		sect_ptr += sizeof(struct section);
+		i++;
+	}
+	return (true);
 }
 
 bool		filetype(struct mach_header *header)
@@ -63,25 +63,25 @@ bool		filetype(struct mach_header *header)
 	return (true);
 }
 
-bool     mach_o_obj_handler_32(t_nm_otool *nm_otool)
+bool		mach_o_obj_handler_32(t_nm_otool *nm_otool)
 {
-    struct mach_header          *header;
-    struct load_command         *lcmd;
-	t_file						*file;
-    uint32_t                    i;
+	struct mach_header		*header;
+	struct load_command		*lcmd;
+	t_file					*file;
+	uint32_t				i;
 
 	file = &nm_otool->file;
 	if (nm_otool->print_file_name)
-        ft_printf("%s:\n", file->name);
-    header = (struct mach_header *)file->memory;
-    lcmd = (void *)file->memory + sizeof(*header);
-    i = 0;
-    while (i < header->ncmds)
-    {
-        if (lcmd->cmd == LC_SEGMENT)
-        	text_segment(lcmd, file);
-        lcmd = (void *)lcmd + lcmd->cmdsize;
-        i++;
-    }
-    return (true);
+		ft_printf("%s:\n", file->name);
+	header = (struct mach_header *)file->memory;
+	lcmd = (void *)file->memory + sizeof(*header);
+	i = 0;
+	while (i < header->ncmds)
+	{
+		if (lcmd->cmd == LC_SEGMENT)
+			text_segment(lcmd, file);
+		lcmd = (void *)lcmd + lcmd->cmdsize;
+		i++;
+	}
+	return (true);
 }

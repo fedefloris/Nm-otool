@@ -1,6 +1,6 @@
 #include "nm_otool.h"
-#include "../../nm/includes/nm.h"
-#include "../../otool/includes/otool.h"
+// #include "../../nm/includes/nm.h" Useless?
+// #include "../../otool/includes/otool.h" Useless?
 
 static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 {
@@ -70,7 +70,7 @@ static bool			handle_archive_objects(t_nm_otool *nm_otool,
 		if ((nm_otool->file.end_of_file = file_data.memory
 			+ file_data.size - 1) > file_data.end_of_file) //Inspect for good logic.
 			return (ERROR_LOG("archive: ar_size bad size."));
-		nm_otool->file.endian_is_reversed = file_data.endian_is_reversed;
+		nm_otool->file.reversed_endian = file_data.reversed_endian;
 		if (!SET_FILE_INFO(nm_otool) || !obj_handler(nm_otool))
 			status = false;
 		nm_otool->file = file_data;
