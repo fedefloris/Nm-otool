@@ -22,11 +22,10 @@ INCLUDES_FILES = otool
 HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
-MAIN_FILES = archive \
+MAIN_FILES = otool \
 	mach_o_obj_handler_32 \
 	mach_o_obj_handler_64 \
 	print \
-	otool \
 	obj_handler \
 	swap
 

@@ -5,8 +5,8 @@ then
 	exit 1
 fi
 
-nm "$1" > quick_sys
-../ft_nm "$1" > quick_ft
+otool -t "$1" > quick_sys
+../ft_otool "$1" > quick_ft
 if ! diff quick_sys quick_ft > quick_diff_report
 then
 	vim quick_diff_report
