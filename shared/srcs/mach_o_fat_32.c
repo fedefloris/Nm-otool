@@ -45,10 +45,6 @@ static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 		return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_64, nm_otool->mach_o_64));
 	if (type_32)
 		return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_64, nm_otool->mach_o_32));
-	//if (type_64 && nm_otool->routine == FT_OTOOL)
-    //    return (process_fat(arch, nfat_arch, &nm_otool->file, nm_otool->mach_o_64));
-	//if (type_32 && nm_otool->routine == FT_OTOOL)
-    //    return (process_fat(arch, nfat_arch, &nm_otool->file, nm_otool->mach_o_32));
 	return (false);
 }
 
