@@ -145,6 +145,10 @@ bool				set_file_info_on_macos(t_nm_otool *nm_otool);
 bool				mach_o_fat_32(t_nm_otool *nm_otool);
 bool				mach_o_fat_64(t_nm_otool *nm_otool);
 
+bool				mach_o_obj_handler(t_nm_otool *nm_otool);
+bool				mach_o_obj_handler_32(t_nm_otool *nm_otool);
+bool				mach_o_obj_handler_64(t_nm_otool *nm_otool);
+
 # endif
 
 #endif
