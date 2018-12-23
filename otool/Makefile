@@ -24,9 +24,6 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 
 MAIN_FILES = otool \
 	print_file_name \
-	mach_o_obj_handler \
-	mach_o_obj_handler_32 \
-	mach_o_obj_handler_64 \
 	obj_handler
 
 SHARED_FILES = config_nm_otool \
@@ -38,19 +35,25 @@ SHARED_FILES = config_nm_otool \
 	list_objs_symbols \
 	get_safe_address \
 	has_good_elf_magic_number \
-	mach_o_fat_32 \
-	mach_o_fat_64 \
 	op \
 	option_check \
 	options \
 	set_file \
-	set_file_info_on_macos \
 	set_archive_format \
 	set_file_info \
 	set_file_info_on_linux \
 	string_is_safe \
 	unset_file \
 	warning_log
+
+ifeq ($(OS_TYPE), Darwin)
+	MACH_O_FILES += mach_o_obj_handler \
+		mach_o_obj_handler_32 \
+		mach_o_obj_handler_64
+	SHARED_FILES += set_file_info_on_macos \
+		mach_o_fat_32 \
+		mach_o_fat_64
+endif
 
 MAIN_OBJS = $(addsuffix .o, $(MAIN_FILES))
 SHARED_OBJS = $(addsuffix .o, $(SHARED_FILES))
