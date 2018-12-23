@@ -15,7 +15,7 @@ bool		elf_obj_handler(t_nm_otool *nm_otool)
 		return (ERROR_LOG("type not supported"));
 	if (IS_ELF_32(nm_otool->file.format))
 		return (elf_obj_handler_32(nm_otool));
-	else if (IS_ELF_64(nm_otool->file.format))
+	if (IS_ELF_64(nm_otool->file.format))
 		return (elf_obj_handler_64(nm_otool));
 	return (ERROR_LOG("unrecognized format"));
 }

@@ -13,6 +13,7 @@ static bool	is_text_section(char *sh_name)
 		|| !ft_strcmp(sh_name, ".fini")
 		|| !ft_strcmp(sh_name, ".init")
 		|| !ft_strcmp(sh_name, ".text")
+		|| !ft_strcmp(sh_name, ".plt")
 		|| !ft_strcmp(sh_name, ".fini_array")
 		|| !ft_strcmp(sh_name, ".init_array"));
 }

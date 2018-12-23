@@ -13,9 +13,6 @@
 
 # endif
 
-bool      mach_o_obj_handler_32(t_nm_otool *nm_otool);
-bool      mach_o_obj_handler_64(t_nm_otool *nm_otool);
-
 void      print_file_name(t_file *file, char *current_file);
 
 #endif

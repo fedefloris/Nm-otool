@@ -9,6 +9,9 @@ OTOOL_DIR = otool
 
 all: $(NAME)
 
+test: $(NAME)
+	OPTIONS=-p ./scripts/test.sh
+
 comp_libft:
 	@make -C $(LIBFT_DIR)/
 
@@ -37,4 +40,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all comp_libft comp_nm comp_otool clean fclean re
+.PHONY: all test comp_libft comp_nm comp_otool clean fclean re

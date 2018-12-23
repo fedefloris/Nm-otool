@@ -49,22 +49,22 @@
 
 # define IS_MACH_O_FAT_32(x) x == MACH_O_FAT_32
 # define IS_MACH_O_FAT_64(x) x == MACH_O_FAT_64
-# define IS_MACH_O_FAT(x) x == IS_MACH_O_FAT_32(x) || IS_MACH_O_FAT_64(x)
+# define IS_MACH_O_FAT(x) (IS_MACH_O_FAT_32(x) || IS_MACH_O_FAT_64(x))
 
 # define IS_MACH_O_32(x) x == MACH_O_32
 # define IS_MACH_O_64(x) x == MACH_O_64
-# define IS_MACH_O(x) IS_MACH_O_32(x) || IS_MACH_O_64(x)
+# define IS_MACH_O(x) (IS_MACH_O_32(x) || IS_MACH_O_64(x))
 
 # define IS_ELF_32(x) x == ELF_32
 # define IS_ELF_64(x) x == ELF_64
-# define IS_ELF(x) IS_ELF_32(x) || IS_ELF_64(x)
+# define IS_ELF(x) (IS_ELF_32(x) || IS_ELF_64(x))
 
 # define IS_ARCHIVE(x) x == ARCHIVE
 
 # define SET(x, y) (x = (typeof(x))get_safe_address(nm_otool, (char*)y))
 # define STRUCT_IS_SAFE(x) get_safe_address(nm_otool, (char*)x + sizeof(*x) - 1)
 # define STRING_IS_SAFE(x) string_is_safe(nm_otool, x)
-# define NEXT_STRUCT(x) SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x)
+# define NEXT_STRUCT(x) (SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x))
 
 # define SWAP(x, y) (typeof(x))endian_swap((uint64_t)x, sizeof(x), y)
 # define SWAP_ENDIAN(x) SWAP(x, nm_otool->file.reversed_endian)
@@ -122,6 +122,7 @@ char				*find_binary(t_nm_otool *nm_otool);
 
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
+bool				unset_file(t_nm_otool *nm_otool);
 
 bool				set_archive_format(t_nm_otool *nm_otool);
 bool				set_file_info_on_linux(t_nm_otool *nm_otool);
@@ -144,11 +145,10 @@ bool				set_file_info_on_macos(t_nm_otool *nm_otool);
 bool				mach_o_fat_32(t_nm_otool *nm_otool);
 bool				mach_o_fat_64(t_nm_otool *nm_otool);
 
+bool				mach_o_obj_handler(t_nm_otool *nm_otool);
 bool				mach_o_obj_handler_32(t_nm_otool *nm_otool);
 bool				mach_o_obj_handler_64(t_nm_otool *nm_otool);
 
 # endif
-
-bool				unset_file(t_nm_otool *nm_otool);
 
 #endif

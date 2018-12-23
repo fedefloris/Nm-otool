@@ -47,7 +47,7 @@ SHARED_FILES = config_nm_otool \
 	warning_log
 
 ifeq ($(OS_TYPE), Darwin)
-	MACH_O_FILES += mach_o_obj_handler \
+	MAIN_FILES += mach_o_obj_handler \
 		mach_o_obj_handler_32 \
 		mach_o_obj_handler_64
 	SHARED_FILES += set_file_info_on_macos \

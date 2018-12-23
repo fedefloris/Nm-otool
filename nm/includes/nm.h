@@ -73,8 +73,6 @@ typedef struct symtab_command	t_sym;
 
 bool			mach_o_archive(t_nm_otool *nm_otool);
 
-bool			mach_o_obj_handler(t_nm_otool *nm_otool);
-
 bool			mach_o_get_sections_32(t_nm_otool *nm_otool,
 					uint8_t **sections, struct segment_command *segment,
 					bool reset);
