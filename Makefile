@@ -40,4 +40,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all comp_libft comp_nm comp_otool clean fclean re
+.PHONY: all test comp_libft comp_nm comp_otool clean fclean re
