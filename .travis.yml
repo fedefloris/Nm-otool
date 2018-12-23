@@ -5,4 +5,5 @@ os:
   - osx
 
 script:
+  make
   OPTIONS=-p ./scripts/test.sh /usr/
