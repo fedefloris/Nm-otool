@@ -9,6 +9,6 @@ bool				config_nm_otool(t_nm_otool *nm_otool, char **argv,
 	nm_otool->argv = argv;
 	nm_otool->env = env;
 	nm_otool->print_file_name = (*argv && *(argv + 1)) ? true : false;
-	nm_otool->routine = FT_OTOOL;
+	nm_otool->routine = routine;
 	return (true);
 }
