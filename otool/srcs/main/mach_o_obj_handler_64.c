@@ -77,7 +77,7 @@ char		*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 
 void		print_row(unsigned char *word)
 {
-	unsigned char	row[WORD_NUM * 3];
+	unsigned char	row[(WORD_NUM * 3) + 1];
 	char			*number;
 	int				i;
 	int				j;
@@ -97,7 +97,7 @@ void		print_row(unsigned char *word)
 		word++;
 		ft_strdel(&number);
 	}
-	row[i - 1] = '\0';
+	row[i] = '\0';
 	ft_printf("%s", row);
 }
 
