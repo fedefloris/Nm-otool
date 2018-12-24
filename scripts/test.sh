@@ -69,12 +69,15 @@ then
 	DIR=$1
 fi
 
+# Get all files from dir
+FILES=$(find $DIR -type f)
+
 # Print initial info
 echo "${WHITE}"
 echo "[$FUNCTION] Testing all files in ${DIR}/\n"
 
 # Iterate files
-for f in $DIR/*;
+for f in $FILES;
 do
 	# Do ft_ and system function.
 	$FUNCTION $OPTIONS $f 2>&- >> $SY;
