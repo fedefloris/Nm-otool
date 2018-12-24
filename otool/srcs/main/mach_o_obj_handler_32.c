@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-bool		parse_text(struct section *section, t_file *file)
+bool		parse_text(struct section *section, t_nm_otool *nm_otool)
 {
 	struct section		*sect_ptr;
 	struct section		*sect_addr;
@@ -9,7 +9,7 @@ bool		parse_text(struct section *section, t_file *file)
 	uint32_t			j;
 	unsigned char		word;
 
-	sect_ptr = (void *)file->memory + section->offset;
+	sect_ptr = (void *)nm_otool->file.memory + section->offset;
 	sect_addr = section;
 	i = 0;
 	while (i < section->size)
@@ -30,7 +30,7 @@ bool		parse_text(struct section *section, t_file *file)
 	return (true);
 }
 
-bool		text_segment(struct load_command *lcmd, t_file *file)
+bool		text_segment(struct load_command *lcmd, t_nm_otool *nm_otool)
 {
 	struct segment_command		*segment;
 	struct section  			*section;
@@ -46,7 +46,7 @@ bool		text_segment(struct load_command *lcmd, t_file *file)
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
 			ft_printf("Contents of (__TEXT,__text) section\n");
-			parse_text(section, file);
+			parse_text(section, nm_otool);
 		}
 		sect_ptr += sizeof(struct section);
 		i++;
@@ -67,19 +67,17 @@ bool		mach_o_obj_handler_32(t_nm_otool *nm_otool)
 {
 	struct mach_header		*header;
 	struct load_command		*lcmd;
-	t_file					*file;
 	uint32_t				i;
 
-	file = &nm_otool->file;
 	if (nm_otool->print_file_name)
-		ft_printf("%s:\n", file->name);
-	header = (struct mach_header *)file->memory;
-	lcmd = (void *)file->memory + sizeof(*header);
+		ft_printf("%s:\n", nm_otool->file.name);
+	header = (struct mach_header *)nm_otool->file.memory;
+	lcmd = (void *)nm_otool->file.memory + sizeof(*header);
 	i = 0;
 	while (i < header->ncmds)
 	{
 		if (lcmd->cmd == LC_SEGMENT)
-			text_segment(lcmd, file);
+			text_segment(lcmd, nm_otool);
 		lcmd = (void *)lcmd + lcmd->cmdsize;
 		i++;
 	}

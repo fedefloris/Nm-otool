@@ -101,7 +101,7 @@ void		print_row(unsigned char *word)
 	ft_printf("%s", row);
 }
 
-bool		parse_text_64(struct section_64 *section, t_file *file)
+bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 {
 	struct section_64	*sect_ptr;
 	struct section_64	*sect_addr;
@@ -109,7 +109,7 @@ bool		parse_text_64(struct section_64 *section, t_file *file)
 	uint32_t			j;
 	unsigned char		word;
 
-	sect_ptr = (void *)file->memory + section->offset;
+	sect_ptr = (void *)nm_otool->file.memory + section->offset;
 	sect_addr = section;
 	i = 0;
 	while (i < section->size)
@@ -138,7 +138,7 @@ bool		parse_text_64(struct section_64 *section, t_file *file)
 	return (true);
 }
 
-bool		text_segment_64(struct load_command *lcmd, t_file *file)
+bool		text_segment_64(struct load_command *lcmd, t_nm_otool *nm_otool)
 {
 	struct segment_command_64   *segment;
 	struct section_64			*section;
@@ -154,7 +154,7 @@ bool		text_segment_64(struct load_command *lcmd, t_file *file)
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
 			ft_printf("Contents of (__TEXT,__text) section\n");
-			parse_text_64(section, file);
+			parse_text_64(section, nm_otool);
 		}
 		sect_ptr += sizeof(struct section_64);
 		i++;
@@ -175,19 +175,17 @@ bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 {
 	struct mach_header_64       *header;
 	struct load_command         *lcmd;
-	t_file						*file;
 	uint32_t                    i;
 
-	file = &nm_otool->file;
 	if (nm_otool->print_file_name)
-		ft_printf("%s:\n", file->name);
-	header = (struct mach_header_64 *)file->memory;
-	lcmd = (void *)file->memory + sizeof(*header);
+		ft_printf("%s:\n", nm_otool->file.name);
+	header = (struct mach_header_64 *)nm_otool->file.memory;
+	lcmd = (void *)nm_otool->file.memory + sizeof(*header);
 	i = 0;
 	while (i < header->ncmds)
 	{
 		if (lcmd->cmd == LC_SEGMENT_64)
-			text_segment_64(lcmd, file);
+			text_segment_64(lcmd, nm_otool);
 		lcmd = (void *)lcmd + lcmd->cmdsize;
 		i++;
 	}

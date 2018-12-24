@@ -13,6 +13,6 @@
 
 # endif
 
-void      print_file_name(t_file *file, char *current_file);
+void      print_file_name(t_nm_otool *nm_otool, char *current_file);
 
 #endif
