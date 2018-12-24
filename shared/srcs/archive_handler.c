@@ -1,6 +1,4 @@
 #include "nm_otool.h"
-// #include "../../nm/includes/nm.h" Useless?
-// #include "../../otool/includes/otool.h" Useless?
 
 static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 {
@@ -18,7 +16,7 @@ static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 }
 
 
-static int			get_ar_name_length(t_nm_otool *nm_otool,
+static int		get_ar_name_length(t_nm_otool *nm_otool,
 	char *ar_name) // Super unsafe function.
 {
 	char			*ptr;
@@ -33,13 +31,7 @@ static int			get_ar_name_length(t_nm_otool *nm_otool,
 	return (-1);
 }
 
-// static bool		handle_archive_object(t_nm_otool *nm_otool,
-// 	struct ar_hdr *ar_ptr)
-// {
-//
-// }
-
-static bool			handle_archive_objects(t_nm_otool *nm_otool,
+static bool		handle_archive_objects(t_nm_otool *nm_otool,
 	struct ar_hdr *ar_ptr, bool print_file_name)
 {
 	int				ar_size;
@@ -86,7 +78,7 @@ bool			archive_handler(t_nm_otool *nm_otool)
 	struct ar_hdr   *ar_ptr;
 	int             ar_size;
 
-	if(!SET(ar_ptr, nm_otool->file.memory + SARMAG)
+	if (!SET(ar_ptr, nm_otool->file.memory + SARMAG)
 		|| !STRUCT_IS_SAFE(ar_ptr))
 		return (ERROR_LOG("archive: not enough space for ar_hdr"));
 	if ((ar_size = safe_atoi(nm_otool, ar_ptr->ar_size)) < 0)
