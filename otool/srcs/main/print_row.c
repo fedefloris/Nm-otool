@@ -35,7 +35,6 @@ static char	*ft_generate_string(uintmax_t num, uintmax_t base, char c)
 	uintmax_t	sum;
 	int			mod;
 	int			len;
-	int			i;
 	char		*str;
 
 	if (num == 0)
@@ -46,7 +45,6 @@ static char	*ft_generate_string(uintmax_t num, uintmax_t base, char c)
 		return (str);
 	}
 	sum = num;
-	i = 0;
 	len = ft_get_len(num, base);
 	if (!(str = ft_strnew(len)))
 		return (NULL);
