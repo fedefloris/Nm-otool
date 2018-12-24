@@ -26,6 +26,12 @@ then
 	USE_VALGRIND=0
 fi
 
+# Set default print report
+if [ -z "$PRINT_REPORT" ]
+then
+	PRINT_REPORT=0
+fi
+
 # Set default test function
 if [ -z "$FUNCTION" ]
 then
@@ -134,6 +140,14 @@ then
 	echo "${WHITE}"
 else
 	echo "${RED}$FAILED_TESTS Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
+	if [ $PRINT_REPORT -eq 1 ]
+	then
+		echo "\n\n${WHITE}Content of ./${REPORT}: \n"
+		cat ./${REPORT}
+		echo "\n\n${WHITE}Content of ./${VAL_REPORT}: \n"
+		cat ./${VAL_REPORT}
+		echo "\n"
+	fi
 	echo "${WHITE}---\\nKey for diff:\\n< ft_$FUNCTION\\n> $FUNCTION"
 	exit 1
 fi
