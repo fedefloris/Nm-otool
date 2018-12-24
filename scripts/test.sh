@@ -80,8 +80,8 @@ echo "[$FUNCTION] Testing all files in ${DIR}/\n"
 for f in $FILES;
 do
 	# Do ft_ and system function.
-	$FUNCTION $OPTIONS $f 2>&- >> $SY;
-	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
+	$FUNCTION $OPTIONS $f 2>&- > $SY;
+	$FUNCTIONPATH $OPTIONS $f 2>&- > $FT;
 
 	# Reset diff status
 	DIFF_STATUS=0
@@ -122,13 +122,10 @@ do
 			STATUS=1
 		fi
 	fi
-
-	# Remove garbage
-	rm -rf $FT
-	rm -rf $SY
-	rm -rf $DIFF_LOG
-	rm -rf $VAL_LOG
 done
+
+# Remove garbage
+rm -rf $FT $SY $DIFF_LOG $VAL_LOG
 
 # Check final test status
 if [ $STATUS -eq 0 ]
