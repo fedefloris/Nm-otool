@@ -10,7 +10,8 @@ OTOOL_DIR = otool
 all: $(NAME)
 
 test: $(NAME)
-	OPTIONS=-p ./scripts/test.sh
+	@OPTIONS=-p ./scripts/test.sh /bin
+	@OPTIONS=-p ./scripts/test.sh /usr/bin
 
 comp_libft:
 	@make -C $(LIBFT_DIR)/
