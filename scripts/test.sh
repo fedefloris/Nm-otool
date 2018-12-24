@@ -134,6 +134,7 @@ done
 if [ $STATUS -eq 0 ]
 then
 	echo "${GREEN}Tests passed!"
+	echo "${WHITE}"
 else
 	echo "${RED}$FAILED_TESTS Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
 	echo "${WHITE}---\\nKey for diff:\\n< ft_$FUNCTION\\n> $FUNCTION"
