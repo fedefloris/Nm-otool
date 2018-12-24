@@ -6,6 +6,8 @@ static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	t_file file_data, struct fat_arch *arch,
 	t_obj_handler mach_o_function)
 {
+	bool		status;
+
 	if (!STRUCT_IS_SAFE(arch))
 		return (ERROR_LOG("fat: arch beyond binary"));
 	ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
@@ -14,6 +16,13 @@ static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
 	if ((nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1) > file_data.end_of_file)
 		return (ERROR_LOG("fat: arch->size bad size."));
+	if (!ft_strncmp(nm_otool->file.memory, ARMAG, SARMAG))
+	{
+		nm_otool->file.format = ARCHIVE;
+		status = archive_handler(nm_otool);
+		nm_otool->file = file_data;
+		return (status);
+	}
 	return (set_file_info_on_macos(nm_otool) && mach_o_function(nm_otool));
 }
 
