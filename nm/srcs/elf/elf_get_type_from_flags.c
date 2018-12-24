@@ -19,6 +19,8 @@ char		elf_get_type_from_flags(t_elf_symbols_info *info)
 	{
 		if (info->sh_type == SHT_GROUP)
 			return ('n');
+		if (info->sh_flags & SHF_EXECINSTR)
+			return ('t');
 		return ('r');
 	}
 	if (is_uninitialized_data_section(info))
