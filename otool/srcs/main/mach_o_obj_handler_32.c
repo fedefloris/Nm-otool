@@ -54,15 +54,6 @@ bool		text_segment(struct load_command *lcmd, t_nm_otool *nm_otool)
 	return (true);
 }
 
-bool		filetype(struct mach_header *header)
-{
-	if (header->filetype == MH_OBJECT)
-		ft_printf("filetype: object\n");
-	else if (header->filetype == MH_EXECUTE)
-		ft_printf("filetype: executable\n");
-	return (true);
-}
-
 bool		mach_o_obj_handler_32(t_nm_otool *nm_otool)
 {
 	struct mach_header		*header;

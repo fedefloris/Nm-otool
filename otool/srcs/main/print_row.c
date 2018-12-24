@@ -58,7 +58,7 @@ static char	*ft_generate_string(uintmax_t num, uintmax_t base, char c)
 	}
 	return (str);
 }
-
+//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
 static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	char	*str;
@@ -79,7 +79,7 @@ void		print_row(unsigned char *word)
 	number = NULL;
 	while (j < WORD_NUM)
 	{
-		if ((number = ft_itoa_base_tmp(*word, 16, 'a')))
+		if ((number = ft_itoa_base_tmp(*word, 16, 'a')))//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
 		{
 			if (ft_strlen(number) == 1)
 				row[i++] = '0';
