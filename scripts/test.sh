@@ -26,6 +26,12 @@ then
 	USE_VALGRIND=0
 fi
 
+# Set default print report
+if [ -z "$PRINT_REPORT" ]
+then
+	PRINT_REPORT=0
+fi
+
 # Set default test function
 if [ -z "$FUNCTION" ]
 then
@@ -69,16 +75,19 @@ then
 	DIR=$1
 fi
 
+# Get all files from dir
+FILES=$(find $DIR -type f)
+
 # Print initial info
 echo "${WHITE}"
 echo "[$FUNCTION] Testing all files in ${DIR}/\n"
 
 # Iterate files
-for f in $DIR/*;
+for f in $FILES;
 do
 	# Do ft_ and system function.
-	$FUNCTION $OPTIONS $f 2>&- >> $SY;
-	$FUNCTIONPATH $OPTIONS $f 2>&- >> $FT;
+	$FUNCTION $OPTIONS $f 2>&- > $SY;
+	$FUNCTIONPATH $OPTIONS $f 2>&- > $FT;
 
 	# Reset diff status
 	DIFF_STATUS=0
@@ -119,20 +128,26 @@ do
 			STATUS=1
 		fi
 	fi
-
-	# Remove garbage
-	rm -rf $FT
-	rm -rf $SY
-	rm -rf $DIFF_LOG
-	rm -rf $VAL_LOG
 done
+
+# Remove garbage
+rm -rf $FT $SY $DIFF_LOG $VAL_LOG
 
 # Check final test status
 if [ $STATUS -eq 0 ]
 then
 	echo "${GREEN}Tests passed!"
+	echo "${WHITE}"
 else
 	echo "${RED}$FAILED_TESTS Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
+	if [ $PRINT_REPORT -eq 1 ]
+	then
+		echo "\n\n${WHITE}Content of ./${REPORT}: \n"
+		cat ./${REPORT}
+		echo "\n\n${WHITE}Content of ./${VAL_REPORT}: \n"
+		cat ./${VAL_REPORT}
+		echo "\n"
+	fi
 	echo "${WHITE}---\\nKey for diff:\\n< ft_$FUNCTION\\n> $FUNCTION"
 	exit 1
 fi

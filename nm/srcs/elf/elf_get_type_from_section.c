@@ -28,13 +28,15 @@ char		elf_get_type_from_section(t_elf_symbols_info *info)
 		return ('N');
 	if (is_initialized_data_section(info->sh_name))
 		return ('d');
-	if (!ft_strcmp(info->sh_name, ".drectve") || !ft_strcmp(info->sh_name, ".idata"))
+	if (!ft_strcmp(info->sh_name, ".drectve")
+		|| !ft_strcmp(info->sh_name, ".idata"))
 		return ('i');
 	if (!ft_strcmp(info->sh_name, ".edata"))
 		return ('e');
 	if (!ft_strcmp(info->sh_name, ".pdata"))
 		return ('p');
-	if (!ft_strcmp(info->sh_name, ".rodata") || !ft_strcmp(info->sh_name, ".rodata1"))
+	if (!ft_strcmp(info->sh_name, ".rodata")
+		|| !ft_strcmp(info->sh_name, ".rodata1"))
 		return ('r');
 	if (!ft_strcmp(info->sh_name, ".scommon"))
 		return ('c');
