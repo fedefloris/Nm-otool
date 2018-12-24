@@ -12,6 +12,7 @@ all: $(NAME)
 test: $(NAME)
 	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
 	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/lib
 
 comp_libft:
 	@make -C $(LIBFT_DIR)/
