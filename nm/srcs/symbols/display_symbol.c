@@ -19,7 +19,8 @@ static void			display_32_symbol_value(t_symbol *sym, bool print_value)
 
 static bool			should_the_value_be_printed(t_symbol *sym)
 {
-	if (sym->type == 'u' && sym->value)
+	if ((sym->type == 'u' || ft_tolower(sym->type) == 'i')
+		&& sym->value)
 		return (true);
 	return (sym->type != 'w'
 		&& ft_tolower(sym->type) != 'u'
@@ -43,8 +44,5 @@ void				display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 		display_32_symbol_value(sym, print_value);
 	else
 		display_64_symbol_value(sym, print_value);
-	if (sym->type != 'I')
-		ft_printf("%c %s\n", sym->type, sym->name);
-	else
-		ft_printf("%c %s (indirect for %s)\n",sym->type, sym->name, sym->name);
+	ft_printf("%c %s\n", sym->type, sym->name);
 }

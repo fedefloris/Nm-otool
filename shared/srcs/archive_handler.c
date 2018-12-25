@@ -78,6 +78,8 @@ bool			archive_handler(t_nm_otool *nm_otool)
 	struct ar_hdr   *ar_ptr;
 	int             ar_size;
 
+	if (nm_otool->routine == FT_OTOOL)
+		ft_printf("Archive : %s\n", nm_otool->file.name);
 	if (!SET(ar_ptr, nm_otool->file.memory + SARMAG)
 		|| !STRUCT_IS_SAFE(ar_ptr))
 		return (ERROR_LOG("archive: not enough space for ar_hdr"));

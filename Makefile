@@ -2,6 +2,8 @@ NM = ft_nm
 OTOOL = ft_otool
 NAME = $(NM) $(OTOOL)
 
+OS_TYPE = $(shell uname)
+
 LIBFT_DIR = libft
 
 NM_DIR = nm
@@ -12,6 +14,9 @@ all: $(NAME)
 test: $(NAME)
 	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
 	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+ifeq ($(OS_TYPE), Darwin)
+	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+endif
 
 comp_libft:
 	@make -C $(LIBFT_DIR)/
