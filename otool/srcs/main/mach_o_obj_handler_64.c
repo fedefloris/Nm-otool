@@ -52,10 +52,10 @@ bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
 	{
 		if (!STRUCT_IS_SAFE(section) || !STRING_IS_SAFE(section->sectname))
 			return (ERROR_LOG("section or secname is beyond binary"));
-		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)//refactor
+		if (!ft_strcmp(section->sectname, SECT_TEXT))
 		{
 			ft_printf("Contents of (__TEXT,__text) section\n");
-			parse_text_64(section, nm_otool);//return good value
+			return (parse_text_64(section, nm_otool));
 		}
 		if (!SET(section, section + sizeof(*section)))
 			return (ERROR_LOG("next section is beyond binary"));
