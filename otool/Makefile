@@ -25,6 +25,7 @@ HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h
 MAIN_FILES = otool \
 	print_file_name \
 	display_row \
+	display_byte \
 	obj_handler
 
 SHARED_FILES = config_nm_otool \
