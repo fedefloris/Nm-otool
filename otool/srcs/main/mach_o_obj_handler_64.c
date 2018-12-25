@@ -82,7 +82,8 @@ bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 		if (!STRUCT_IS_SAFE(lcmd))
 			return (ERROR_LOG("current load command is beyond binary"));
 		if (lcmd->cmd == LC_SEGMENT_64)
-			text_segment_64(lcmd, nm_otool);
+			if (!text_segment_64(lcmd, nm_otool))
+				return (false);
 		if (!SET(lcmd, lcmd + lcmd->cmdsize))
 			return (ERROR_LOG("next load command is beyond binary"));
 	}
