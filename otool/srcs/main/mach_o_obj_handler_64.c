@@ -42,11 +42,11 @@ bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
 {
 	struct section_64			*section;
 	void						*sect_ptr;
-	uint32_t                    i;
+	uint32_t                    nsects;
 
 	sect_ptr = (void *)(segment + 1);
-	i = 0;
-	while (i < segment->nsects)
+	nsects = segment->nsects;
+	while (nsects--)
 	{
 		section = (struct section_64 *)sect_ptr;
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
@@ -55,7 +55,6 @@ bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
 			parse_text_64(section, nm_otool);
 		}
 		sect_ptr += sizeof(struct section_64);
-		i++;
 	}
 	return (true);
 }
