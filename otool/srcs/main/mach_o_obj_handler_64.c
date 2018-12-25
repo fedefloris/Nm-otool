@@ -1,18 +1,6 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-static bool			display_row(t_nm_otool *nm_otool, unsigned char **byte, uint64_t *current_byte, uint64_t *position_on_row)
-{
-	if (!ADDRESS_IS_SAFE(*byte + (BYTES_PER_ROW - 1)))
-		return (ERROR_LOG("current row is beyond binary"));
-	print_row(*byte);
-	if (!ADVANCE(*byte, *byte + BYTES_PER_ROW))
-		return (ERROR_LOG("next row is beyond binary"));
-	*position_on_row += BYTES_PER_ROW;
-	*current_byte += BYTES_PER_ROW;
-	return (true);
-}
-
 static bool			display_byte(t_nm_otool *nm_otool, unsigned char **byte, uint64_t *current_byte, uint64_t *position_on_row)
 {
 	if (!ADDRESS_IS_SAFE(*byte))
