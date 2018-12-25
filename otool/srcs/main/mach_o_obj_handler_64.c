@@ -4,8 +4,8 @@
 bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 {
 	uint64_t			addr;
-	uint32_t			i;
-	uint32_t			j;
+	uint32_t			current_byte;
+	uint32_t			position_on_row;
 	unsigned char		*byte;
 
 	if (!STRUCT_IS_SAFE(section))
@@ -13,30 +13,30 @@ bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 	if (!SET(byte, nm_otool->file.memory + section->offset))
 		return (ERROR_LOG("offset beyond binary"));
 	addr = section->addr;
-	i = 0;
-	while (i < section->size)
+	current_byte = 0;
+	while (current_byte < section->size)
 	{
-		ft_printf("%016lx\t", addr + i);
-		j = 0;
-		while (j < BYTES_PER_ROW && (i + j) < section->size)
+		ft_printf("%016lx\t", addr + current_byte);
+		position_on_row = 0;
+		while (position_on_row < BYTES_PER_ROW && (current_byte + position_on_row) < section->size)
 		{
-			if (i + j + BYTES_PER_ROW < section->size)
+			if (current_byte + position_on_row + BYTES_PER_ROW < section->size)
 			{
 				print_row(byte);
 				if (!SET(byte, byte + BYTES_PER_ROW))
 					return (ERROR_LOG("byte + BYTES_PER_ROW is beyond binary"));
-				j += BYTES_PER_ROW;
+				position_on_row += BYTES_PER_ROW;
 			}
 			else
 			{
 				ft_printf("%02x ", *byte);
 				if (!SET(byte, byte + sizeof(*byte)))
 					return (ERROR_LOG("byte + sizeof(byte) is beyond binary"));
-				j++;
+				position_on_row++;
 			}
 		}
 		ft_printf("\n");
-		i += BYTES_PER_ROW;
+		current_byte += BYTES_PER_ROW;
 	}
 	return (true);
 }
