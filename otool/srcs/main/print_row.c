@@ -62,29 +62,29 @@ void		print_row(unsigned char *byte)
 {
 	unsigned char	row[(BYTES_PER_ROW * 3) + 1];
 	char			*number;
-	int				i;
-	int				j;
+	int				current_byte;
+	int				position_on_row;
 
-	i = 0;
-	j = 0;
+	current_byte = 0;
+	position_on_row = 0;
 	number = NULL;
-	while (j < BYTES_PER_ROW)
+	while (position_on_row < BYTES_PER_ROW)
 	{
 		if ((number = ft_itoa_base_tmp(*byte, 16, 'a')))//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
 		{
 			if (ft_strlen(number) == 1)
-				row[i++] = '0';
-			ft_strcpy((char *)(row + i), number);
-			i += ft_strlen(number);
+				row[current_byte++] = '0';
+			ft_strcpy((char *)(row + current_byte), number);
+			current_byte += ft_strlen(number);
 		}
 		else
-			ft_strcpy((char *)(row + i), "00");
+			ft_strcpy((char *)(row + current_byte), "00");
 
-		row[i++] = ' ';
-		j++;
+		row[current_byte++] = ' ';
+		position_on_row++;
 		byte++;
 		ft_strdel(&number);
 	}
-	row[i] = '\0';
+	row[current_byte] = '\0';
 	ft_printf("%s", row);
 }
