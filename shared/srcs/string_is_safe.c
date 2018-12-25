@@ -4,7 +4,7 @@ bool		string_is_safe(t_nm_otool *nm_otool, char *str)
 {
 	if (!str)
 		return (false);
-	while (get_safe_address(nm_otool, str))
+	while (ADDRESS_IS_SAFE(str))
 	{
 		if (!*str)
 			return (true);
