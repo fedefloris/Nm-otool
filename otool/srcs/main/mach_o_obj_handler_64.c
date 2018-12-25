@@ -1,11 +1,12 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
+static bool			parse_text_64(t_nm_otool *nm_otool,
+	struct section_64 *section)
 {
-	uint64_t			current_byte;
-	uint64_t			position_on_row;
-	unsigned char		*byte;
+	uint64_t		current_byte;
+	uint64_t		position_on_row;
+	unsigned char	*byte;
 
 	if (!STRUCT_IS_SAFE(section))
 		return (ERROR_LOG("section is beyond binary"));
@@ -40,10 +41,11 @@ bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 	return (true);
 }
 
-bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
+static bool			text_segment_64(t_nm_otool *nm_otool,
+	struct segment_command_64 *segment)
 {
-	struct section_64			*section;
-	uint32_t                    nsects;
+	struct section_64	*section;
+	uint32_t			nsects;
 
 	if (!SET(section, segment + sizeof(*segment)))
 		return (ERROR_LOG("first section beyond binary"));
@@ -57,7 +59,7 @@ bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
 		if (!ft_strcmp(section->sectname, SECT_TEXT))
 		{
 			ft_printf("Contents of (__TEXT,__text) section\n");
-			return (parse_text_64(section, nm_otool));
+			return (parse_text_64(nm_otool, section));
 		}
 		if (!SET(section, section + sizeof(*section)))
 			return (ERROR_LOG("next section is beyond binary"));
@@ -65,11 +67,11 @@ bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
 	return (true);
 }
 
-bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
+bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 {
-	struct mach_header_64       *header;
-	struct load_command         *lcmd;
-	uint32_t					ncmds;
+	struct mach_header_64	*header;
+	struct load_command		*lcmd;
+	uint32_t				ncmds;
 
 	if (nm_otool->print_file_name)
 		ft_printf("%s:\n", nm_otool->file.name);
@@ -85,7 +87,7 @@ bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 		if (!STRUCT_IS_SAFE(lcmd))
 			return (ERROR_LOG("current load command is beyond binary"));
 		if (lcmd->cmd == LC_SEGMENT_64)
-			if (!text_segment_64((struct segment_command_64 *)lcmd, nm_otool))
+			if (!text_segment_64(nm_otool, (struct segment_command_64 *)lcmd))
 				return (false);
 		if (!SET(lcmd, lcmd + lcmd->cmdsize))
 			return (ERROR_LOG("next load command is beyond binary"));
