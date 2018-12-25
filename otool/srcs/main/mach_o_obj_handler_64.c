@@ -10,16 +10,16 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 
 	if (!STRUCT_IS_SAFE(section))
 		return (ERROR_LOG("section is beyond binary"));
-	if (!SET(byte, nm_otool->file.memory + section->offset))
+	if (!SET(byte, nm_otool->file.memory + SWAP_ENDIAN(section->offset)))
 		return (ERROR_LOG("offset beyond binary"));
 	current_byte = 0;
-	while (current_byte < section->size)
+	while (current_byte < SWAP_ENDIAN(section->size))
 	{
-		ft_printf("%016lx\t", section->addr + current_byte);
+		ft_printf("%016lx\t", SWAP_ENDIAN(section->addr) + current_byte);
 		position_on_row = 0;
-		while (position_on_row < BYTES_PER_ROW && current_byte < section->size)
+		while (position_on_row < BYTES_PER_ROW && current_byte < SWAP_ENDIAN(section->size))
 		{
-			if (current_byte + position_on_row + BYTES_PER_ROW < section->size)
+			if (current_byte + position_on_row + BYTES_PER_ROW < SWAP_ENDIAN(section->size))
 			{
 				if (!ADDRESS_IS_SAFE(byte + (BYTES_PER_ROW - 1)))
 					return (ERROR_LOG("current row is beyond binary"));
@@ -55,7 +55,7 @@ static bool			text_segment_64(t_nm_otool *nm_otool,
 		return (ERROR_LOG("first section beyond binary"));
 	if (!STRUCT_IS_SAFE(segment))
 		return (ERROR_LOG("segment struct is beyond binary"));
-	nsects = segment->nsects;
+	nsects = SWAP_ENDIAN(segment->nsects);
 	while (nsects--)
 	{
 		if (!STRUCT_IS_SAFE(section) || !STRING_IS_SAFE(section->sectname))
@@ -85,12 +85,12 @@ bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 		return (ERROR_LOG("first load command beyond binary"));
 	if (!STRUCT_IS_SAFE(header))
 		return (ERROR_LOG("header is beyond binary"));
-	ncmds = header->ncmds;
+	ncmds = SWAP_ENDIAN(header->ncmds);
 	while (ncmds--)
 	{
 		if (!STRUCT_IS_SAFE(lcmd))
 			return (ERROR_LOG("current load command is beyond binary"));
-		if (lcmd->cmd == LC_SEGMENT_64)
+		if (SWAP_ENDIAN(lcmd->cmd) == LC_SEGMENT_64)
 			if (!text_segment_64(nm_otool, (struct segment_command_64 *)lcmd))
 				return (false);
 		if (!ADVANCE(lcmd, lcmd + lcmd->cmdsize))
