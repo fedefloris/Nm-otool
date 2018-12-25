@@ -41,20 +41,24 @@ bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 bool		text_segment_64(struct segment_command_64 *segment, t_nm_otool *nm_otool)
 {
 	struct section_64			*section;
-	void						*sect_ptr;
 	uint32_t                    nsects;
 
-	sect_ptr = (void *)(segment + 1);
+	if (!SET(section, segment + sizeof(*segment)))
+		return (ERROR_LOG("first section beyond binary"));
+	if (!STRUCT_IS_SAFE(segment))
+		return (ERROR_LOG("segment struct is beyond binary"));
 	nsects = segment->nsects;
 	while (nsects--)
 	{
-		section = (struct section_64 *)sect_ptr;
-		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
+		if (!STRUCT_IS_SAFE(section) || !STRING_IS_SAFE(section->sectname))
+			return (ERROR_LOG("section or secname is beyond binary"));
+		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)//refactor
 		{
 			ft_printf("Contents of (__TEXT,__text) section\n");
-			parse_text_64(section, nm_otool);
+			parse_text_64(section, nm_otool);//return good value
 		}
-		sect_ptr += sizeof(struct section_64);
+		if (!SET(section, section + sizeof(*section)))
+			return (ERROR_LOG("next section is beyond binary"));
 	}
 	return (true);
 }
