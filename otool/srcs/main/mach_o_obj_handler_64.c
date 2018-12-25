@@ -3,13 +3,12 @@
 
 bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 {
-	struct section_64	*sect_ptr;
 	uint64_t			addr;
 	uint32_t			i;
 	uint32_t			j;
-	unsigned char		word;
+	unsigned char		*word;
 
-	sect_ptr = (void *)nm_otool->file.memory + section->offset;
+	word = (unsigned char *)nm_otool->file.memory + section->offset;
 	addr = section->addr;
 	i = 0;
 	while (i < section->size)
@@ -18,17 +17,16 @@ bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 		j = 0;
 		while (j < WORD_NUM && (i + j) < section->size)
 		{
-			word = *(unsigned char *)sect_ptr;
 			if (i + j + WORD_NUM < section->size)
 			{
-				print_row((unsigned char *)sect_ptr);
-				sect_ptr = (void *)sect_ptr + WORD_NUM;
+				print_row(word);
+				word = (unsigned char *)word + WORD_NUM;
 				j += WORD_NUM;
 			}
 			else
 			{
-				ft_printf("%02x ", word);
-				sect_ptr = (void *)sect_ptr + sizeof(char);
+				ft_printf("%02x ", *word);
+				word = word + sizeof(*word);
 				j++;
 			}
 		}
