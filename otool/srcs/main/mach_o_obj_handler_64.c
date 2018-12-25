@@ -1,9 +1,34 @@
 #include "nm_otool.h"
 #include "otool.h"
 
+static bool			display_row(t_nm_otool *nm_otool, unsigned char **byte, uint64_t *current_byte, uint64_t *position_on_row)
+{
+	if (!ADDRESS_IS_SAFE(*byte + (BYTES_PER_ROW - 1)))
+		return (ERROR_LOG("current row is beyond binary"));
+	print_row(*byte);
+	if (!ADVANCE(*byte, *byte + BYTES_PER_ROW))
+		return (ERROR_LOG("next row is beyond binary"));
+	*position_on_row += BYTES_PER_ROW;
+	*current_byte += BYTES_PER_ROW;
+	return (true);
+}
+
+static bool			display_byte(t_nm_otool *nm_otool, unsigned char **byte, uint64_t *current_byte, uint64_t *position_on_row)
+{
+	if (!ADDRESS_IS_SAFE(*byte))
+		return (ERROR_LOG("current row is beyond binary"));
+	ft_printf("%02x ", **byte);
+	if (!ADVANCE(*byte, *byte + sizeof(**byte)))
+		return (ERROR_LOG("next byte is beyond binary"));
+	*position_on_row += 1;
+	*current_byte += 1;
+	return (true);
+}
+
 static bool			parse_text_64(t_nm_otool *nm_otool,
 	struct section_64 *section)
 {
+	bool			status;
 	uint64_t		current_byte;
 	uint64_t		position_on_row;
 	unsigned char	*byte;
@@ -13,6 +38,7 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 	if (!SET(byte, nm_otool->file.memory + SWAP_ENDIAN(section->offset)))
 		return (ERROR_LOG("offset beyond binary"));
 	current_byte = 0;
+	status = true;
 	while (current_byte < SWAP_ENDIAN(section->size))
 	{
 		ft_printf("%016lx\t", SWAP_ENDIAN(section->addr) + current_byte);
@@ -20,25 +46,11 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 		while (position_on_row < BYTES_PER_ROW && current_byte < SWAP_ENDIAN(section->size))
 		{
 			if (current_byte + position_on_row + BYTES_PER_ROW < SWAP_ENDIAN(section->size))
-			{
-				if (!ADDRESS_IS_SAFE(byte + (BYTES_PER_ROW - 1)))
-					return (ERROR_LOG("current row is beyond binary"));
-				print_row(byte);
-				if (!ADVANCE(byte, byte + BYTES_PER_ROW))
-					return (ERROR_LOG("next row is beyond binary"));
-				position_on_row += BYTES_PER_ROW;
-				current_byte += BYTES_PER_ROW;
-			}
+				status = display_row(nm_otool, &byte, &current_byte, &position_on_row);
 			else
-			{
-				if (!ADDRESS_IS_SAFE(byte))
-					return (ERROR_LOG("current row is beyond binary"));
-				ft_printf("%02x ", *byte);
-				if (!ADVANCE(byte, byte + sizeof(*byte)))
-					return (ERROR_LOG("next byte is beyond binary"));
-				position_on_row++;
-				current_byte++;
-			}
+				status = display_byte(nm_otool, &byte, &current_byte, &position_on_row);
+			if (!status)
+				return (false);
 		}
 		ft_printf("\n");
 	}
