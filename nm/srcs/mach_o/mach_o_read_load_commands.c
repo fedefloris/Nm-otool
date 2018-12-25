@@ -13,7 +13,7 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 			return (NULL);
 		if (!symtab && SWAP_ENDIAN(lc->cmd) == LC_SYMTAB)
 		{
-			if (!SET(symtab, lc) || !STRUCT_IS_SAFE(symtab))
+			if (!ADVANCE(symtab, lc) || !STRUCT_IS_SAFE(symtab))
 				return (NULL);
 		}
 		if (SWAP_ENDIAN(lc->cmd) == LC_SEGMENT)//ENSURE variable load command sizes are within binary.
@@ -26,7 +26,7 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 				return (NULL);
 		if (SWAP_ENDIAN(lc->cmdsize) <= sizeof(*lc))
 			return (NULL);
-		if (!SET(lc, lc + SWAP_ENDIAN(lc->cmdsize)))
+		if (!ADVANCE(lc, lc + SWAP_ENDIAN(lc->cmdsize)))
 			return (NULL);
 	}
 	return (symtab);

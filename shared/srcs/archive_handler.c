@@ -66,7 +66,7 @@ static bool		handle_archive_objects(t_nm_otool *nm_otool,
 		if (!SET_FILE_INFO(nm_otool) || !obj_handler(nm_otool))
 			status = false;
 		nm_otool->file = file_data;
-		if (!SET(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr)))
+		if (!ADVANCE(ar_ptr, ar_ptr + ar_size + sizeof(struct ar_hdr)))
 			break ;
 	}
 	nm_otool->print_file_name = print_file_name;

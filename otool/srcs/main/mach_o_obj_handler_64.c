@@ -24,7 +24,7 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 				if (!ADDRESS_IS_SAFE(byte + (BYTES_PER_ROW - 1)))
 					return (ERROR_LOG("current row is beyond binary"));
 				print_row(byte);
-				if (!SET(byte, byte + BYTES_PER_ROW))
+				if (!ADVANCE(byte, byte + BYTES_PER_ROW))
 					return (ERROR_LOG("next row is beyond binary"));
 				position_on_row += BYTES_PER_ROW;
 				current_byte += BYTES_PER_ROW;
@@ -34,7 +34,7 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 				if (!ADDRESS_IS_SAFE(byte))
 					return (ERROR_LOG("current row is beyond binary"));
 				ft_printf("%02x ", *byte);
-				if (!SET(byte, byte + sizeof(*byte)))
+				if (!ADVANCE(byte, byte + sizeof(*byte)))
 					return (ERROR_LOG("next byte is beyond binary"));
 				position_on_row++;
 				current_byte++;
@@ -93,7 +93,7 @@ bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 		if (lcmd->cmd == LC_SEGMENT_64)
 			if (!text_segment_64(nm_otool, (struct segment_command_64 *)lcmd))
 				return (false);
-		if (!SET(lcmd, lcmd + lcmd->cmdsize))
+		if (!ADVANCE(lcmd, lcmd + lcmd->cmdsize))
 			return (ERROR_LOG("next load command is beyond binary"));
 	}
 	return (true);
