@@ -4,17 +4,17 @@
 bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 {
 	struct section_64	*sect_ptr;
-	struct section_64	*sect_addr;
+	uint64_t			addr;
 	uint32_t			i;
 	uint32_t			j;
 	unsigned char		word;
 
 	sect_ptr = (void *)nm_otool->file.memory + section->offset;
-	sect_addr = section;
+	addr = section->addr;
 	i = 0;
 	while (i < section->size)
 	{
-		ft_printf("%016lx\t", (void *)(sect_addr->addr + i));
+		ft_printf("%016lx\t", addr + i);
 		j = 0;
 		while (j < WORD_NUM && (i + j) < section->size)
 		{
