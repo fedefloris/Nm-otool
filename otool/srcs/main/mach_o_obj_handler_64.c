@@ -66,7 +66,7 @@ bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 {
 	struct mach_header_64       *header;
 	struct load_command         *lcmd;
-	uint32_t                    i;
+	uint32_t					ncmds;
 
 	if (nm_otool->print_file_name)
 		ft_printf("%s:\n", nm_otool->file.name);
@@ -74,10 +74,10 @@ bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 		return (ERROR_LOG("file->memory beyond binary"));
 	if (!SET(lcmd, nm_otool->file.memory + sizeof(*header)))
 		return (ERROR_LOG("first load command beyond binary"));
-	i = 0;
 	if (!STRUCT_IS_SAFE(header))
 		return (ERROR_LOG("header is beyond binary"));
-	while (i < header->ncmds)
+	ncmds = header->ncmds;
+	while (ncmds--)
 	{
 		if (!STRUCT_IS_SAFE(lcmd))
 			return (ERROR_LOG("current load command is beyond binary"));
@@ -85,7 +85,6 @@ bool		mach_o_obj_handler_64(t_nm_otool *nm_otool)
 			text_segment_64(lcmd, nm_otool);
 		if (!SET(lcmd, lcmd + lcmd->cmdsize))
 			return (ERROR_LOG("next load command is beyond binary"));
-		i++;
 	}
 	return (true);
 }
