@@ -3,26 +3,22 @@
 
 bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 {
-	uint64_t			addr;
-	uint64_t			size;
-	uint32_t			current_byte;
-	uint32_t			position_on_row;
+	uint64_t			current_byte;
+	uint64_t			position_on_row;
 	unsigned char		*byte;
 
 	if (!STRUCT_IS_SAFE(section))
 		return (ERROR_LOG("section is beyond binary"));
 	if (!SET(byte, nm_otool->file.memory + section->offset))
 		return (ERROR_LOG("offset beyond binary"));
-	addr = section->addr;
-	size = section->size;
 	current_byte = 0;
-	while (current_byte < size)
+	while (current_byte < section->size)
 	{
-		ft_printf("%016lx\t", addr + current_byte);
+		ft_printf("%016lx\t", section->addr + current_byte);
 		position_on_row = 0;
-		while (position_on_row < BYTES_PER_ROW && current_byte < size)
+		while (position_on_row < BYTES_PER_ROW && current_byte < section->size)
 		{
-			if (current_byte + position_on_row + BYTES_PER_ROW < size)
+			if (current_byte + position_on_row + BYTES_PER_ROW < section->size)
 			{
 				print_row(byte);
 				if (!SET(byte, byte + BYTES_PER_ROW))
