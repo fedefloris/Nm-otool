@@ -7,7 +7,7 @@ bool		parse_text(struct section *section, t_nm_otool *nm_otool)
 	struct section		*sect_addr;
 	uint32_t			i;
 	uint32_t			j;
-	unsigned char		word;
+	unsigned char		byte;
 
 	sect_ptr = (void *)nm_otool->file.memory + section->offset;
 	sect_addr = section;
@@ -16,16 +16,16 @@ bool		parse_text(struct section *section, t_nm_otool *nm_otool)
 	{
 		ft_printf("%08lx\t", (void *)(size_t)(sect_addr->addr + i));
 		j = 0;
-		while (j < WORD_NUM && (i + j) < section->size)
+		while (j < BYTES_PER_ROW && (i + j) < section->size)
 		{
-			word = *(unsigned char *)sect_ptr;
-			ft_printf("%02x ", word);
-			//swap_64(word);
+			byte = *(unsigned char *)sect_ptr;
+			ft_printf("%02x ", byte);
+			//swap_64(byte);
 			sect_ptr = (void *)sect_ptr + sizeof(char);
 			j++;
 		}
 		ft_printf("\n");
-		i += WORD_NUM;
+		i += BYTES_PER_ROW;
 	}
 	return (true);
 }

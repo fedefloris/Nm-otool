@@ -58,9 +58,9 @@ static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 	return (str);
 }
 
-void		print_row(unsigned char *word)
+void		print_row(unsigned char *byte)
 {
-	unsigned char	row[(WORD_NUM * 3) + 1];
+	unsigned char	row[(BYTES_PER_ROW * 3) + 1];
 	char			*number;
 	int				i;
 	int				j;
@@ -68,9 +68,9 @@ void		print_row(unsigned char *word)
 	i = 0;
 	j = 0;
 	number = NULL;
-	while (j < WORD_NUM)
+	while (j < BYTES_PER_ROW)
 	{
-		if ((number = ft_itoa_base_tmp(*word, 16, 'a')))//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+		if ((number = ft_itoa_base_tmp(*byte, 16, 'a')))//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
 		{
 			if (ft_strlen(number) == 1)
 				row[i++] = '0';
@@ -82,7 +82,7 @@ void		print_row(unsigned char *word)
 
 		row[i++] = ' ';
 		j++;
-		word++;
+		byte++;
 		ft_strdel(&number);
 	}
 	row[i] = '\0';

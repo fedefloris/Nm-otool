@@ -6,32 +6,32 @@ bool		parse_text_64(struct section_64 *section, t_nm_otool *nm_otool)
 	uint64_t			addr;
 	uint32_t			i;
 	uint32_t			j;
-	unsigned char		*word;
+	unsigned char		*byte;
 
-	word = (unsigned char *)nm_otool->file.memory + section->offset;
+	byte = (unsigned char *)nm_otool->file.memory + section->offset;
 	addr = section->addr;
 	i = 0;
 	while (i < section->size)
 	{
 		ft_printf("%016lx\t", addr + i);
 		j = 0;
-		while (j < WORD_NUM && (i + j) < section->size)
+		while (j < BYTES_PER_ROW && (i + j) < section->size)
 		{
-			if (i + j + WORD_NUM < section->size)
+			if (i + j + BYTES_PER_ROW < section->size)
 			{
-				print_row(word);
-				word = (unsigned char *)word + WORD_NUM;
-				j += WORD_NUM;
+				print_row(byte);
+				byte = (unsigned char *)byte + BYTES_PER_ROW;
+				j += BYTES_PER_ROW;
 			}
 			else
 			{
-				ft_printf("%02x ", *word);
-				word = word + sizeof(*word);
+				ft_printf("%02x ", *byte);
+				byte = byte + sizeof(*byte);
 				j++;
 			}
 		}
 		ft_printf("\n");
-		i += WORD_NUM;
+		i += BYTES_PER_ROW;
 	}
 	return (true);
 }
