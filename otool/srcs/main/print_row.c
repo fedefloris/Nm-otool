@@ -30,7 +30,8 @@ static int	ft_get_len(uintmax_t num, uintmax_t base)
 	return (len);
 }
 
-static char	*ft_generate_string(uintmax_t num, uintmax_t base, char c)
+//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	uintmax_t	sum;
 	int			mod;
@@ -54,14 +55,6 @@ static char	*ft_generate_string(uintmax_t num, uintmax_t base, char c)
 		sum /= base;
 		str[(len--) - 1] = ft_calculate_char(mod, c);
 	}
-	return (str);
-}
-//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
-static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
-{
-	char	*str;
-
-	str = ft_generate_string(num, base, c);
 	return (str);
 }
 
