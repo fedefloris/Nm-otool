@@ -5,7 +5,7 @@ static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 	int				result;
 
 	result = 0;
-	while (get_safe_address(nm_otool, str))
+	while (ADDRESS_IS_SAFE(str))
 	{
 		if (*str >= '0' && *str <= '9')
 			result = (result * 10) + (*(str++) - '0');
@@ -22,7 +22,7 @@ static int		get_ar_name_length(t_nm_otool *nm_otool,
 	char			*ptr;
 
 	ptr = ar_name;
-	while (get_safe_address(nm_otool, ptr))
+	while (ADDRESS_IS_SAFE(ptr))
 	{
 		if (*ptr && *ptr == '/')
 			return (safe_atoi(nm_otool, ptr + 1));

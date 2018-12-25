@@ -21,7 +21,7 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 		{
 			if (current_byte + position_on_row + BYTES_PER_ROW < section->size)
 			{
-				if (!get_safe_address(nm_otool, (char *)byte + (BYTES_PER_ROW - 1)))
+				if (!ADDRESS_IS_SAFE(byte + (BYTES_PER_ROW - 1)))
 					return (ERROR_LOG("current row is beyond binary"));
 				print_row(byte);
 				if (!SET(byte, byte + BYTES_PER_ROW))
@@ -31,7 +31,7 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 			}
 			else
 			{
-				if (!get_safe_address(nm_otool, (char *)byte))
+				if (!ADDRESS_IS_SAFE(byte))
 					return (ERROR_LOG("current row is beyond binary"));
 				ft_printf("%02x ", *byte);
 				if (!SET(byte, byte + sizeof(*byte)))
