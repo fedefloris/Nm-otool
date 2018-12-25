@@ -1,7 +1,7 @@
 #ifndef OTOOL_H
 # define OTOOL_H
 
-# define WORD_NUM 16
+# define BYTES_PER_ROW 16
 
 # ifdef __APPLE__
 
@@ -14,6 +14,6 @@
 # endif
 
 void      print_file_name(t_nm_otool *nm_otool, char *current_file);
-void		print_row(unsigned char *word);
+void		print_row(unsigned char *byte);
 
 #endif
