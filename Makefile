@@ -12,6 +12,8 @@ OTOOL_DIR = otool
 all: $(NAME)
 
 test: $(NAME)
+	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
+	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
 	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
 	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
 ifeq ($(OS_TYPE), Darwin)
