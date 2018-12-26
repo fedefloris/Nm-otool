@@ -1,11 +1,11 @@
 #include "nm_otool.h"
 
-static bool	set_endianness(t_nm_otool *nm_otool, Elf32_Ehdr *header)
+static bool	set_file_endianness(t_nm_otool *nm_otool, Elf32_Ehdr *header)
 {
 	if (header->e_ident[EI_DATA] == ELFDATA2LSB)
-		nm_otool->file.reversed_endian = false;
+		set_endianness(nm_otool, LITTLE_ENDIAN_FILE);
 	else if (header->e_ident[EI_DATA] == ELFDATA2MSB)
-		nm_otool->file.reversed_endian = true;
+		set_endianness(nm_otool, BIG_ENDIAN_FILE);
 	else
 		return (false);
 	return (true);
@@ -41,7 +41,7 @@ bool		set_file_info_on_linux(t_nm_otool *nm_otool)
 	else if (IS_ELF_64(nm_otool->file.format)
 		&& nm_otool->file.size < (long)sizeof(Elf64_Ehdr))
 		return (ERROR_LOG("Bad size"));
-	else if (!set_endianness(nm_otool, header))
+	else if (!set_file_endianness(nm_otool, header))
 		return (ERROR_LOG("Bad endianness"));
 	else if (!has_good_version(nm_otool, header))
 		return (ERROR_LOG("Wrong version"));

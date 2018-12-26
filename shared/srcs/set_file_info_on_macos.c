@@ -9,9 +9,9 @@ static bool		set_mach_o_format(t_nm_otool *nm_otool,
 		nm_otool->file.format = MACH_O_64;
 	else
 		return (false);
-	nm_otool->file.reversed_endian = false;
+	set_endianness(nm_otool, LITTLE_ENDIAN_FILE);
 	if (magic_number == MH_CIGAM || magic_number == MH_CIGAM_64)
-		nm_otool->file.reversed_endian = true;
+		set_endianness(nm_otool, BIG_ENDIAN_FILE);
 	return (true);
 }
 

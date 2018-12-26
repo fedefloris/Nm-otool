@@ -68,6 +68,9 @@
 # define STRING_IS_SAFE(x) string_is_safe(nm_otool, x)
 # define NEXT_STRUCT(x) (SET(x, x + sizeof(*x)) && STRUCT_IS_SAFE(x))
 
+# define LITTLE_ENDIAN_FILE 1
+# define BIG_ENDIAN_FILE 2
+
 # define SWAP(x, y) (typeof(x))endian_swap((uint64_t)x, sizeof(x), y)
 # define SWAP_ENDIAN(x) SWAP(x, nm_otool->file.reversed_endian)
 # define SWAP_ENDIAN_FORCE(x) SWAP(x, true)
@@ -124,6 +127,8 @@ char				*find_binary(t_nm_otool *nm_otool);
 
 bool				set_file(t_nm_otool *nm_otool);
 bool				set_file_info(t_nm_otool *nm_otool);
+void				set_endianness(t_nm_otool *nm_otool,
+						int file_endianness);
 bool				unset_file(t_nm_otool *nm_otool);
 
 bool				set_archive_format(t_nm_otool *nm_otool);

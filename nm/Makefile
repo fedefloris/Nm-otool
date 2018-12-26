@@ -62,6 +62,7 @@ SHARED_FILES = config_nm_otool \
 	op \
 	option_check \
 	options \
+	set_endianness \
 	set_file \
 	set_archive_format \
 	set_file_info \
