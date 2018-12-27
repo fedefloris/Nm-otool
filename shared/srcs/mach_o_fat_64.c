@@ -51,7 +51,7 @@ static bool		mach_fat_64_handle_format(t_nm_otool *nm_otool,
 					type_64, mach_o_obj_handler_64));
 	if (type_32)
 		return (mach_fat_64_launch_mach_o(nm_otool, file_data,
-					type_64, mach_o_obj_handler_32));
+					type_32, mach_o_obj_handler_32));
 	return (false);
 }
 
