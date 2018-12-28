@@ -33,3 +33,6 @@ diff_log
 valgrind_log
 diff_report
 valgrind_report
+quick_diff_report
+quick_ft
+quick_sys
