@@ -107,6 +107,7 @@ typedef struct		s_nm_otool
 	unsigned char	routine;
 	t_file			file;
 	bool			print_file_name;
+	char			bad_string_index[17];
 }					t_nm_otool;
 
 typedef bool		(*t_obj_handler)(t_nm_otool *);
