@@ -80,7 +80,7 @@ FILES=$(find $DIR -type f)
 
 # Print initial info
 echo "${WHITE}"
-echo "[$FUNCTION] Testing all files in ${DIR}/\n"
+echo "[$FUNCTION $OPTIONS] Testing all files in ${DIR}/\n"
 
 # Iterate files
 for f in $FILES;
