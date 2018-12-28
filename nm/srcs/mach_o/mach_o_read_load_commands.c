@@ -16,13 +16,13 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 			if (!ADVANCE(symtab, lc) || !STRUCT_IS_SAFE(symtab))
 				return (NULL);
 		}
-		if (SWAP_ENDIAN(lc->cmd) == LC_SEGMENT)//ENSURE variable load command sizes are within binary.
+		if (SWAP_ENDIAN(lc->cmd) == LC_SEGMENT)
 			if (!mach_o_get_sections_32(nm_otool, sections,
-					(struct segment_command *)lc, false))//DOES THIS NEED TO BE COMMON OR UNIQUE?
+					(struct segment_command *)lc, false))
 				return (NULL);
-		if (SWAP_ENDIAN(lc->cmd) == LC_SEGMENT_64)//ENSURE variable load command sizes are within binary.
+		if (SWAP_ENDIAN(lc->cmd) == LC_SEGMENT_64)
 			if (!mach_o_get_sections_64(nm_otool, sections,
-					(struct segment_command_64 *)lc, false))//DOES THIS NEED TO BE COMMON OR UNIQUE?
+					(struct segment_command_64 *)lc, false))
 				return (NULL);
 		if (SWAP_ENDIAN(lc->cmdsize) <= sizeof(*lc))
 			return (NULL);

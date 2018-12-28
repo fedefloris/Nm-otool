@@ -76,5 +76,5 @@ bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 	if ((symtab = mach_o_read_load_commands(nm_otool, lc,
 			sections, number_of_commands)))
 		return (mach_o_64_get_symbols(nm_otool, symtab, sections));
-	return (true);//Is this good or bad? TRUE/FALSE?
+	return (true);
 }

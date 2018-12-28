@@ -3,7 +3,6 @@
 
 static char			get_type_section(uint8_t n_sect, uint8_t **sections)
 {
-	// ft_printf("[%s] Looking for %d\n", (char *)sections[n_sect], n_sect);
 	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_BSS))
 		return ('B');
 	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_DATA))

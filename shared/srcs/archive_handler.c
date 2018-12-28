@@ -17,7 +17,7 @@ static int		safe_atoi(t_nm_otool *nm_otool, char *str)
 
 
 static int		get_ar_name_length(t_nm_otool *nm_otool,
-	char *ar_name) // Super unsafe function.
+	char *ar_name)
 {
 	char	*ptr;
 
@@ -48,10 +48,10 @@ static bool		handle_archive_object(t_nm_otool *nm_otool,
 		nm_otool->file.name, filename);
 	ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 	nm_otool->file.name = file_data->name;
-	nm_otool->file.size = (off_t)*ar_size; // Check is safe.
+	nm_otool->file.size = (off_t)*ar_size;
 	nm_otool->file.memory = (char *)(ar_ptr + 1) + ar_name_len;
 	if ((nm_otool->file.end_of_file = file_data->memory
-		+ file_data->size - 1) > file_data->end_of_file) // Inspect for good logic.
+		+ file_data->size - 1) > file_data->end_of_file)
 		return (ERROR_LOG("archive: ar_size bad size."));
 	nm_otool->file.reversed_endian = file_data->reversed_endian;
 	return (true);

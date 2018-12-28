@@ -1,6 +1,4 @@
 #include "nm_otool.h"
-// #include "../../nm/includes/nm.h" Useless?
-// #include "../../otool/includes/otool.h" Useless?
 
 static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	t_file file_data, struct fat_arch *arch,
