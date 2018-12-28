@@ -50,7 +50,7 @@ bool		elf_parse_section_headers_32(t_nm_otool *nm_otool,
 	t_elf_symbols_info	info;
 
 	if (!SET(section_headers, (char*)header + SWAP_ENDIAN(header->e_shoff)))
-		return (ERROR_LOG("not enough space for the first section header"));
+		return (ERROR_LOG("wrong value of e_shoff"));
 	ft_bzero(&info, sizeof(info));
 	if (header->e_shstrndx != SHN_UNDEF
 		&& !set_header_str_section(nm_otool, header, section_headers, &info))

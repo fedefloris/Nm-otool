@@ -3,13 +3,14 @@
 
 static char			get_type_section(uint8_t n_sect, uint8_t **sections)
 {
-	// ft_printf("[%s] Looking for %d\n", (char *)sections[n_sect], n_sect);
 	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_BSS))
 		return ('B');
 	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_DATA))
 		return ('D');
 	if (sections[n_sect] && !ft_strcmp((char *)sections[n_sect], SECT_TEXT))
 		return ('T');
+	if (n_sect == NO_SECT)
+		return ('?');
 	return ('S');
 }
 
@@ -18,7 +19,7 @@ char				mach_o_get_type(uint8_t n_type, uint64_t n_value,
 {
 	char			type;
 
-	type = '0';
+	type = '?';
 	type = ((n_type & N_TYPE) == N_UNDF && n_value) ? 'C' : type;
 	type = ((n_type & N_TYPE) == N_UNDF && !n_value) ? 'U' : type;
 	type = ((n_type & N_TYPE) == N_ABS) ? 'A' : type;

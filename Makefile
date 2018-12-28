@@ -12,10 +12,23 @@ OTOOL_DIR = otool
 all: $(NAME)
 
 test: $(NAME)
-	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
-	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	# ------- NM -------
 ifeq ($(OS_TYPE), Darwin)
-	@OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
+else
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
+endif
+ifeq ($(OS_TYPE), Darwin)
+	# ------- OTOOL -------
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
 endif
 
 comp_libft:

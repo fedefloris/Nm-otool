@@ -1,6 +1,4 @@
 #include "nm_otool.h"
-// #include "../../nm/includes/nm.h" Useless?
-// #include "../../otool/includes/otool.h" Useless?
 
 static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	t_file file_data, struct fat_arch *arch,
@@ -53,7 +51,7 @@ static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 					type_64, mach_o_obj_handler_64));
 	if (type_32)
 		return (mach_fat_32_launch_mach_o(nm_otool, file_data,
-					type_64, mach_o_obj_handler_32));
+					type_32, mach_o_obj_handler_32));
 	return (false);
 }
 
