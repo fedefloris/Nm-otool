@@ -23,10 +23,10 @@ else
 endif
 	# -- OTOOL --
 ifeq ($(OS_TYPE), Darwin)
-	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /bin
-	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/bin
-	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/lib
-	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
 endif
 
 comp_libft:
