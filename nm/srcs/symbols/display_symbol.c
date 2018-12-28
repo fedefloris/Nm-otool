@@ -32,11 +32,9 @@ void				display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 	bool			print_value;
 
 	print_value = should_the_value_be_printed(sym);
-	if (!sym->name || !*sym->name)
-		return ;
 	if (op(nm_otool, 'j'))
 	{
-		ft_printf("%s\n", sym->name);
+		ft_printf("%s\n", (sym->name) ? sym->name : BAD_STRING_INDEX);
 		return ;
 	}
 	if (nm_otool->file.format == MACH_O_32
@@ -44,5 +42,5 @@ void				display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 		display_32_symbol_value(sym, print_value);
 	else
 		display_64_symbol_value(sym, print_value);
-	ft_printf("%c %s\n", sym->type, sym->name);
+	ft_printf("%c %s\n", sym->type, (sym->name) ? sym->name : BAD_STRING_INDEX);
 }

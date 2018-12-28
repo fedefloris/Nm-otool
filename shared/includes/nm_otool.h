@@ -33,6 +33,8 @@
 # define ERROR_LOG(x) error_log(nm_otool->file.name, x)
 # define WARNING_LOG(x) warning_log(nm_otool->file.name, x)
 
+# define BAD_STRING_INDEX "bad string index"
+
 # define MACH_O_FAT_32 1
 # define MACH_O_FAT_64 2
 # define MACH_O_32 3

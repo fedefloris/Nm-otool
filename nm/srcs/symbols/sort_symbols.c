@@ -3,7 +3,13 @@
 
 static int	cmp_name_ascendent(t_symbol *sym1, t_symbol *sym2)
 {
-	return (ft_strcmp(sym1->name, sym2->name));
+	if (sym1->name && sym2->name)
+		return (ft_strcmp(sym1->name, sym2->name));
+	if (sym1->value > sym2->value)
+		return (1);
+	if (sym1->value < sym2->value)
+		return (-1);
+	return (0);
 }
 
 static int	cmp_name_descendent(t_symbol *sym1, t_symbol *sym2)
