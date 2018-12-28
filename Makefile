@@ -13,7 +13,7 @@ all: $(NAME)
 
 test: $(NAME)
 	# -- NM --
-	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1
 	./scripts/test.sh /bin
 	./scripts/test.sh /usr/bin
 ifeq ($(OS_TYPE), Darwin)
