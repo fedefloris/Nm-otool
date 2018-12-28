@@ -12,25 +12,13 @@ OTOOL_DIR = otool
 all: $(NAME)
 
 test: $(NAME)
-	@FUNCTION=nm
-	@OPTIONS=
-	@PRINT_REPORT=1 ./scripts/test.sh /bin
-	@PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
 ifeq ($(OS_TYPE), Darwin)
-	@PRINT_REPORT=1 ./scripts/test.sh /usr/lib
-	@PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
 else
-	PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
-endif
-	@FUNCTION=otool
-	@OPTIONS=-t
-	@PRINT_REPORT=1 ./scripts/test.sh /bin
-	@PRINT_REPORT=1 ./scripts/test.sh /usr/bin
-ifeq ($(OS_TYPE), Darwin)
-	@PRINT_REPORT=1 ./scripts/test.sh /usr/lib
-	@PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
-else
-	PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
+	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
 endif
 
 comp_libft:
