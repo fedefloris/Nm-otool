@@ -20,13 +20,11 @@ ifeq ($(OS_TYPE), Darwin)
 else
 	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
 endif
+ifeq ($(OS_TYPE), Darwin)
 	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /bin
 	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
-ifeq ($(OS_TYPE), Darwin)
 	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/lib
 	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
-else
-	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
 endif
 
 comp_libft:
