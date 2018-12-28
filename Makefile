@@ -23,8 +23,8 @@ else
 	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
 	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
 endif
-	# ------- OTOOL -------
 ifeq ($(OS_TYPE), Darwin)
+	# ------- OTOOL -------
 	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /bin
 	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/bin
 	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/lib
