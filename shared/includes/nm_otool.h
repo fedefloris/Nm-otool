@@ -88,6 +88,14 @@
 
 # endif
 
+# define BUFFER_SIZE 1000
+
+typedef struct		s_buffer
+{
+	char			content[BUFFER_SIZE];
+	size_t			content_index;
+}					t_buffer;
+
 typedef struct		s_file
 {
 	char			*name;
@@ -148,6 +156,10 @@ bool				op(t_nm_otool *nm_otool, char c);
 
 uint64_t			endian_swap(uint64_t value, size_t size,
 						bool needs_reverse);
+
+void		config_buffer(t_buffer *buffer);
+void		send_to_buffer(t_buffer *buffer, char *str);
+void		empty_the_buffer(t_buffer *buffer);
 
 # ifdef __APPLE__
 

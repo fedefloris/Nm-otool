@@ -28,8 +28,10 @@ MAIN_FILES = otool \
 	display_byte \
 	obj_handler
 
-SHARED_FILES = config_nm_otool \
-	archive_handler \
+SHARED_FILES = archive_handler \
+	config_buffer \
+	config_nm_otool \
+	empty_the_buffer \
 	endian_swap \
 	error_log \
 	find_binary \
@@ -45,6 +47,7 @@ SHARED_FILES = config_nm_otool \
 	set_archive_format \
 	set_file_info \
 	set_file_info_on_linux \
+	send_to_buffer \
 	string_is_safe \
 	unset_file \
 	warning_log
