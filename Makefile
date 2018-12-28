@@ -13,22 +13,20 @@ all: $(NAME)
 
 test: $(NAME)
 	# -- NM --
-	@FUNCTION=nm OPTIONS= PRINT_REPORT=1
-	./scripts/test.sh /bin
-	./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /usr/bin
 ifeq ($(OS_TYPE), Darwin)
-	./scripts/test.sh /usr/lib
-	./scripts/test.sh ./examples/mach_o
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
 else
-	./scripts/test.sh ./examples/elf/good_files
+	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
 endif
 	# -- OTOOL --
-	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1
 ifeq ($(OS_TYPE), Darwin)
-	./scripts/test.sh /bin
-	./scripts/test.sh /usr/bin
-	./scripts/test.sh /usr/lib
-	./scripts/test.sh ./examples/mach_o
+	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=nm OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
 endif
 
 comp_libft:
