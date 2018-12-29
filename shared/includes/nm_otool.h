@@ -114,6 +114,7 @@ typedef struct		s_nm_otool
 	unsigned long	options;
 	unsigned char	routine;
 	t_file			file;
+	t_buffer		buffer;
 	bool			print_file_name;
 	char			bad_string_index[17];
 }					t_nm_otool;
@@ -157,9 +158,9 @@ bool				op(t_nm_otool *nm_otool, char c);
 uint64_t			endian_swap(uint64_t value, size_t size,
 						bool needs_reverse);
 
-void		config_buffer(t_buffer *buffer);
-void		send_to_buffer(t_buffer *buffer, char *str);
-void		empty_the_buffer(t_buffer *buffer);
+void				config_buffer(t_buffer *buffer);
+void				send_to_buffer(t_buffer *buffer, ...);
+void				empty_the_buffer(t_buffer *buffer);
 
 # ifdef __APPLE__
 
