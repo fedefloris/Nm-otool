@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include <stdarg.h>
 
-void		send_str_to_buffer(t_buffer *buffer, char *str)
+static void		send_str_to_buffer(t_buffer *buffer, char *str)
 {
 	while (*str)
 	{
@@ -11,13 +11,13 @@ void		send_str_to_buffer(t_buffer *buffer, char *str)
 	}
 }
 
-void		send_to_buffer(t_buffer *buffer, ...)
+void				send_to_buffer(t_buffer *buffer, ...)
 {
 	va_list		args;
 	char		*str;
 
 	va_start(args, buffer);
 	while ((str = va_arg(args, char*)))
-		send_str_to_buffer(str);
+		send_str_to_buffer(buffer, str);
 	va_end(args);
 }

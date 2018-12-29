@@ -4,7 +4,7 @@
 void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
 {
 	if (nm_otool->print_file_name)
-		send_to_buffer(&nm_otool->buffer, "\n", nm_otool->file.name, ":\n", NULL);
+		SEND_TO_BUFFER("\n", nm_otool->file.name, ":\n");
 	while (symbols)
 	{
 		display_symbol(nm_otool, symbols);

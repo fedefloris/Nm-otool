@@ -7,7 +7,7 @@ static void			display_64_symbol_value(t_nm_otool *nm_otool,
 	if (print_value)
 		ft_printf("%-17.16jx", sym->value);
 	else
-		send_to_buffer(&nm_otool->buffer, "                 ", NULL);
+		SEND_TO_BUFFER("                 ");
 }
 
 static void			display_32_symbol_value(t_nm_otool *nm_otool,
@@ -16,7 +16,7 @@ static void			display_32_symbol_value(t_nm_otool *nm_otool,
 	if (print_value)
 		ft_printf("%-9.8jx", sym->value);
 	else
-		send_to_buffer(&nm_otool->buffer, "         ", NULL);
+		SEND_TO_BUFFER("         ");
 }
 
 static bool			should_the_value_be_printed(t_symbol *sym)
@@ -38,7 +38,7 @@ void				display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 		return ;
 	if (op(nm_otool, 'j'))
 	{
-		send_to_buffer(&nm_otool->buffer, sym->name, "\n", NULL);
+		SEND_TO_BUFFER(sym->name, "\n");
 		return ;
 	}
 	type[0] = sym->type;
@@ -50,5 +50,5 @@ void				display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 		display_32_symbol_value(nm_otool, sym, print_value);
 	else
 		display_64_symbol_value(nm_otool, sym, print_value);
-	send_to_buffer(&nm_otool->buffer, type, sym->name, "\n", NULL);
+	SEND_TO_BUFFER(type, sym->name, "\n");
 }
