@@ -59,6 +59,8 @@ SHARED_FILES = archive_handler \
 	find_binary \
 	list_obj_symbols \
 	list_objs_symbols \
+	get_formatted_32_value \
+	get_formatted_64_value \
 	get_safe_address \
 	has_good_elf_magic_number \
 	op \
