@@ -1,6 +1,82 @@
 #include "nm_otool.h"
 #include "otool.h"
 
+static char	ft_calculate_char(int mod, char c)
+{
+	char	return_char;
+
+	if (mod > 36)
+		return (0);
+	return_char = '0';
+	while (mod--)
+	{
+		return_char++;
+		if (return_char == ':')
+			return_char = c;
+	}
+	return (return_char);
+}
+
+static int	ft_get_len(uintmax_t num, uintmax_t base)
+{
+	int		len;
+
+	len = 0;
+	while (num)
+	{
+		num /= base;
+		len++;
+	}
+	return (len);
+}
+
+//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
+{
+	uintmax_t	sum;
+	int			mod;
+	int			len;
+	char		*str;
+
+	if (num == 0)
+	{
+		if (!(str = ft_strnew(1)))
+			return (NULL);
+		*str = '0';
+		return (str);
+	}
+	sum = num;
+	len = ft_get_len(num, base);
+	if (!(str = ft_strnew(len)))
+		return (NULL);
+	while (sum)
+	{
+		mod = sum % base;
+		sum /= base;
+		str[(len--) - 1] = ft_calculate_char(mod, c);
+	}
+	return (str);
+}
+
+static char			*get_formatted_byte(uint64_t byte)
+{
+	static char		formatted[17];
+	char			*number;
+	int				formatted_index;
+	int				number_index;
+
+	ft_memset(formatted, '0', 16);
+	if (!(number = ft_itoa_base_tmp(byte, 16, 'a'))) // Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+		return ("");
+	formatted_index = 15;
+	if ((number_index = ft_strlen(number) - 1) > formatted_index)
+		number_index = formatted_index;
+	while (number_index >= 0)
+		formatted[formatted_index--] = number[number_index--];
+	ft_strdel(&number);
+	return (formatted);
+}
+
 static bool			parse_text_64(t_nm_otool *nm_otool,
 	struct section_64 *section)
 {
@@ -17,7 +93,9 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 	status = true;
 	while (current_byte < SWAP_ENDIAN(section->size))
 	{
-		ft_printf("%016lx\t", SWAP_ENDIAN(section->addr) + current_byte);
+		// ft_printf("%016lx\t", SWAP_ENDIAN(section->addr) + current_byte);
+		SEND_TO_BUFFER(get_formatted_byte(SWAP_ENDIAN(section->addr)
+			+ current_byte), "\t");
 		position_on_row = 0;
 		while (position_on_row < BYTES_PER_ROW && current_byte < SWAP_ENDIAN(section->size))
 		{
@@ -28,7 +106,7 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 			if (!status)
 				return (false);
 		}
-		ft_printf("\n");
+		SEND_TO_BUFFER("\n");
 	}
 	return (true);
 }
@@ -50,7 +128,7 @@ static bool			text_segment_64(t_nm_otool *nm_otool,
 			return (ERROR_LOG("section or secname is beyond binary"));
 		if (!ft_strcmp(section->sectname, SECT_TEXT))
 		{
-			ft_printf("Contents of (__TEXT,__text) section\n");
+			SEND_TO_BUFFER("Contents of (__TEXT,__text) section\n");
 			return (parse_text_64(nm_otool, section));
 		}
 		if (!SET(section, section + sizeof(*section)))
@@ -66,7 +144,7 @@ bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 	uint32_t				ncmds;
 
 	if (nm_otool->print_file_name)
-		ft_printf("%s:\n", nm_otool->file.name);
+		SEND_TO_BUFFER(nm_otool->file.name, ":\n");
 	if (!SET(header, nm_otool->file.memory))
 		return (ERROR_LOG("file->memory beyond binary"));
 	if (!SET(lcmd, nm_otool->file.memory + sizeof(*header)))
