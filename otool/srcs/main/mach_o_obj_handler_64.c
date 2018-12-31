@@ -162,5 +162,6 @@ bool				mach_o_obj_handler_64(t_nm_otool *nm_otool)
 		if (!ADVANCE(lcmd, lcmd + lcmd->cmdsize))
 			return (ERROR_LOG("next load command is beyond binary"));
 	}
+	empty_the_buffer(&nm_otool->buffer);
 	return (true);
 }
