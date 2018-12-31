@@ -88,6 +88,15 @@
 
 # endif
 
+# define BUFFER_SIZE 2500
+# define SEND_TO_BUFFER(...) send_to_buffer(&nm_otool->buffer, __VA_ARGS__, NULL)
+
+typedef struct		s_buffer
+{
+	char			content[BUFFER_SIZE];
+	size_t			content_index;
+}					t_buffer;
+
 typedef struct		s_file
 {
 	char			*name;
@@ -106,6 +115,7 @@ typedef struct		s_nm_otool
 	unsigned long	options;
 	unsigned char	routine;
 	t_file			file;
+	t_buffer		buffer;
 	bool			print_file_name;
 	char			bad_string_index[17];
 }					t_nm_otool;
@@ -148,6 +158,13 @@ bool				op(t_nm_otool *nm_otool, char c);
 
 uint64_t			endian_swap(uint64_t value, size_t size,
 						bool needs_reverse);
+
+char				*get_formatted_32_value(uint64_t value);
+char				*get_formatted_64_value(uint64_t value);
+
+void				config_buffer(t_buffer *buffer);
+void				send_to_buffer(t_buffer *buffer, ...);
+void				empty_the_buffer(t_buffer *buffer);
 
 # ifdef __APPLE__
 

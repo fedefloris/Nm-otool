@@ -44,8 +44,8 @@ static bool		handle_archive_object(t_nm_otool *nm_otool,
 		return (ERROR_LOG("archive: ar_size bad format"));
 	if ((ar_name_len = get_ar_name_length(nm_otool, ar_ptr->ar_name)) < 0)
 		return (ERROR_LOG("archive: ar_name_len bad format"));
-	ft_printf("%s%s(%s):\n",(nm_otool->routine == FT_NM) ? "\n" : "",
-		nm_otool->file.name, filename);
+	SEND_TO_BUFFER((nm_otool->routine == FT_NM) ? "\n" : "",
+		nm_otool->file.name, "(", filename, "):\n");
 	ft_bzero(&nm_otool->file, sizeof(nm_otool->file));
 	nm_otool->file.name = file_data->name;
 	nm_otool->file.size = (off_t)*ar_size;
@@ -80,6 +80,7 @@ static bool		handle_archive_objects(t_nm_otool *nm_otool,
 			break ;
 	}
 	nm_otool->print_file_name = print_file_name;
+	empty_the_buffer(&nm_otool->buffer);
 	return (status);
 }
 
@@ -89,7 +90,7 @@ bool			archive_handler(t_nm_otool *nm_otool)
 	int				ar_size;
 
 	if (nm_otool->routine == FT_OTOOL)
-		ft_printf("Archive : %s\n", nm_otool->file.name);
+		SEND_TO_BUFFER("Archive : ", nm_otool->file.name, "\n");
 	if (!SET(ar_ptr, nm_otool->file.memory + SARMAG)
 		|| !STRUCT_IS_SAFE(ar_ptr))
 		return (ERROR_LOG("archive: not enough space for ar_hdr"));

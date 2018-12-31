@@ -1,20 +1,22 @@
 #include "nm_otool.h"
 #include "nm.h"
 
-static void			display_64_symbol_value(t_symbol *sym, bool print_value)
+static void			display_64_symbol_value(t_nm_otool *nm_otool,
+	t_symbol *sym, bool print_value)
 {
 	if (print_value)
-		ft_printf("%-17.16jx", sym->value);
+		SEND_TO_BUFFER(get_formatted_64_value(sym->value), " ");
 	else
-		ft_printf("%17s", "");
+		SEND_TO_BUFFER("                 ");
 }
 
-static void			display_32_symbol_value(t_symbol *sym, bool print_value)
+static void			display_32_symbol_value(t_nm_otool *nm_otool,
+	t_symbol *sym, bool print_value)
 {
 	if (print_value)
-		ft_printf("%-9.8jx", sym->value);
+		SEND_TO_BUFFER(get_formatted_32_value(sym->value), " ");
 	else
-		ft_printf("%9s", "");
+		SEND_TO_BUFFER("         ");
 }
 
 static bool			should_the_value_be_printed(t_symbol *sym)
@@ -30,19 +32,22 @@ static bool			should_the_value_be_printed(t_symbol *sym)
 void				display_symbol(t_nm_otool *nm_otool, t_symbol *sym)
 {
 	bool			print_value;
+	static char		type[3];
 
-	print_value = should_the_value_be_printed(sym);
 	if (!sym->name || !*sym->name)
 		return ;
 	if (op(nm_otool, 'j'))
 	{
-		ft_printf("%s\n", sym->name);
+		SEND_TO_BUFFER(sym->name, "\n");
 		return ;
 	}
-	if (nm_otool->file.format == MACH_O_32
-			|| nm_otool->file.format == ELF_32)
-		display_32_symbol_value(sym, print_value);
+	type[0] = sym->type;
+	type[1] = ' ';
+	print_value = should_the_value_be_printed(sym);
+	if (IS_MACH_O_32(nm_otool->file.format)
+			|| IS_ELF_32(nm_otool->file.format))
+		display_32_symbol_value(nm_otool, sym, print_value);
 	else
-		display_64_symbol_value(sym, print_value);
-	ft_printf("%c %s\n", sym->type, sym->name);
+		display_64_symbol_value(nm_otool, sym, print_value);
+	SEND_TO_BUFFER(type, sym->name, "\n");
 }

@@ -1,5 +1,4 @@
 #include "nm_otool.h"
-#include "otool.h"
 
 static char	ft_calculate_char(int mod, char c)
 {
@@ -58,34 +57,21 @@ static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 	return (str);
 }
 
-static char			*get_formatted_byte(int byte)
+char		*get_formatted_64_value(uint64_t value)
 {
-	static char		formatted[3];
+	static char		formatted[17];
 	char			*number;
 	int				formatted_index;
 	int				number_index;
 
-	ft_memset(formatted, '0', 2);
-	if (!(number = ft_itoa_base_tmp(byte, 16, 'a'))) // Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+	ft_memset(formatted, '0', 16);
+	if (!(number = ft_itoa_base_tmp(value, 16, 'a'))) // Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
 		return ("");
-	formatted_index = 1;
+	formatted_index = 15;
 	if ((number_index = ft_strlen(number) - 1) > formatted_index)
 		number_index = formatted_index;
 	while (number_index >= 0)
 		formatted[formatted_index--] = number[number_index--];
 	ft_strdel(&number);
 	return (formatted);
-}
-
-bool				display_byte(t_nm_otool *nm_otool, unsigned char **byte,
-				uint64_t *current_byte, uint64_t *position_on_row)
-{
-	if (!ADDRESS_IS_SAFE(*byte))
-		return (ERROR_LOG("current row is beyond binary"));
-	SEND_TO_BUFFER(get_formatted_byte(**byte), " ");
-	if (!ADVANCE(*byte, *byte + sizeof(**byte)))
-		return (ERROR_LOG("next byte is beyond binary"));
-	*position_on_row += 1;
-	*current_byte += 1;
-	return (true);
 }

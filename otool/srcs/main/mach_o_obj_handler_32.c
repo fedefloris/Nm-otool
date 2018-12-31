@@ -17,7 +17,8 @@ static bool			parse_text_32(t_nm_otool *nm_otool,
 	status = true;
 	while (current_byte < SWAP_ENDIAN(section->size))
 	{
-		ft_printf("%08lx\t", SWAP_ENDIAN(section->addr) + current_byte);
+		SEND_TO_BUFFER(get_formatted_32_value(SWAP_ENDIAN(section->addr)
+			+ current_byte), "\t");
 		position_on_row = 0;
 		while (position_on_row < BYTES_PER_ROW && current_byte < SWAP_ENDIAN(section->size))
 		{
@@ -28,7 +29,7 @@ static bool			parse_text_32(t_nm_otool *nm_otool,
 			if (!status)
 				return (false);
 		}
-		ft_printf("\n");
+		SEND_TO_BUFFER("\n");
 	}
 	return (true);
 }
@@ -50,7 +51,7 @@ static bool			text_segment_32(t_nm_otool *nm_otool,
 			return (ERROR_LOG("section or secname is beyond binary"));
 		if (!ft_strcmp(section->sectname, SECT_TEXT))
 		{
-			ft_printf("Contents of (__TEXT,__text) section\n");
+			SEND_TO_BUFFER("Contents of (__TEXT,__text) section\n");
 			return (parse_text_32(nm_otool, section));
 		}
 		if (!SET(section, section + sizeof(*section)))
@@ -66,7 +67,7 @@ bool				mach_o_obj_handler_32(t_nm_otool *nm_otool)
 	uint32_t				ncmds;
 
 	if (nm_otool->print_file_name)
-		ft_printf("%s:\n", nm_otool->file.name);
+		SEND_TO_BUFFER(nm_otool->file.name, ":\n");
 	if (!SET(header, nm_otool->file.memory))
 		return (ERROR_LOG("file->memory beyond binary"));
 	if (!SET(lcmd, nm_otool->file.memory + sizeof(*header)))
@@ -84,5 +85,6 @@ bool				mach_o_obj_handler_32(t_nm_otool *nm_otool)
 		if (!ADVANCE(lcmd, lcmd + lcmd->cmdsize))
 			return (ERROR_LOG("next load command is beyond binary"));
 	}
+	empty_the_buffer(&nm_otool->buffer);
 	return (true);
 }

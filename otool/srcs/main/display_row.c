@@ -58,7 +58,7 @@ static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 	return (str);
 }
 
-static void			print_row(unsigned char *byte)
+static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 {
 	unsigned char	row[(BYTES_PER_ROW * 3) + 1];
 	char			*number;
@@ -84,7 +84,7 @@ static void			print_row(unsigned char *byte)
 		ft_strdel(&number);
 	}
 	row[row_index] = '\0';
-	ft_printf("%s", row);
+	SEND_TO_BUFFER(row);
 }
 
 bool				display_row(t_nm_otool *nm_otool, unsigned char **byte,
@@ -92,7 +92,7 @@ bool				display_row(t_nm_otool *nm_otool, unsigned char **byte,
 {
 	if (!ADDRESS_IS_SAFE(*byte + (BYTES_PER_ROW - 1)))
 		return (ERROR_LOG("current row is beyond binary"));
-	print_row(*byte);
+	print_row(nm_otool, *byte);
 	if (!ADVANCE(*byte, *byte + BYTES_PER_ROW))
 		return (ERROR_LOG("next row is beyond binary"));
 	*position_on_row += BYTES_PER_ROW;
