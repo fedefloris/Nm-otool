@@ -88,7 +88,7 @@
 
 # endif
 
-# define BUFFER_SIZE 1000
+# define BUFFER_SIZE 2500
 # define SEND_TO_BUFFER(...) send_to_buffer(&nm_otool->buffer, __VA_ARGS__, NULL)
 
 typedef struct		s_buffer
