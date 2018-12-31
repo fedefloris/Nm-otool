@@ -11,7 +11,7 @@ static void		send_str_to_buffer(t_buffer *buffer, char *str)
 	}
 }
 
-void				send_to_buffer(t_buffer *buffer, ...)
+void			send_to_buffer(t_buffer *buffer, ...)
 {
 	va_list		args;
 	char		*str;
