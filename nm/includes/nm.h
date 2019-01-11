@@ -71,6 +71,13 @@ bool				free_symbols(t_symbol *symbols);
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_sym;
 
+typedef struct					s_reader
+{
+	uint8_t						**sections;
+	t_symbol					*symbols;
+	t_sym						*symtab;
+}								t_reader;
+
 bool				mach_o_archive(t_nm_otool *nm_otool);
 
 bool				mach_o_get_sections_32(t_nm_otool *nm_otool,

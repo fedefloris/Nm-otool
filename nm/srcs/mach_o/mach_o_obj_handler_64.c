@@ -2,17 +2,17 @@
 #include "nm.h"
 
 static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
-		struct nlist_64 *array, uint8_t **sections,
-		t_symbol **symbols, t_sym *symtab)
+		struct nlist_64 *array, t_reader *reader)
 {
 	uint32_t		i;
 	char			*str;
 	char			*stringtable;
 
 	i = 0;
-	if (!SET(stringtable, nm_otool->file.memory + SWAP_ENDIAN(symtab->stroff)))
+	if (!SET(stringtable, nm_otool->file.memory
+			+ SWAP_ENDIAN(reader->symtab->stroff)))
 		return (ERROR_LOG("no stringtable found"));
-	while (i < SWAP_ENDIAN(symtab->nsyms))
+	while (i < SWAP_ENDIAN(reader->symtab->nsyms))
 	{
 		if (!STRUCT_IS_SAFE(&array[i]))
 			return (ERROR_LOG("struct nlist is not a good size"));
@@ -21,10 +21,10 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 		else if (!STRING_IS_SAFE(str))
 			return (ERROR_LOG("symbol name str goes beyond the binary limit"));
 		if ((SWAP_ENDIAN(array[i].n_type) & N_STAB) == 0)
-			if (!(add_symbol(symbols, SWAP_ENDIAN(array[i].n_value),
+			if (!(add_symbol(&reader->symbols, SWAP_ENDIAN(array[i].n_value),
 					mach_o_get_type(SWAP_ENDIAN(array[i].n_type),
 					(uint64_t)SWAP_ENDIAN(array[i].n_value),
-					SWAP_ENDIAN(array[i].n_sect), sections), str)))
+					SWAP_ENDIAN(array[i].n_sect), reader->sections), str)))
 				return (ERROR_LOG("malloc failed: t_symbol symbol"));
 		i++;
 	}
@@ -35,18 +35,19 @@ static bool			mach_o_64_get_symbols(t_nm_otool *nm_otool,
 		t_sym *symtab, uint8_t **sections)
 {
 	struct nlist_64	*array;
-	t_symbol		*symbols;
+	t_reader		reader;
 
-	symbols = NULL;
-	if (!SET(array, nm_otool->file.memory + SWAP_ENDIAN(symtab->symoff)))
-		return (free_symbols(symbols));
-	if (!(mach_o_64_read_symbols(nm_otool, array,
-			sections, &symbols, symtab)))
-		return (free_symbols(symbols));
-	sort_symbols(nm_otool, &symbols);
-	display_symbols(nm_otool, symbols);
-	mach_o_free_sections(sections);
-	free_symbols(symbols);
+	reader.sections = sections;
+	reader.symbols = NULL;
+	reader.symtab = symtab;
+	if (!SET(array, nm_otool->file.memory + SWAP_ENDIAN(reader.symtab->symoff)))
+		return (free_symbols(reader.symbols));
+	if (!(mach_o_64_read_symbols(nm_otool, array, &reader)))
+		return (free_symbols(reader.symbols));
+	sort_symbols(nm_otool, &reader.symbols);
+	display_symbols(nm_otool, reader.symbols);
+	mach_o_free_sections(reader.sections);
+	free_symbols(reader.symbols);
 	return (true);
 }
 
