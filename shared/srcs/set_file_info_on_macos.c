@@ -40,7 +40,7 @@ static bool		set_format(t_nm_otool *nm_otool)
 			SEND_TO_BUFFER(nm_otool->file.name, ": is not an object file\n");
 		else
 			return (ERROR_LOG("Bad magic number"));
-		empty_the_buffer(&nm_otool->buffer);
+		empty_the_buffer(&nm_otool->buff);
 		return (false);
 	}
 	if (nm_otool->file.format == MACH_O_64

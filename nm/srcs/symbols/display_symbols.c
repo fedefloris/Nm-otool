@@ -10,5 +10,5 @@ void			display_symbols(t_nm_otool *nm_otool, t_symbol *symbols)
 		display_symbol(nm_otool, symbols);
 		symbols = symbols->next;
 	}
-	empty_the_buffer(&nm_otool->buffer);
+	empty_the_buffer(&nm_otool->buff);
 }

@@ -79,7 +79,7 @@ static bool		handle_archive_objects(t_nm_otool *nm_otool,
 			break ;
 	}
 	nm_otool->print_file_name = print_file_name;
-	empty_the_buffer(&nm_otool->buffer);
+	empty_the_buffer(&nm_otool->buff);
 	return (status);
 }
 
