@@ -32,6 +32,7 @@ static int			ft_get_len(uintmax_t num, uintmax_t base)
 
 //Get rid of this and use with your own ft_itoa_base
 //(the one in our dev libft does not work)
+
 static char			*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	uintmax_t	sum;

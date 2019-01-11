@@ -32,6 +32,7 @@ static int			ft_get_len(uintmax_t num, uintmax_t base)
 
 //Get rid of this and use with your own ft_itoa_base
 //(the one in our dev libft does not work)
+
 static char			*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	uintmax_t	sum;
@@ -59,9 +60,12 @@ static char			*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 	return (str);
 }
 
+//Get rid of ft_itoa_base_tmp and use with your own ft_itoa_base
+//(the one in our dev libft does not work)
+
 static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 {
-	unsigned char	row[(BYTES_PER_ROW * 3) + 1];
+	unsigned char	row[PRINT_ROW_SIZE];
 	char			*number;
 	int				row_index;
 	int				position;
@@ -71,8 +75,6 @@ static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 	number = NULL;
 	while (position < BYTES_PER_ROW)
 	{
-		//Get rid of this and use with your own ft_itoa_base
-		//(the one in our dev libft does not work)
 		if ((number = ft_itoa_base_tmp(byte[position], 16, 'a')))
 		{
 			if (ft_strlen(number) == 1)

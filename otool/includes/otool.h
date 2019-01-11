@@ -2,6 +2,7 @@
 # define OTOOL_H
 
 # define BYTES_PER_ROW 16
+# define PRINT_ROW_SIZE (BYTES_PER_ROW * 3) + 1
 
 # ifdef __APPLE__
 
