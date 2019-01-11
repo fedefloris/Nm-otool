@@ -12,10 +12,8 @@ t_sym				*mach_o_read_load_commands(t_nm_otool *nm_otool,
 		if (!STRUCT_IS_SAFE(lc))
 			return (NULL);
 		if (!symtab && SWAP_ENDIAN(lc->cmd) == LC_SYMTAB)
-		{
 			if (!ADVANCE(symtab, lc) || !STRUCT_IS_SAFE(symtab))
 				return (NULL);
-		}
 		if (SWAP_ENDIAN(lc->cmd) == LC_SEGMENT)
 			if (!mach_o_get_sections_32(nm_otool, sections,
 					(struct segment_command *)lc, false))

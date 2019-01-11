@@ -8,13 +8,11 @@ bool				mach_o_get_sections_64(t_nm_otool *nm_otool,
 	static unsigned char	sec_number = 1;
 	struct section_64		*sec;
 
+	sec_number = (reset) ? 1 : sec_number;
 	if (reset)
-	{
-		sec_number = 1;
 		return (true);
-	}
 	i = 0;
-	if(!SET(sec, segment + sizeof(*segment)))
+	if (!SET(sec, segment + sizeof(*segment)))
 		return (ERROR_LOG("section beyond binary"));
 	while (i++ < SWAP_ENDIAN(segment->nsects))
 	{

@@ -19,7 +19,7 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 		if (!SET(str, stringtable + SWAP_ENDIAN(array[i].n_un.n_strx)))
 			str = nm_otool->bad_string_index;
 		else if (!STRING_IS_SAFE(str))
-			return (ERROR_LOG("symbol name string goes beyond the binary limit"));
+			return (ERROR_LOG("symbol name str goes beyond the binary limit"));
 		if ((SWAP_ENDIAN(array[i].n_type) & N_STAB) == 0)
 			if (!(add_symbol(symbols, SWAP_ENDIAN(array[i].n_value),
 					mach_o_get_type(SWAP_ENDIAN(array[i].n_type),
