@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-static char	ft_calculate_char(int mod, char c)
+static char			ft_calculate_char(int mod, char c)
 {
 	char	return_char;
 
@@ -17,7 +17,7 @@ static char	ft_calculate_char(int mod, char c)
 	return (return_char);
 }
 
-static int	ft_get_len(uintmax_t num, uintmax_t base)
+static int			ft_get_len(uintmax_t num, uintmax_t base)
 {
 	int		len;
 
@@ -30,8 +30,9 @@ static int	ft_get_len(uintmax_t num, uintmax_t base)
 	return (len);
 }
 
-//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
-static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
+//Get rid of this and use with your own ft_itoa_base
+//(the one in our dev libft does not work)
+static char			*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	uintmax_t	sum;
 	int			mod;
@@ -66,7 +67,9 @@ static char			*get_formatted_byte(int byte)
 	int				number_index;
 
 	ft_memset(formatted, '0', 2);
-	if (!(number = ft_itoa_base_tmp(byte, 16, 'a'))) // Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+	// Get rid of this and use with your own ft_itoa_base
+	//(the one in our dev libft does not work)
+	if (!(number = ft_itoa_base_tmp(byte, 16, 'a')))
 		return ("");
 	formatted_index = 1;
 	if ((number_index = ft_strlen(number) - 1) > formatted_index)
@@ -78,14 +81,14 @@ static char			*get_formatted_byte(int byte)
 }
 
 bool				display_byte(t_nm_otool *nm_otool, unsigned char **byte,
-				uint64_t *current_byte, uint64_t *position_on_row)
+				uint64_t *index, uint64_t *position)
 {
 	if (!ADDRESS_IS_SAFE(*byte))
 		return (ERROR_LOG("current row is beyond binary"));
 	SEND_TO_BUFFER(get_formatted_byte(**byte), " ");
 	if (!ADVANCE(*byte, *byte + sizeof(**byte)))
 		return (ERROR_LOG("next byte is beyond binary"));
-	*position_on_row += 1;
-	*current_byte += 1;
+	*position += 1;
+	*index += 1;
 	return (true);
 }

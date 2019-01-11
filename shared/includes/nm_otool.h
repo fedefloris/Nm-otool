@@ -159,8 +159,8 @@ bool				op(t_nm_otool *nm_otool, char c);
 uint64_t			endian_swap(uint64_t value, size_t size,
 						bool needs_reverse);
 
-char				*get_formatted_32_value(uint64_t value);
-char				*get_formatted_64_value(uint64_t value);
+char				*get_value_32(uint64_t value);
+char				*get_value_64(uint64_t value);
 
 void				config_buffer(t_buffer *buffer);
 void				send_to_buffer(t_buffer *buffer, ...);

@@ -57,7 +57,7 @@ static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 	return (str);
 }
 
-char		*get_formatted_64_value(uint64_t value)
+char		*get_value_64(uint64_t value)
 {
 	static char		formatted[17];
 	char			*number;

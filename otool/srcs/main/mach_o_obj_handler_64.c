@@ -5,33 +5,30 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 	struct section_64 *section)
 {
 	bool			status;
-	uint64_t		current_byte;
-	uint64_t		position_on_row;
+	uint64_t		index;
+	uint64_t		position;
 	unsigned char	*byte;
 
-	if (!STRUCT_IS_SAFE(section))
+	if ((index = 0) || !STRUCT_IS_SAFE(section))
 		return (ERROR_LOG("section is beyond binary"));
 	if (!SET(byte, nm_otool->file.memory + SWAP_ENDIAN(section->offset)))
 		return (ERROR_LOG("offset beyond binary"));
-	current_byte = 0;
 	status = true;
-	while (current_byte < SWAP_ENDIAN(section->size))
+	while (index < SWAP_ENDIAN(section->size) && status)
 	{
-		SEND_TO_BUFFER(get_formatted_64_value(SWAP_ENDIAN(section->addr)
-			+ current_byte), "\t");
-		position_on_row = 0;
-		while (position_on_row < BYTES_PER_ROW && current_byte < SWAP_ENDIAN(section->size))
+		SEND_TO_BUFFER(get_value_64(SWAP_ENDIAN(section->addr)
+			+ index), "\t");
+		position = 0;
+		while (position < BYTES_PER_ROW && index < SWAP_ENDIAN(section->size))
 		{
-			if (current_byte + position_on_row + BYTES_PER_ROW < SWAP_ENDIAN(section->size))
-				status = display_row(nm_otool, &byte, &current_byte, &position_on_row);
+			if (index + position + BYTES_PER_ROW < SWAP_ENDIAN(section->size))
+				status = display_row(nm_otool, &byte, &index, &position);
 			else
-				status = display_byte(nm_otool, &byte, &current_byte, &position_on_row);
-			if (!status)
-				return (false);
+				status = display_byte(nm_otool, &byte, &index, &position);
 		}
 		SEND_TO_BUFFER("\n");
 	}
-	return (true);
+	return (status);
 }
 
 static bool			text_segment_64(t_nm_otool *nm_otool,

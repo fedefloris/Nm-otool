@@ -5,7 +5,7 @@ static void			display_64_symbol_value(t_nm_otool *nm_otool,
 	t_symbol *sym, bool print_value)
 {
 	if (print_value)
-		SEND_TO_BUFFER(get_formatted_64_value(sym->value), " ");
+		SEND_TO_BUFFER(get_value_64(sym->value), " ");
 	else
 		SEND_TO_BUFFER("                 ");
 }
@@ -14,7 +14,7 @@ static void			display_32_symbol_value(t_nm_otool *nm_otool,
 	t_symbol *sym, bool print_value)
 {
 	if (print_value)
-		SEND_TO_BUFFER(get_formatted_32_value(sym->value), " ");
+		SEND_TO_BUFFER(get_value_32(sym->value), " ");
 	else
 		SEND_TO_BUFFER("         ");
 }

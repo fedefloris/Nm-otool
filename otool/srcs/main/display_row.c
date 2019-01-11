@@ -1,7 +1,7 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-static char	ft_calculate_char(int mod, char c)
+static char			ft_calculate_char(int mod, char c)
 {
 	char	return_char;
 
@@ -17,7 +17,7 @@ static char	ft_calculate_char(int mod, char c)
 	return (return_char);
 }
 
-static int	ft_get_len(uintmax_t num, uintmax_t base)
+static int			ft_get_len(uintmax_t num, uintmax_t base)
 {
 	int		len;
 
@@ -30,8 +30,9 @@ static int	ft_get_len(uintmax_t num, uintmax_t base)
 	return (len);
 }
 
-//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
-static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
+//Get rid of this and use with your own ft_itoa_base
+//(the one in our dev libft does not work)
+static char			*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	uintmax_t	sum;
 	int			mod;
@@ -63,14 +64,16 @@ static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 	unsigned char	row[(BYTES_PER_ROW * 3) + 1];
 	char			*number;
 	int				row_index;
-	int				position_on_row;
+	int				position;
 
 	row_index = 0;
-	position_on_row = 0;
+	position = 0;
 	number = NULL;
-	while (position_on_row < BYTES_PER_ROW)
+	while (position < BYTES_PER_ROW)
 	{
-		if ((number = ft_itoa_base_tmp(byte[position_on_row], 16, 'a')))//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+		//Get rid of this and use with your own ft_itoa_base
+		//(the one in our dev libft does not work)
+		if ((number = ft_itoa_base_tmp(byte[position], 16, 'a')))
 		{
 			if (ft_strlen(number) == 1)
 				row[row_index++] = '0';
@@ -80,7 +83,7 @@ static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 		else
 			ft_strcpy((char *)(row + row_index), "00");
 		row[row_index++] = ' ';
-		position_on_row++;
+		position++;
 		ft_strdel(&number);
 	}
 	row[row_index] = '\0';
@@ -88,14 +91,14 @@ static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 }
 
 bool				display_row(t_nm_otool *nm_otool, unsigned char **byte,
-				uint64_t *current_byte, uint64_t *position_on_row)
+				uint64_t *index, uint64_t *position)
 {
 	if (!ADDRESS_IS_SAFE(*byte + (BYTES_PER_ROW - 1)))
 		return (ERROR_LOG("current row is beyond binary"));
 	print_row(nm_otool, *byte);
 	if (!ADVANCE(*byte, *byte + BYTES_PER_ROW))
 		return (ERROR_LOG("next row is beyond binary"));
-	*position_on_row += BYTES_PER_ROW;
-	*current_byte += BYTES_PER_ROW;
+	*position += BYTES_PER_ROW;
+	*index += BYTES_PER_ROW;
 	return (true);
 }
