@@ -29,7 +29,9 @@ static int	ft_get_len(uintmax_t num, uintmax_t base)
 	return (len);
 }
 
-//Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+//Get rid of this and use with your own ft_itoa_base
+//(the one in our dev libft does not work)
+
 static char	*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
 {
 	uintmax_t	sum;
@@ -65,7 +67,9 @@ char		*get_value_64(uint64_t value)
 	int				number_index;
 
 	ft_memset(formatted, '0', 16);
-	if (!(number = ft_itoa_base_tmp(value, 16, 'a'))) // Get rid of this and use with your own ft_itoa_base (the one in our dev libft does not work)
+	// Get rid of this and use with your own ft_itoa_base
+	//(the one in our dev libft does not work)
+	if (!(number = ft_itoa_base_tmp(value, 16, 'a')))
 		return ("");
 	formatted_index = 15;
 	if ((number_index = ft_strlen(number) - 1) > formatted_index)

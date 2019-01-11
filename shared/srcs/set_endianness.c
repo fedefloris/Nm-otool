@@ -1,11 +1,12 @@
 #include "nm_otool.h"
 
 /*
-	Returns:
-		0 in case of big endian machine
-		1 in case of little endian machine
- */
-static int	get_endianness()
+** Returns:
+** 0 in case of big endian machine
+** 1 in case of little endian machine
+*/
+
+static int	get_endianness(void)
 {
 	unsigned int x;
 

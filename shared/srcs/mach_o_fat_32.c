@@ -12,7 +12,8 @@ static bool		mach_fat_32_launch_mach_o(t_nm_otool *nm_otool,
 	nm_otool->file.name = file_data.name;
 	nm_otool->file.size = SWAP_ENDIAN_FORCE(arch->size);
 	nm_otool->file.memory = file_data.memory + SWAP_ENDIAN_FORCE(arch->offset);
-	if ((nm_otool->file.end_of_file = nm_otool->file.memory + nm_otool->file.size - 1) > file_data.end_of_file)
+	if ((nm_otool->file.end_of_file = nm_otool->file.memory
+			+ nm_otool->file.size - 1) > file_data.end_of_file)
 		return (ERROR_LOG("fat: arch->size bad size."));
 	if (!ft_strncmp(nm_otool->file.memory, ARMAG, SARMAG))
 	{
@@ -46,13 +47,10 @@ static bool		mach_fat_32_handle_format(t_nm_otool *nm_otool,
 		if (!(NEXT_STRUCT(arch)))
 			return (ERROR_LOG("fat: next arch beyond binary"));
 	}
-	if (type_64)
-		return (mach_fat_32_launch_mach_o(nm_otool, file_data,
-					type_64, mach_o_obj_handler_64));
-	if (type_32)
-		return (mach_fat_32_launch_mach_o(nm_otool, file_data,
-					type_32, mach_o_obj_handler_32));
-	return (false);
+	if (!type_32 && !type_64)
+		return (false);
+	return (mach_fat_32_launch_mach_o(nm_otool, file_data, type_64, (type_64)
+		? mach_o_obj_handler_64 : mach_o_obj_handler_32));
 }
 
 bool			mach_o_fat_32(t_nm_otool *nm_otool)
