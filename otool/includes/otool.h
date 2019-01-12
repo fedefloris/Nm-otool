@@ -14,6 +14,8 @@
 
 # endif
 
+int			display_usage(void);
+
 void		print_file_name(t_nm_otool *nm_otool, char *current_file);
 
 bool		display_row(t_nm_otool *nm_otool, unsigned char **byte,

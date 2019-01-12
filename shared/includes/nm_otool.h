@@ -47,7 +47,7 @@
 # define FT_OTOOL 2
 
 # define NM_OPTIONS "hrjp"
-# define OTOOL_OPTIONS "t"
+# define OTOOL_OPTIONS "ht"
 
 # define IS_MACH_O_FAT_32(x) x == MACH_O_FAT_32
 # define IS_MACH_O_FAT_64(x) x == MACH_O_FAT_64

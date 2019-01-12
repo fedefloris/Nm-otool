@@ -28,7 +28,8 @@ HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES
 HEADERS += $(SHARED_INCLUDES_DIR)/nm_otool.h \
 	$(EXTERNAL_INCLUDES_DIR)/elf.h
 
-MAIN_FILES = otool \
+MAIN_FILES = display_usage \
+	otool \
 	print_file_name \
 	display_row \
 	display_byte \
