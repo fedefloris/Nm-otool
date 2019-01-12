@@ -10,7 +10,7 @@ static void		display_options(void)
 
 int				display_usage(void)
 {
-	ft_putstr("Usage: nm [options] [files]\n\n");
+	ft_putstr("Usage: ./ft_nm [options] [files]\n\n");
 	ft_putstr("List object files symbols.\n\n");
 	ft_putstr("The options are:\n");
 	display_options();
