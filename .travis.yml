@@ -1,13 +1,14 @@
 language: c
 
-before_install:
-  - apt-get update -qq && apt-get install -qq valgrind
-
 os:
   - linux
   - osx
 
 osx_image:
   - xcode9.2
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-get install -y valgrind; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install valgirnd; fi
 
 script: travis_wait 60 make test
