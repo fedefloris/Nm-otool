@@ -9,6 +9,6 @@ osx_image:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-get install -y valgrind; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install valgirnd; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install valgrind; fi
 
 script: travis_wait 60 make test
