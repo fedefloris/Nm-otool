@@ -14,21 +14,21 @@ all: $(NAME)
 test: $(NAME)
 	# ------- NM -------
 ifeq ($(OS_TYPE), Darwin)
-	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 USE_VALGRIND=1 ./scripts/test.sh /bin
-	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /usr/bin
-	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh /usr/lib
-	@FUNCTION=nm OPTIONS= PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
+	@FUNCTION=nm OPTIONS= VERBOSE=1 USE_VALGRIND=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS= VERBOSE=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS= VERBOSE=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=nm OPTIONS= VERBOSE=1 ./scripts/test.sh ./examples/mach_o
 else
-	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 USE_VALGRIND=1 ./scripts/test.sh /bin
-	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh /usr/bin
-	@FUNCTION=nm OPTIONS=-p PRINT_REPORT=1 ./scripts/test.sh ./examples/elf/good_files
+	@FUNCTION=nm OPTIONS=-p VERBOSE=1 USE_VALGRIND=1 ./scripts/test.sh /bin
+	@FUNCTION=nm OPTIONS=-p VERBOSE=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=nm OPTIONS=-p VERBOSE=1 ./scripts/test.sh ./examples/elf/good_files
 endif
 ifeq ($(OS_TYPE), Darwin)
 	# ------- OTOOL -------
-	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 USE_VALGRIND=1 ./scripts/test.sh /bin
-	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/bin
-	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh /usr/lib
-	@FUNCTION=otool OPTIONS=-t PRINT_REPORT=1 ./scripts/test.sh ./examples/mach_o
+	@FUNCTION=otool OPTIONS=-t VERBOSE=1 USE_VALGRIND=1 ./scripts/test.sh /bin
+	@FUNCTION=otool OPTIONS=-t VERBOSE=1 ./scripts/test.sh /usr/bin
+	@FUNCTION=otool OPTIONS=-t VERBOSE=1 ./scripts/test.sh /usr/lib
+	@FUNCTION=otool OPTIONS=-t VERBOSE=1 ./scripts/test.sh ./examples/mach_o
 endif
 
 comp_libft:

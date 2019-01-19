@@ -27,9 +27,9 @@ then
 fi
 
 # Set default print report
-if [ -z "$PRINT_REPORT" ]
+if [ -z "$VERBOSE" ]
 then
-	PRINT_REPORT=0
+	VERBOSE=0
 fi
 
 # Set default test function
@@ -104,6 +104,9 @@ do
 		echo ********************END $f \\n\\n\\n\\n\\n\\n\\n\\n\\n >> $REPORT;
 		STATUS=1
 		DIFF_STATUS=1
+	elif [ $VERBOSE -eq 1 ]
+	then
+		echo "${GREEN}OK: ${WHITE}$f"
 	fi
 
 	if [ $DIFF_STATUS -eq 0 ] && [ $USE_VALGRIND -eq 1 ]
@@ -140,7 +143,7 @@ then
 	echo "${WHITE}"
 else
 	echo "${RED}$FAILED_TESTS Tests failed! For more details look at ./${REPORT} and ./${VAL_REPORT}"
-	if [ $PRINT_REPORT -eq 1 ]
+	if [ $VERBOSE -eq 1 ]
 	then
 		echo "\n\n${WHITE}Content of ./${REPORT}: \n"
 		cat ./${REPORT}
