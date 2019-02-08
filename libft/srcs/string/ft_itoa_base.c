@@ -62,7 +62,7 @@ static char	*itoa_base(int value, int base, unsigned int value_size,
 	{
 		out = value_u / value_size;
 		if (out > 9 && out != 16)
-			out += 'A' - '9' - 1;
+			out += 'a' - '9' - 1;
 		res[i++] = '0' + out;
 		value_u %= value_size;
 		value_size /= base;

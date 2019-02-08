@@ -13,68 +13,6 @@
 #include "nm_otool.h"
 #include "otool.h"
 
-static char			ft_calculate_char(int mod, char c)
-{
-	char	return_char;
-
-	if (mod > 36)
-		return (0);
-	return_char = '0';
-	while (mod--)
-	{
-		return_char++;
-		if (return_char == ':')
-			return_char = c;
-	}
-	return (return_char);
-}
-
-static int			ft_get_len(uintmax_t num, uintmax_t base)
-{
-	int		len;
-
-	len = 0;
-	while (num)
-	{
-		num /= base;
-		len++;
-	}
-	return (len);
-}
-
-//Get rid of this and use with your own ft_itoa_base
-//(the one in our dev libft does not work)
-
-static char			*ft_itoa_base_tmp(uintmax_t num, uintmax_t base, char c)
-{
-	uintmax_t	sum;
-	int			mod;
-	int			len;
-	char		*str;
-
-	if (num == 0)
-	{
-		if (!(str = ft_strnew(1)))
-			return (NULL);
-		*str = '0';
-		return (str);
-	}
-	sum = num;
-	len = ft_get_len(num, base);
-	if (!(str = ft_strnew(len)))
-		return (NULL);
-	while (sum)
-	{
-		mod = sum % base;
-		sum /= base;
-		str[(len--) - 1] = ft_calculate_char(mod, c);
-	}
-	return (str);
-}
-
-//Get rid of ft_itoa_base_tmp and use with your own ft_itoa_base
-//(the one in our dev libft does not work)
-
 static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 {
 	unsigned char	row[PRINT_ROW_SIZE];
@@ -87,7 +25,7 @@ static void			print_row(t_nm_otool *nm_otool, unsigned char *byte)
 	number = NULL;
 	while (position < BYTES_PER_ROW)
 	{
-		if ((number = ft_itoa_base_tmp(byte[position], 16, 'a')))
+		if ((number = ft_itoa_base(byte[position], 16)))
 		{
 			if (ft_strlen(number) == 1)
 				row[row_index++] = '0';
