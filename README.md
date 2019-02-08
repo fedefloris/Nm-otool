@@ -1,7 +1,7 @@
 # Nm-otool
 [![Build Status](https://travis-ci.com/fedefloris/Nm-otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm-otool) ![](https://img.shields.io/github/license/fedefloris/Nm-otool.svg)
 ## Challenge  
-To recode the `UNIX` commands `nm` (with no options) and `otool` (the same as `-t`) The executeables must be named `ft_nm` and `ft_otool`  
+To recode the `UNIX` commands `nm` (with no options) and `otool` (the same as `-t`) The executables must be named `ft_nm` and `ft_otool`  
 
 The function must conform to 42's norm.  
 
@@ -135,13 +135,10 @@ Contents of (__TEXT,__text) section
 000000010000441c        78 00 00 00
 ```
 
-
-To execute a binary
-
 ## Bonus
 - `ft_nm` works on `macOS` and `Linux`
 - `ft_nm` works on `ELF` binaries. `ELF` binaries are a completely different architecture to `mach-o`. This functionality is an entire `ft_nm` in its own right.
-- Binary finder: `./ft_nm ls` is equivlent to `./ft_nm /bin/ls`. `UNIX`'s `nm` does not have this feature.
+- Binary finder: `./ft_nm ls` is equivalent to `./ft_nm /bin/ls`. `UNIX`'s `nm` does not have this feature.
 - `ft_otool` is 4.8x faster than `otool`. One benchmark measured:  
 `ft_otool`: 73 seconds  
 `otool`: 551 seconds
