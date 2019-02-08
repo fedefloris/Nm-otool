@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/fedefloris/Nm-otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm-otool)
 # Nm-otool
+[![Build Status](https://travis-ci.com/fedefloris/Nm-otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm-otool)
 ***
 ### Score TBA
 ##### Mandatory
