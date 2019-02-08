@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/davhojt/Nm-otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/davhojt/Nm-otool)
+[![Build Status](https://travis-ci.com/fedefloris/Nm-otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm-otool)
 # Nm-otool
 ***
 ### Score TBA
@@ -11,11 +11,11 @@ TBA/TBA
 ***
 ### Challenge  
 To recode the `UNIX` commands `nm` (with no options) and `otool` (the same as `-t`) The executeables must be named `ft_nm` and `ft_otool`  
-  
+
 The function must conform to 42's norm.  
-  
+
 The programs cannot leak. All errors must be handled carefully. In no way can the programs quit in an unexpected manner (Segmentation fault, bus error, double free, etc).  
-  
+
 Allowed functions for the mandatory part are:
 - `open(2)`
 - `close(2)`
@@ -127,20 +127,20 @@ $> ./ft_nm ls
 $> ./ft_otool -t ls
 ls:
 Contents of (__TEXT,__text) section
-0000000100000f0c        55 48 89 e5 48 83 c7 68 48 83 c6 68 5d e9 5e 36 
-0000000100000f1c        00 00 55 48 89 e5 48 8d 46 68 48 8d 77 68 48 89 
-0000000100000f2c        c7 5d e9 49 36 00 00 55 48 89 e5 4c 8b 46 60 48 
-0000000100000f3c        8b 57 60 48 8b 4a 30 b8 01 00 00 00 49 39 48 30 
-0000000100000f4c        7f 1a 7d 07 b8 ff ff ff ff eb 11 48 8b 4a 38 49 
-0000000100000f5c        39 48 38 7f 07 b8 ff ff ff ff 7d 02 5d c3 48 83 
+0000000100000f0c        55 48 89 e5 48 83 c7 68 48 83 c6 68 5d e9 5e 36
+0000000100000f1c        00 00 55 48 89 e5 48 8d 46 68 48 8d 77 68 48 89
+0000000100000f2c        c7 5d e9 49 36 00 00 55 48 89 e5 4c 8b 46 60 48
+0000000100000f3c        8b 57 60 48 8b 4a 30 b8 01 00 00 00 49 39 48 30
+0000000100000f4c        7f 1a 7d 07 b8 ff ff ff ff eb 11 48 8b 4a 38 49
+0000000100000f5c        39 48 38 7f 07 b8 ff ff ff ff 7d 02 5d c3 48 83
 
-00000001000043ac        48 ff c3 49 ff cf 75 f0 8b bd 4c ff ff ff 44 89 
-00000001000043bc        e3 e8 1a 02 00 00 01 c3 e9 64 ff ff ff 48 8b 05 
-00000001000043cc        48 0c 00 00 48 8b 00 48 3b 45 d0 75 14 89 d8 48 
-00000001000043dc        81 c4 98 00 00 00 5b 41 5c 41 5d 41 5e 41 5f 5d 
-00000001000043ec        c3 e8 4c 00 00 00 55 48 89 e5 48 8b 05 23 0c 00 
-00000001000043fc        00 48 8b 08 48 8d 3d 21 0b 00 00 be 3e 00 00 00 
-000000010000440c        ba 01 00 00 00 e8 be 00 00 00 bf 01 00 00 00 e8 
+00000001000043ac        48 ff c3 49 ff cf 75 f0 8b bd 4c ff ff ff 44 89
+00000001000043bc        e3 e8 1a 02 00 00 01 c3 e9 64 ff ff ff 48 8b 05
+00000001000043cc        48 0c 00 00 48 8b 00 48 3b 45 d0 75 14 89 d8 48
+00000001000043dc        81 c4 98 00 00 00 5b 41 5c 41 5d 41 5e 41 5f 5d
+00000001000043ec        c3 e8 4c 00 00 00 55 48 89 e5 48 8b 05 23 0c 00
+00000001000043fc        00 48 8b 08 48 8d 3d 21 0b 00 00 be 3e 00 00 00
+000000010000440c        ba 01 00 00 00 e8 be 00 00 00 bf 01 00 00 00 e8
 000000010000441c        78 00 00 00
 ```
 
