@@ -1,5 +1,6 @@
 # Nm-otool
 [![Build Status](https://travis-ci.com/fedefloris/Nm-otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm-otool) ![](https://img.shields.io/github/license/fedefloris/Nm-otool.svg)
+***
 ## Challenge  
 To recode the `UNIX` commands `nm` (with no options) and `otool` (the same as `-t`) The executables must be named `ft_nm` and `ft_otool`  
 
@@ -25,7 +26,6 @@ To compile the project, run `GNU`'s `make`. This will compile `ft_nm` and `ft_ot
 ```console
 make
 ```
-
 #### Execute
 To execute (see the below options) execute like a normal non-`$PATH` binary.
 ```console
@@ -134,7 +134,7 @@ Contents of (__TEXT,__text) section
 000000010000440c        ba 01 00 00 00 e8 be 00 00 00 bf 01 00 00 00 e8
 000000010000441c        78 00 00 00
 ```
-
+***
 ## Bonus
 - `ft_nm` works on `macOS` and `Linux`
 - `ft_nm` works on `ELF` binaries. `ELF` binaries are a completely different architecture to `mach-o`. This functionality is an entire `ft_nm` in its own right.
