@@ -6,7 +6,7 @@
 /*   By: ffloris <ffloris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 11:30:56 by ffloris           #+#    #+#             */
-/*   Updated: 2019/02/08 11:30:57 by ffloris          ###   ########.fr       */
+/*   Updated: 2019/02/21 13:58:01 by ffloris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool		mach_o_obj_handler(t_nm_otool *nm_otool)
 		mach_o_fat_32(nm_otool);
 	else if (IS_ARCHIVE(nm_otool->file.format))
 	{
-		nm_otool->file.format = ARCHIVE; // Useless?
+		nm_otool->file.format = ARCHIVE;
 		archive_handler(nm_otool);
 	}
 	return (true);
