@@ -142,6 +142,7 @@ Contents of (__TEXT,__text) section
 - `ft_otool` is 4.8x faster than `otool`. One benchmark measured:  
 `ft_otool`: 73 seconds  
 `otool`: 551 seconds
+- Unit testing
 - Every error has an individual message.
 - `-j` Just display the symbol names (no value or type).
 - `-r` Sort in reverse order.
