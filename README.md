@@ -1,6 +1,5 @@
 # Nm-otool - 42born2code
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4610eb2fe6a7496594320ac0a3c97a49)](https://app.codacy.com/app/fedefloris/Nm_otool?utm_source=github.com&utm_medium=referral&utm_content=fedefloris/Nm_otool&utm_campaign=Badge_Grade_Dashboard)
-[![Build Status](https://travis-ci.com/fedefloris/Nm_otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm_otool) ![](https://img.shields.io/github/license/fedefloris/Nm_otool.svg) 
+[![Build Status](https://travis-ci.com/fedefloris/Nm_otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm_otool)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4610eb2fe6a7496594320ac0a3c97a49)](https://app.codacy.com/app/fedefloris/Nm_otool?utm_source=github.com&utm_medium=referral&utm_content=fedefloris/Nm_otool&utm_campaign=Badge_Grade_Dashboard) ![](https://img.shields.io/github/license/fedefloris/Nm_otool.svg) 
 ***
 ## Challenge  
 To recode the `UNIX` commands `nm` (with no options) and `otool` (the same as `-t`) The executables must be named `ft_nm` and `ft_otool`  
