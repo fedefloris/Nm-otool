@@ -10,12 +10,19 @@ The programs cannot leak. All errors must be handled carefully. In no way can th
 
 Allowed functions for the mandatory part are:
 - `open(2)`
+
 - `close(2)`
+
 - `mmap(2)`
+
 - `munmap(2)`
+
 - `write(2)`
+
 - `fstat(2)`
+
 - `malloc(3)`
+
 - `free(3)`
 
 Everything else is forbidden. Other functions can be used for bonus, but their use must be justified.
@@ -137,13 +144,19 @@ Contents of (__TEXT,__text) section
 ***
 ## Bonus
 - `ft_nm` works on `macOS` and `Linux`
+
 - `ft_nm` works on `ELF` binaries. `ELF` binaries are a completely different architecture to `mach-o`. This functionality is an entire `ft_nm` in its own right.
+
 -  Binary finder: `./ft_nm ls` is equivalent to `./ft_nm /bin/ls`. `UNIX`'s `nm` does not have this feature.
+
 - `ft_otool` is 4.8x faster than `otool`. One benchmark measured:  
 `ft_otool`: 73 seconds  
 `otool`: 551 seconds
+
 - Unit testing
+
 - Every error has an individual message.
+
 - `-j` Just display the symbol names (no value or type).
 
 - `-r` Sort in reverse order.
