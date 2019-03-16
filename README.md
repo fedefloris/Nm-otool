@@ -10,19 +10,12 @@ The programs cannot leak. All errors must be handled carefully. In no way can th
 
 Allowed functions for the mandatory part are:
 - `open(2)`
-
 - `close(2)`
-
 - `mmap(2)`
-
 - `munmap(2)`
-
 - `write(2)`
-
 - `fstat(2)`
-
 - `malloc(3)`
-
 - `free(3)`
 
 Everything else is forbidden. Other functions can be used for bonus, but their use must be justified.
