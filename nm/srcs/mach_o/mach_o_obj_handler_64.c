@@ -29,7 +29,7 @@ static bool			mach_o_64_read_symbols(t_nm_otool *nm_otool,
 		if (!STRUCT_IS_SAFE(&array[i]))
 			return (ERROR_LOG("struct nlist is not a good size"));
 		if (!SET(str, stringtable + SWAP_ENDIAN(array[i].n_un.n_strx)))
-			str = nm_otool->bad_string_index;
+			str = BAD_STRING_INDEX;
 		else if (!STRING_IS_SAFE(str))
 			return (ERROR_LOG("symbol name str goes beyond the binary limit"));
 		if ((SWAP_ENDIAN(array[i].n_type) & N_STAB) == 0)
