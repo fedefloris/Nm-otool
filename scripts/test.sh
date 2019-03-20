@@ -131,10 +131,12 @@ do
 			STATUS=1
 		fi
 	fi
+	# Remove log files
+	rm -rf $DIFF_LOG $VAL_LOG
 done
 
-# Remove garbage
-rm -rf $FT $SY $DIFF_LOG $VAL_LOG
+# Remove log files
+rm -rf $FT $SY
 
 # Check final test status
 if [ $STATUS -eq 0 ]

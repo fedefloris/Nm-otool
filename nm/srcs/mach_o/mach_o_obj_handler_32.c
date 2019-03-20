@@ -58,7 +58,6 @@ static bool			mach_o_32_get_symbols(t_nm_otool *nm_otool,
 		return (free_symbols(reader.symbols));
 	sort_symbols(nm_otool, &reader.symbols);
 	display_symbols(nm_otool, reader.symbols);
-	mach_o_free_sections(reader.sections);
 	free_symbols(reader.symbols);
 	return (true);
 }
@@ -77,16 +76,15 @@ static int			mach_o_32_get_first_load_command(t_nm_otool *nm_otool,
 
 bool				mach_o_obj_handler_32(t_nm_otool *nm_otool)
 {
-	int						number_of_commands;
-	t_lc					*lc;
-	t_sym					*symtab;
-	uint8_t					**sections;
+	int					number_of_commands;
+	uint8_t				*sections[256];
+	t_lc				*lc;
+	t_sym				*symtab;
 
-	if (!(sections = (uint8_t **)ft_memalloc(sizeof(uint8_t *) * 256)))
-		return (ERROR_LOG("malloc failed: sections"));
+	ft_bzero(sections, sizeof(uint8_t*) * 256);
 	if ((number_of_commands =
 			mach_o_32_get_first_load_command(nm_otool, &lc)) < 0)
-		return (mach_o_free_sections(sections));
+		return (false);
 	if ((symtab = mach_o_read_load_commands(nm_otool, lc,
 			sections, number_of_commands)))
 		return (mach_o_32_get_symbols(nm_otool, symtab, sections));

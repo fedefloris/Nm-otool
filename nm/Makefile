@@ -82,8 +82,7 @@ SHARED_FILES = archive_handler \
 	warning_log
 
 ifeq ($(OS_TYPE), Darwin)
-	MACH_O_FILES +=	mach_o_free_sections \
-		mach_o_get_type \
+	MACH_O_FILES +=	mach_o_get_type \
 		mach_o_obj_handler \
 		mach_o_get_sections_32 \
 		mach_o_obj_handler_32 \
