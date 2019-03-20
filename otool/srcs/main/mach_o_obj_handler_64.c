@@ -26,12 +26,13 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 	if (!SET(byte, nm_otool->file.memory + SWAP_ENDIAN(section->offset)))
 		return (ERROR_LOG("offset beyond binary"));
 	status = true;
-	while (index < SWAP_ENDIAN(section->size) && status)
+	while (status && index < SWAP_ENDIAN(section->size))
 	{
 		SEND_TO_BUFFER(get_value_64(SWAP_ENDIAN(section->addr)
 			+ index), "\t");
 		position = 0;
-		while (position < BYTES_PER_ROW && index < SWAP_ENDIAN(section->size))
+		while (status && position < BYTES_PER_ROW
+			&& index < SWAP_ENDIAN(section->size))
 		{
 			if (index + position + BYTES_PER_ROW < SWAP_ENDIAN(section->size))
 				status = display_row(nm_otool, &byte, &index, &position);
