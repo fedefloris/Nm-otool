@@ -6,7 +6,7 @@
 /*   By: ffloris <ffloris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 11:31:01 by ffloris           #+#    #+#             */
-/*   Updated: 2019/02/08 11:31:02 by ffloris          ###   ########.fr       */
+/*   Updated: 2019/03/21 15:03:54 by ffloris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ static bool			parse_text_64(t_nm_otool *nm_otool,
 	status = true;
 	while (status && index < SWAP_ENDIAN(section->size))
 	{
-		SEND_TO_BUFFER(get_value_64(SWAP_ENDIAN(section->addr)
-			+ index), "\t");
+		SEND_TO_BUFFER(get_value_64(SWAP_ENDIAN(section->addr) + index), "\t");
 		position = 0;
 		while (status && position < BYTES_PER_ROW
-			&& index < SWAP_ENDIAN(section->size))
+				&& index < SWAP_ENDIAN(section->size))
 		{
 			if (index + position + BYTES_PER_ROW < SWAP_ENDIAN(section->size))
 				status = display_row(nm_otool, &byte, &index, &position);
