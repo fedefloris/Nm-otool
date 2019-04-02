@@ -26,8 +26,8 @@ static int	cmp_name_ascendent(t_symbol *sym1, t_symbol *sym2)
 {
 	int		name_cmp;
 
-	return ((sym1->name && sym2->name &&
-		(name_cmp = ft_strcmp(sym1->name, sym2->name)))
+	return ((sym1->name && sym2->name
+		&& (name_cmp = ft_strcmp(sym1->name, sym2->name)))
 			? name_cmp
 			: cmp_value_ascendent(sym1, sym2));
 }
