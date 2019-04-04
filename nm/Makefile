@@ -68,7 +68,6 @@ ELF_FILES = elf_obj_handler_32 \
 	elf_obj_handler
 
 SHARED_FILES = archive_handler \
-	config_buffer \
 	config_nm_otool \
 	empty_the_buffer \
 	endian_swap \

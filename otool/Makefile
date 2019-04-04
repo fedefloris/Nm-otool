@@ -48,7 +48,6 @@ MAIN_FILES = display_usage \
 	obj_handler
 
 SHARED_FILES = archive_handler \
-	config_buffer \
 	config_nm_otool \
 	empty_the_buffer \
 	endian_swap \

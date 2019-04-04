@@ -15,6 +15,8 @@
 
 void		empty_the_buffer(t_buffer *buffer)
 {
+	if (!buffer->content_index)
+		return ;
 	write(1, buffer->content, buffer->content_index);
-	config_buffer(buffer);
+	CONFIG_BUFFER(buffer);
 }

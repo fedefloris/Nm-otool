@@ -101,6 +101,7 @@
 # endif
 
 # define BUFFER_SIZE 2500
+# define CONFIG_BUFFER(buffer) ((buffer)->content_index = 0)
 # define SEND_TO_BUFFER(...) send_to_buffer(&nm_otool->buff, __VA_ARGS__, NULL)
 
 typedef struct		s_buffer
@@ -173,7 +174,6 @@ uint64_t			endian_swap(uint64_t value, size_t size,
 char				*get_value_32(uint64_t value);
 char				*get_value_64(uint64_t value);
 
-void				config_buffer(t_buffer *buffer);
 void				send_to_buffer(t_buffer *buffer, ...);
 void				empty_the_buffer(t_buffer *buffer);
 
