@@ -140,7 +140,7 @@ Contents of (__TEXT,__text) section
 
 - `ft_nm` works on `ELF` binaries. `ELF` binaries are a completely different architecture to `mach-o`. This functionality is an entire `ft_nm` in its own right.
 
--  Binary finder: `./ft_nm ls` is equivalent to `./ft_nm /bin/ls`. `UNIX`'s `nm` does not have this feature.
+-  Binary finder: `./ft_nm ls` is equivalent to `./ft_nm /bin/ls`.
 
 - `ft_otool` is 4.8x faster than `otool`. One benchmark measured:  
 `ft_otool`: 73 seconds  
