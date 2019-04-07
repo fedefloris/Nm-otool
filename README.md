@@ -22,7 +22,7 @@ Everything else is forbidden. Other functions can be used for bonus, but their u
 ***
 ## Using the project
 #### Compile
-To compile the project, run `GNU`'s `make`. This will compile `ft_nm` and `ft_otool`
+To compile the project, run `make`. This will compile `ft_nm` and `ft_otool`
 ```console
 make
 ```
