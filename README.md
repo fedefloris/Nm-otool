@@ -142,7 +142,7 @@ Contents of (__TEXT,__text) section
 
 -  Binary finder: `./ft_nm ls` is equivalent to `./ft_nm /bin/ls`.
 
-- `ft_otool` is 4.8x faster than `otool`. One benchmark measured:  
+- `ft_otool` is way faster than `otool`. One benchmark measured:  
 `ft_otool`: 73 seconds  
 `otool`: 551 seconds
 
