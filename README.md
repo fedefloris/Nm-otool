@@ -1,5 +1,5 @@
 # Nm-otool - 42born2code
-[![Build Status](https://travis-ci.com/fedefloris/Nm_otool.svg?token=dH8C3CpkpNBzxeKzZ8gb&branch=master)](https://travis-ci.com/fedefloris/Nm_otool)
+[![Build Status](https://travis-ci.com/fedefloris/Nm-otool.svg?branch=master)](https://travis-ci.com/fedefloris/Nm-otool)
 ***
 ## Challenge  
 To recode the `UNIX` commands `nm` (with no options) and `otool` (the same as `-t`) The executables must be named `ft_nm` and `ft_otool`  
